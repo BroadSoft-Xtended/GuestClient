@@ -1,0 +1,140 @@
+.cgcAudio{
+	background-color:#1B1A1A;
+}
+
+.cgcAudioHover{
+	background-color:#171616;
+}
+
+.cgcAudioPress{
+	background-color:#1A8DA5;
+}
+
+.cgcVideoOff{
+	background-color:#1B1A1A;
+}
+
+.cgcVideoOffHover{
+	background-color:#171616;
+}
+
+.cgcVideoOffPress{
+	background-color:#1A8DA5;
+}
+
+.cgcVideoOn{
+	background-color:#1D9DB8;
+}
+
+.cgcVideoOnHover{
+	background-color:#1A8DA5;
+}
+
+.cgcVideoOnPress{
+	background-color:#177E93;
+}
+
+.cgcMuteOff{
+	background-color:#1B1A1A;
+}
+
+.cgcMuteOffHover{
+	background-color:#171616;
+}
+
+.cgcMuteOffPress{
+	background-color:#1A8DA5;
+}
+
+.cgcMuteOn{
+	background-color:#1D9DB8;
+}
+
+.cgcMuteOnHover{
+	background-color:#1A8DA5;
+}
+
+.cgcMuteOnPress{
+	background-color:#177E93;
+}
+
+.cgcEndActive{
+	background-color:#DE4D4D;
+}
+
+.cgcEndHover{
+	background-color:#C74545;
+}
+
+.cgcEndPress{
+	background-color:#B23E3E;
+}
+
+.cgcCallMeButtonDisableBackground{
+	color:#797979;
+	background-color: #323131;
+}
+
+.cgcCallMeButtonEnableBackground{
+	color:#ffffff; 
+	background-color: #05d361;
+}
+
+.cgcCallMeButtonOnPressBackground{
+	color:#FFFFFF;
+	background-color: #04BD57;
+}
+
+.cgcChatInfoFontColor{
+    color: #00992d;
+}
+
+.cgcChatErrorFontColor{
+    color:#FF0000;
+}
+
+.cgcChatMessageBackgroundFirstColor{
+	background-color: #EFEFEF;
+}
+
+.cgcChatMessageBackgroundFirstColor:after{
+	border-color: transparent #EFEFEF;
+}
+
+.cgcChatMessageBackgroundSecondColor{
+	background-color: #FFFFFF;
+}
+
+.cgcChatMessageBackgroundSecondColor:after{
+	border-color: transparent #FFFFFF;
+}
+
+.cgcAlternativeNumberPopupBackground{
+    background-color: rgba(210, 210, 210, 0.8); 
+}
+
+.bsftPopup{
+	  background-color: #F0F0F0; 
+}
+
+.bsftPopupInactiveButton{
+  color: #ADADAD;
+	background-color: #636363;
+}
+
+.bsftPopupActiveButton{
+  color: #FFFFFF;
+	background-color: #1d9db8;
+}
+
+.desktopShareButtonInactiveBackground{
+	background-color: #636363;
+}
+
+.desktopShareButtonActiveBackground{
+	background-color: #1d9db8;
+}
+
+.desktopShareStopButtonDisabled{
+	opacity: 0.5;
+}

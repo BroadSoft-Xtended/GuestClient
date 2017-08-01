@@ -1,0 +1,156 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5" metadata-complete="true">
+	<display-name>BWCollaborateGuestClient</display-name>
+	<description>A light-weight client that allows non-BroadWorks users to participate in collaboration sessions using a HTML5 based browser without downloading any plug-ins.</description>
+	<env-entry>
+		<description>Version</description>
+		<env-entry-name>webAppVersion</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>3.19</env-entry-value>
+	</env-entry>
+	<env-entry>
+		<description>Name of the Configuration File for this WebApp</description>
+		<env-entry-name>webAppConfigFile</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>BWCollaborateGuestClientConfig_3.19.properties</env-entry-value>
+	</env-entry>
+	
+	<resource-env-ref>
+    	<description>Object factory for LogManager instances.</description>
+   		<resource-env-ref-name>broadworks/logging/LogManager</resource-env-ref-name>
+    	<resource-env-ref-type>com.broadsoft.xsp.logging.LogManager</resource-env-ref-type>
+  	</resource-env-ref>
+  	
+	<env-entry>
+		<description>Custom config label Properties file directory</description>
+		<env-entry-name>webAppCustomDir</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+		<env-entry-value>WEB-INF/customDir</env-entry-value>
+	</env-entry>
+  	
+	<env-entry>
+	  	<description>Logging configuration file</description> 
+	  	<env-entry-name>logConfig</env-entry-name> 
+	  	<env-entry-type>java.lang.String</env-entry-type> 
+	  	<env-entry-value>bwLogConfig.xml</env-entry-value>
+	</env-entry>
+	
+
+	<listener>
+  		<listener-class>com.broadsoft.xsp.logging.LoggingInitializer</listener-class> 
+	</listener>
+	
+	<listener>
+		<listener-class>com.broadsoft.cgc.server.CollaborateGuestClientServletContextListener</listener-class>
+	</listener>
+	
+	<filter>
+		<filter-name>BwCollaborateFilter</filter-name>
+		<filter-class>com.broadsoft.cgc.server.filter.BWCGCFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>BwCollaborateFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>	
+	
+	<filter>
+		<filter-name>BwGlobalOverloadProtection</filter-name>
+		<filter-class>com.broadsoft.cgc.server.filter.BWCGCCaptchaFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>BwGlobalOverloadProtection</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>	
+	 
+	<servlet>
+		<servlet-name>CallMeServlet</servlet-name>
+		<servlet-class>com.broadsoft.cgc.server.CallMeServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>DeleteGuestServlet</servlet-name>
+		<servlet-class>com.broadsoft.cgc.server.DeleteGuestServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>DeleteGuestServlet</servlet-name>
+		<url-pattern>/DeleteGuestServlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- servlet>
+	    <servlet-name>cgc</servlet-name>
+	    <jsp-file>/cgc.jsp</jsp-file>
+	</servlet>
+	
+	<servlet>
+	    <servlet-name>cgcDev</servlet-name>
+	    <jsp-file>/cgcdev.jsp</jsp-file>
+	</servlet -->
+	
+	<servlet>
+		<servlet-name>fileService</servlet-name>
+		<servlet-class>com.broadsoft.cgc.server.CGCFileServiceServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>PAServlet</servlet-name>
+		<servlet-class>com.broadsoft.cgc.server.PAServlet</servlet-class>
+	</servlet>
+	<filter>    
+		<filter-name>URLSessionFilter</filter-name>
+		<filter-class>com.broadsoft.cgc.server.filter.URLSessionFilter</filter-class>
+		</filter>
+		
+	<filter-mapping>
+		<filter-name>URLSessionFilter</filter-name>    
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<servlet-mapping>
+		<servlet-name>CallMeServlet</servlet-name>
+		<url-pattern>/CallMeServlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- servlet-mapping>
+		<servlet-name>cgc</servlet-name>
+		<url-pattern>/cgc</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
+		<servlet-name>cgcDev</servlet-name>
+		<url-pattern>/cgcdev</url-pattern>
+	</servlet-mapping -->
+	
+	
+	<servlet-mapping>
+		<servlet-name>fileService</servlet-name>
+		<url-pattern>/messages/*</url-pattern>
+		<url-pattern>/branding/*</url-pattern>
+	</servlet-mapping>
+	
+
+	
+	<servlet-mapping>
+		<servlet-name>PAServlet</servlet-name>
+		<url-pattern>/PAServlet</url-pattern>
+	</servlet-mapping>
+	
+	<welcome-file-list> 
+		<welcome-file>cgc.jsp</welcome-file> 
+	</welcome-file-list>
+	
+	<mime-mapping>
+		<extension>properties</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+	
+	<mime-mapping>
+		<extension>ico</extension>
+		<mime-type>image/x-icon</mime-type>
+	</mime-mapping>
+	
+	<mime-mapping>
+		<extension>less</extension>
+		<mime-type>text/plain</mime-type>
+	</mime-mapping>
+</web-app>

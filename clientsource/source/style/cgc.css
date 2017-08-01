@@ -1,0 +1,1805 @@
+
+@CHARSET "ISO-8859-1";
+
+body{
+	overflow: hidden; width: 100%; height: 100%;font-family: 'Roboto' !important; background-color: #FFFFFF;cursor:default;
+}
+.cgcViewControl{
+    background: #f6f6f6;
+    overflow:auto;
+}
+
+.cgcErrorItem{
+    width: 99%;
+    left: 10px;
+    height : auto;
+    position: static;
+    font-size: 12px;
+}
+
+.cgcChatItemInfo{
+    height: auto;
+    left: 10px;
+    position: static;
+    font-size: 12px;
+}
+
+.cgcChatAvatar{
+    width: 28px;
+    height: 28px;
+    float: left;
+}
+
+.cgcChatEmptyAvatar{
+    display : none;
+    height: 28px !important;
+    width: 29px;
+    float: right;
+    margin-left: 10px;
+}
+
+.cgcChatMessageUser{
+    display: inline-block;
+    margin-bottom: 2px;
+    width:100%;
+}
+
+.cgcTextSize{
+    padding: 0px !important;
+    padding-left: 10px !important;
+    font-size: 18px !important;
+    text-align: left !important;
+}
+
+.cgcChatSenderMainDiv{
+    padding-bottom:4px;
+    display: inline-block;
+    width: 100%;
+    padding-top: 12px;
+}
+
+.cgcChatReceiverMainDiv{
+    padding-bottom:2px;
+    display: block;
+    width: 80%;
+    padding-top: 1px;
+}
+
+.cgcCollaborateGuestClient{
+    width:100%;
+    height:100%;
+}
+
+.cgcAlternativeNumberPopup{
+    border-radius: 5px;
+    font-size:70%;
+    padding: 10px; 
+    max-height: 150px;
+    height: auto; 
+    max-width:280px;
+    width:auto;
+    overflow-y:auto;
+}
+
+.cgcLoginHeader{
+    font-size: 19px;
+    padding-bottom: 5px;
+    text-align: center;
+    color: #0D9DBA; 
+	font-weight: 500;
+}
+
+.cgcRoomHeader{
+    font-size: 13px;
+    color: #a1a1a1;
+    text-align: center;
+}
+
+.cgcTimeoutLoginBox{
+    display: inline-block;
+    width: auto !important;
+    padding-right: 50%;
+    padding-top: 10px;
+}
+
+.cgcGuestProfile{
+	max-width: 220px;
+	white-space: nowrap;
+	overflow: hidden;
+	vertical-align: middle;
+	display: table-cell;
+	text-overflow: ellipsis;
+	padding-left:7px;
+}
+
+.cgcGuestYou{
+    vertical-align: middle;
+	padding-left: 5px;
+	display: table-cell;
+}
+
+.cgcChatItemHeaderTime{
+    color: #999999;
+    font-size:11px; 
+    padding-top:10px;
+    border-bottom: 1px black;
+    display: inline;
+    height:initial;
+}
+
+.cgcGuestRole{
+    padding-left: 5px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 285px;
+	overflow: hidden;
+	vertical-align: middle;
+	display: table-cell;
+}
+
+.cgcLeftPanelVideoBackground{
+	background:rgb(194, 192, 192);
+	text-align: -webkit-center;
+	width:100%;
+	height: 100%;
+}
+
+.cgcRightPanelVideoBackground{
+    background-color: #3a3a3a;
+	width: 100% !important;
+	height: 100% !important;
+	display: flex !important;
+}
+
+.cgcVideoPanel{
+    height:0px;
+    width:100%;
+    padding:0px;
+    min-height:0px;
+    max-height:240px
+}
+
+.cgcJoinPage{
+    text-align: center;
+    max-width:345px;
+}
+
+.cgcJoinPageOuterBox{
+    background: #ffffff;
+    padding-top: 52px;
+    padding-bottom: 61px;
+    padding-left:40px;
+    padding-right:40px;
+    height: auto !important;
+    min-width: 360px !important;
+	max-width: 425px !important;
+}
+
+.cgcJoinPageHeader{
+    text-align:center;
+    font-style:italic; 
+    color:red;
+    font-size:15px;
+    width:auto;
+    height:110px;
+}
+
+.cgcJoinPageLogoOuterBox{
+    text-align: center;
+}
+
+.cgcJoinPageLogo{
+    max-width: 345px;
+    text-align:center;
+}
+
+.cgcLogoSeperator{
+    height : 38px;
+}
+
+.cgcLoginBox{
+    display: -webkit-box;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+}
+
+.cgcTimeoutRejoinHeader{
+    height: 110px;
+}
+
+.cgcRejoinHeader{
+    height:110px;
+    width:auto;
+}
+
+.cgcWaitForLeaderAcceptanceWidget{
+    text-align: left;
+    padding-left: 268px;
+}
+
+.cgcApploadingimgBox{
+    width: 60px !important;
+    height: 60px !important;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    text-align:center;
+    margin: auto;
+}
+
+.cgcApploadingimg{
+    width: 48px !important;
+    height: 48px !important;
+    display: block;
+    margin: auto;
+    text-align:center;
+}
+
+.cgcSigninProgress{
+    display: inline-block;
+    width: 100%;
+    float: left;
+    color: black;
+}
+
+.cgcStatusMessageBox{
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #333333;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.cgcStatusProgressInfoMessageBox{
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    color: #333333;
+    padding-left: 45px;
+    padding-right: 45px;
+}
+
+.cgcStatusProgressWarningMessageBox{
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    color: #333333;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.cgcStatusUnSupportedBrowerMessageBox{
+      font-size: 14px;
+	  font-weight: normal;
+	  text-align: left;
+	  color: #B5ADAD;
+	  padding-left: 15px;
+}
+
+.cgcRightPanelHeaderButtons{
+    text-align:right;
+    padding-right:12px;
+    display: table-cell;
+}
+
+.cgcChatimg{
+    height: 13px;
+    width: 16px;
+}
+
+.cgcParticipantContent{
+	border-right: 1px solid lightgrey;
+	color: #666666;
+	font-size: 13px;
+}
+
+.cgcParticipantYou{
+	background-color: #F3F5F6;
+	height: 49px;
+	line-height:49px;
+	vertical-align:middle;
+	padding-left: 14px;
+}
+
+.cgcHeaderParticipantsLabel{
+    font-size: 18px;
+    color: white;
+    padding-left: 5px;
+    height: 30px !important;
+    width: 90%;
+    padding-top: 5px;
+}
+
+.cgcHeaderParticipantsImg{
+    width: 22px !important;
+    height: 22px !important;
+    padding-top: 2px;
+}
+
+.cgcHeaderChatImg{
+    width: 22px !important;
+    height: 22px !important;
+    padding-top: 2px;
+}
+
+.cgcHeaderProfile{
+    vertical-align: sub;
+    padding-left: 10px;
+    padding-bottom:0px;
+    color:#FFFFFF;
+    font-size: 18px;
+}
+
+.cgcHeaderSubProfile{
+    vertical-align: sub;
+    padding-left: 10px;
+    font-style: italic;
+    font-family: -webkit-body;
+    padding-bottom: 0px;
+    color: #EADEDE;
+    font-size: 14px;
+}
+
+.cgcLeftNavicationContent{
+	height: 38px;border-right: 1px solid #E5E5E5;
+}
+
+.cgcAccordionItems{
+    height:auto;
+    background-color: #ffffff;
+}
+
+.cgcChatPanelContainter{
+    padding-top:2px;
+}
+
+.cgcHeaderParticipants{
+    height: auto;
+}
+
+.cgcParticipantPopup{
+    top: 5%;
+    left: 78%;
+    height: auto;
+    max-height: 230px;
+    width: 250px;
+    float:right;
+    border: 1px solid #2C92B3;
+    background-color: #FFFFFF;
+}
+
+.cgcChatHeader{
+    background-color: #2C92B3;
+    height: 30px;
+}
+
+.cgcMuteButtonHeader {
+    cursor: pointer;
+    height:32px
+    vertical-align: middle;
+    line-height: 32px;
+    text-align: center;
+    cursor: pointer;
+    margin-right:18px;
+}
+
+.cgcFullScreenImg{
+    cursor: hand; 
+    cursor: pointer;
+    height: 25px !important;
+    width: 20px;
+    padding-right: 5px;
+    padding-top: 9px;
+}
+
+.cgcFullScreenLabelOff{
+    cursor: pointer;
+    height:32px
+    vertical-align: middle;
+    line-height: 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.cgcFullScreenLabelOn{
+    cursor: hand; 
+    cursor: pointer;
+    color: #78B9CE;
+    padding-left: 5px;
+    padding-top: 10px;
+    padding-right: 10px;
+    vertical-align: sub;
+    font-size: 12px;
+    float: right;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.cgcRightPanelHeaderLabel{
+      font-size: 12px;
+	  height: 32px !important;
+	  font-weight: bold;
+	  vertical-align: middle;
+	  padding-left: 10px;
+	  margin: 0 auto;
+	  display: table-cell;
+	  width: 100%;
+}
+
+.cgcHeaderStyle{
+    display: none !important;
+    width: 100%;
+    font-size: 18px;
+    height:30px !important;
+    background-repeat:no-repeat;
+}
+
+.cgcPendingBox{
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding-top:20px;
+    background-color:#2C92B3;
+    height: auto !important;
+}
+
+.cgcFooterbox{
+    padding-top:5px;
+    font-style:italic; 
+    color:red;
+    font-size:15px;
+    width:auto;
+    height:40%
+}
+
+.cgcFooterInnerbox{
+    margin: 0 auto;
+    text-align: right;
+}
+
+.cgcCompanyLogo{
+    text-align: right;
+    margin: 0 auto;
+    width: 80px;
+    height: 0px;
+    padding-bottom: 1%;
+}
+
+.cgcParticipantsLogo{
+    cursor: hand; 
+    cursor: pointer;
+    display: block;
+	margin: 0 auto;
+	width: 16px;
+	height: 16px;
+}
+
+.videoBar {
+	display: none;
+	height: 0px;
+	border: 0px solid #DDDDDD;
+}
+
+.cgcCallItemsAdd{
+    background-color: #FCD9B6;
+}
+
+.cgcCallItemsEven{
+    background-color: #EBEBEB;  
+}
+
+.cgcWebRTCPanel{
+    height: 64px !important;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    padding: 0px;
+}
+
+.cgcCallButtonDiv{
+    width: 80% !important;
+}
+
+.cgcBasePanel{
+    width:100%; 
+    height: 100%; 
+}
+
+.cgcLeftPanel{
+    width: 320px;
+    min-width:320px;
+    max-width:320px; 
+    height: 100%; 
+}
+
+.cgcRightPanel{
+    background: white;
+    width:100% ;
+    height: 100%; 
+}
+
+.cgcConnectorButton {
+	border-right: 1px solid #000000;
+	width: 107px;
+    vertical-align: middle;
+    line-height: 62px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.cgcLeftPannelDefaultColor {
+    background-color: #0F0D0E;
+}
+
+ .cgcChatScrollerLeft {
+	padding-left: 5px !important;
+}
+
+ .cgcChatScrollerRight {
+	padding-left: 25px !important;
+}
+
+.cgcChatScroller{
+	border:none; 
+}
+
+.cgcChatScrollerMac{
+	border:none; 
+	overflow-x: hidden !important;
+	overflow-y: auto !important;
+}
+
+.cgcChatScrollerNonMac{
+	border:none; 
+	overflow-x: hidden !important;
+	overflow-y: hidden !important;
+}
+
+
+        
+
+.cgcPadding{
+    padding:2px;
+}
+
+.cgcChatItemHeader{
+    color: #999999;
+    font-weight:bold;
+    font-size: 11px;
+    padding-top: 10px;
+    border-bottom: 1px black;
+    display: inline;
+}
+
+.cgcChatItemMessage{
+    height: initial;
+	font-size: 13px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	padding-top: 5px;
+	width: 100%;
+	max-width:600px;
+	color: #666666;
+}
+
+.cgcLoggedUserWidget{
+    border-bottom:1px solid #FF9016;
+    padding:4px;
+    min-height:60px; 
+    max-height:145px
+}
+
+.cgcVedioPanelBorder{
+    border-bottom:1px solid #FF9016;
+}
+
+.cgcContactPanelBorder{
+    border-bottom:1px solid #FF9016;
+}
+
+.cgcContactPanelMac{
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+.cgcContactPanelNonMac{
+    overflow: hidden !important;
+}
+
+.cgcLoginPageLogoChrome{
+    content: url("../../branding/assets/bsft_logo_128x128.png");
+}
+
+.cgcLoginPageLogoNetscape{
+    background: url("../../branding/assets/bsft_logo_128x128.png") no-repeat;
+}
+
+.cgcLoginPageLogoSafari{
+    content: url("../../branding/assets/bsft_logo_128x128.png");
+}
+
+.cgcLoginPageLogoFirefox{
+    background: url("../../branding/assets/bsft_logo_128x128.png") no-repeat;
+}
+
+.cgcJoinButtonBox{
+    padding-top: 33px;
+}
+
+.cgcJoinButton{
+    height: 48px;
+    width: 273px;
+    border-radius: 20px;
+    background-color: #cccccc;
+    font-size: 16pt;
+    font-weight: bold;
+    color: rgb(171, 171, 171);
+}
+
+.cgcJoinButtonOnBlurColor{
+    background-color: #1a8da5;
+    color: #ffffff;
+}
+
+.cgcJoinButtonActiveColor{
+    background-color: #1d9db8;
+    color: #ffffff;
+}
+
+.cgcJoinButtonOnSelectColor{
+    background-color: #177e93;
+    color: #ffffff;
+}
+
+.cgcHide{
+    display : none !important;
+}
+
+.cgcShow{
+    display : inline-flex !important;
+}
+
+.cgcParticipantsCount{
+    background-color: #c2c2c2;
+	font-size: 13px;
+	color: #FFFFFF;
+	border-radius: 2px;
+	min-width: 21px;
+	margin-left: 5px;
+	text-align: center;
+	height: 18px;
+	line-height: 18px;
+	width: auto;
+	display: inherit;
+}
+
+.cgcParticipantDetails{
+    overflow: hidden;
+	border-bottom: 1px solid #E5E5E5;
+	padding-left: 14px;
+	width: 305px;
+	line-height:49px;
+	vertical-align:middle;
+	//display: inline-table;
+	margin: auto;
+}
+
+.cgcParticipantPhoto{
+    height:28px;
+    width:28px
+}
+
+.cgcParticipantRecord{
+    padding-left: 7px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 150px;
+	overflow: hidden;
+	display: table-cell;
+}
+
+.cgcCallMeContent{
+    height : 20px;
+    padding-left: 2px;
+    padding-top: 5px;
+}
+
+.cgcParticipantToolTip{
+    border-bottom: 1px solid #E3E7EA;
+    background: #FFFFFF;
+    font-size:85%;
+    color:black; 
+    min-width:50px;
+    max-width:300px;
+    white-space: pre-wrap;
+    word-wrap:break-word;
+}
+
+.onyx-tooltip.below.left-arrow::before{
+    border-bottom: 0px solid #E6E6E6;
+    top:-6px;
+}
+
+.cgcProfileDetails{
+    font-size:100%;
+    margin : 4px 0 4px 0;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;  
+    width:100%;
+    padding:2px;
+}
+
+.cgcProfileToolTip{
+    border-bottom: 1px solid #E3E7EA;
+    background: #FFFFFF;
+    font-size:85%;
+    color:black; 
+    min-width:50px;
+    max-width:300px;
+    white-space: pre-wrap;
+    left:2px;
+    word-wrap:break-word;
+}
+
+.cgcDialInfoWidget{
+	padding-bottom:5px;
+	padding-top:5px;
+	color:#CCCCCC;
+	font-size:12px;
+	width:auto;
+	display: inline-block;
+}
+
+.cgcDailInOption{
+	padding-bottom:10px;
+	padding-top:10px;
+	color:#CCCCCC;
+	font-size:12px;
+	width:auto;
+	display: inline-block;
+}
+
+.cgcCallMeNowLableHide{
+    cursor: hand; 
+    cursor: pointer;
+    float: right;
+    color: #0C91E0;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.cgcCallMeNowLabel{
+    color:#666666;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.cgcCallMeLable{
+	color:#cccccc;
+    font-size: 12px;
+}
+
+.cgcCallMeInputText{
+	width: 100%;
+	cursor: text !important;
+	font-size: 12px !important;
+    color:#000000;
+}
+
+.cgcCallMeInputText::-ms-clear {
+    display: none;
+}
+
+.cgcCallMeInputText:-ms-input-placeholder{
+	color:    #c1c1c1 !important;
+	padding: 3px;
+}
+
+.cgcDialInfoLabel{
+   	color: #666666;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.cgcDialInfo{
+    font-size:70%;
+    padding-left:2px;
+    max-width:290px;
+}
+
+.cgcLoggedInUserWidget{
+    min-height:60px; 
+    max-height:140px
+}
+
+.cgcCallMeWidget{
+    padding-top:10px;
+    padding-bottom:20px;
+    color:#B5B5B5;
+    font-size:12px;
+    width:100%;
+}
+
+.cgcCallMeNumberText{
+    cursor: text;
+    margin-right:10px;
+    min-width:170px;
+    background-color: white;
+    height: 32px !important;
+}
+
+.cgcCallMeNumberActiveTextBorder{
+    border: 2px solid #0099cc !important;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px #0099cc !important;
+}
+
+.cgcCallMeImgWidget{
+    padding:0px;
+}
+
+.cgcCallMeImage{
+    cursor: pointer;
+    height : 26px;
+}
+
+.cgcCallMeContentHide{
+    height: 100%;
+}
+
+.cgcCallMeContentShow{
+    height : auto;
+}
+
+.cgcConferencePanel{
+    border: 0px solid;
+    padding:0px;
+    background-color: #1B1A1A;
+    max-height:400px;
+    width:320px;
+}
+
+.cgcLeftPanelSideBar{
+    cursor: pointer;
+    height : 12px;
+    width: 10px;
+    text-align: right;
+    vertical-align: text-top;
+}
+
+.cgcStatusPanel{
+    height : 16px;
+    width : 100%;
+    max-height : 16px;
+}
+
+.cgcFullScreenOn{
+    cursor: pointer;
+    width : 6px;
+    height : 12px;
+    vertical-align: text-top;
+}
+
+.cgcAlternativeExpand{
+    cursor: hand;
+	cursor: pointer;
+	position: absolute;
+	width: 14px !important;
+	height: 12px !important;
+	margin-top: 40px;
+	margin-left: 20px;
+}
+
+.cgcChatPanel{
+    min-height:100%;
+    min-width:100%;
+    display: inline-block;
+    max-height:100%;
+    max-width:100%;
+}
+
+.cgcChatPanelHeader{
+  height: 15px;
+  width: 100%;
+}
+
+.cgcChatPanelFooter{
+	height:15px;
+	width:100%
+}
+
+.cgcChatItemSenderHeader{
+    margin-top:2px;
+    padding-top:8px;
+}
+
+.cgcLoginOuterBox{
+    display: inline-block;
+    padding-top: 10px;
+}
+
+.cgcLoginInputBox{
+    height: 39px;
+    text-align: center;
+}
+
+.cgcLoginFirstAndLastNameText{
+    height: 40px;
+    width: 100%;
+}
+
+.cgcLoginFirstAndLastNameText::-ms-clear {
+    display: none;
+}
+
+.cgcLoginFirstAndLastNameText:-ms-input-placeholder{
+	color: #C1C1C1 !important;
+	font-size: 15px !important;
+}
+
+.cgcLoginFirstAndLastNameTextColor{
+    color: #333333;
+    font-size: 15px !important;
+}
+
+.cgcRecaptchaBox{
+    height: 100%;
+    display: inline-block;
+}
+
+.cgcFirstandLastNameText{
+    background-color: #ffffff;
+    width: 265px;
+    height: 37px;
+    padding: 0px;
+    padding-left: 6px;
+    border: 1px solid #E8E8E8;
+    border-radius: 4px;
+    box-shadow: none !important;
+}
+
+.cgcFirstandLastNameActiveTextBorder{
+    border-color: #0099cc !important;
+    box-shadow: 0.5px 0.5px 0.5px 0.5px #0099cc !important;
+}
+
+.cgcFullScreenPanelOn{
+    width : 10px;
+    height : 12px;
+}
+
+.cgcFullScreenPanelOff{
+    width : 8px;
+    height : 100%;
+    border-right:3px solid #E6E6E6
+}
+
+.cgcDialInfoLabelBox{
+    float: left;
+    width: 100%;
+    padding-top: 0px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.cgcDialInfoImage{
+    cursor: hand; 
+    cursor: pointer;
+    height: 30px !important;
+    width: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    float: right;
+}
+
+.cgcProfileBar{
+    height: 32px;
+    max-height:32px;
+    min-height:32px;
+	text-align: left;
+	font-size: 12px;
+	padding-left: 5px;
+	background-color: #000000;
+	color: #B5B5B5;
+	vertical-align: middle;
+	line-height: 32px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	 white-space: nowrap;
+}
+
+.cgcDialInfoImageHide{
+    cursor: hand; 
+    cursor: pointer;
+    width: 12px !important;
+    height: 20px !important;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-right: 2px;
+    float: right;
+}
+
+.cgcCallMeImgNowButton{
+    cursor: hand; 
+    cursor: pointer;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 11px;
+    height: 32px !important;
+	width: auto;
+	max-width:100px;
+	min-width:64px;
+	border-radius: 30px;
+	border: 0px !important;
+	box-shadow: none !important;
+	background-image: none !important;
+	
+}
+
+.cgcStatusPage{
+    background:white; 
+    text-align: center;
+    margin-top:100px;
+    height:10px
+}
+
+.cgcUserPanelHeader{
+    padding: 5px;
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.cgcUserPanel{
+    border-radius: 2px;
+    width: auto !important;
+    height: 18px;
+    background-color: #FF9016;
+    margin-top: 5px;
+}
+
+.cgcCaptchaErrorBorderDiv{
+    display: inline-block;
+    max-width:345px;
+}
+
+.cgcCaptchaErrorLabel{
+	  background-color: #FF0000;
+	  padding: 10px;
+	  font-size: 13px;
+	  border-radius: 5px;
+	  color: #ffffff;
+	  font-weight: bold;
+	  display: table-caption;
+	  min-width:300px;
+	  
+}
+
+.cgcInfoAndErrorDiv{
+	display: inline-flex;
+	padding-top:10px;
+	margin:0 auto;
+	padding-left: 10px;
+	width:95%;
+}
+
+.cgcLoginError{
+   	background-color: #FF0000;
+	width: 253px;
+	font-size: 12px;
+	font-weight: bold;
+	margin:0 auto;
+	color: #FFFFFF;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+.cgcBrowserSupportErrorPanel {
+    background-color: #FF0000;
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 5px;
+    color: #fff;
+    width: 100%;
+    display:inline;
+    display: -ms-grid;
+    text-align: center;
+}
+
+.cgcErrorPanel{
+    background-color: #FF0000;
+	padding: 10px;
+	font-size: 13px;
+	border-radius: 5px;
+	color: #ffffff;
+	width: 253px;
+}
+
+.cgcInfoPanel{
+	padding: 10px;
+	font-size: 13px;
+	border-radius: 5px;
+	color: #000000;
+	width: 253px;
+}
+
+.cgcRightPanelComponentContainer{
+	height:100%;
+}
+
+.cgcChatMessagePopupContent{
+    font-size: 16px;
+    padding-left: 15px;
+	padding-right: 15px;
+    width: 640px !important;
+    max-width:100%;
+    word-wrap: break-word;
+    text-overflow:ellipsis;
+    overflow: hidden;
+    float: left;
+    position: relative;
+}
+
+.cgcChatMessagePopup{
+	overflow: hidden;
+	left: 0%;
+	max-width: 70%;
+	color: #FFFFFF;
+	max-height: 115px;
+	height: auto;
+	background-color: rgba(0, 0, 0, 0.8);
+	display: flex;
+	bottom:11px;
+	z-index: 1;
+	padding-top: 14px;
+	padding-bottom: 14px;
+}
+
+.cgcChatContainer  .cgcChatContentFirstStyle{
+	min-width: 80%;
+}
+
+.cgcChatContainer  .cgcChatContentOtherStyle{
+	min-width: 80%;
+}
+
+.cgcChatContentFirstStyle {
+    position: relative;
+    padding-left: 8px !important;
+	padding: 5px;
+	margin-right: 50px;
+	margin-left: 12px;
+	border: 2px solid #EFEFEF;
+	display: inline-block;
+	color: #333;
+	-moz-border-radius: 10px !important;
+	border-radius: 3px;
+	max-width: 80%;
+}
+
+.cgcChatContentFirstStyle:before {
+	  bottom: auto !important;
+	  left: -9px;
+	  border-width: 0px 9px 10px 0px;
+	  border-color: transparent #EFEFEF;
+	  content: "";
+	  position: absolute;
+	  border-style: solid;
+	  display: block;
+	  margin-top: -7.2px;
+	  top: 5.4px;
+}
+
+.cgcChatContentFirstStyle:after {
+      top: 8.2px;
+	  bottom: auto;
+	  left: -4.5px;
+	  border-width: 0px 9px 10px 0px;
+	  content: "";
+	  position: absolute;
+	  display: block;
+	  border-style: solid;
+	  margin-top: -8.2px;
+}
+
+.cgcChatContentOtherStyle {
+    font-size: 13px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	margin-left: 40px;
+	max-width: 80%;
+	margin-right: 2%;
+	border: 2px solid #EFEFEF;
+	display: inline-block;
+	border-radius: 3px;
+	padding-left: 8px !important;
+	padding: 5px;
+}
+
+.cgcChatInnerBox{
+	margin-top: 0.1px;
+	width: 100%;
+}
+
+.cgcChatDetails{
+	padding-top: 10px;
+	font-size: 11px;
+}
+
+.cgcOuterBoxRight {
+  	height: 71px;
+  	border: 1px solid #E4E4E4;
+  	width: 100%;
+  	background-color: #F0F0F0;
+}
+.cgcOuterBoxLeft {
+     position: relative;
+  height: 100px;
+  width: 100%;
+}
+
+.cgcChatBoxLeft {
+	border-top: 1px solid #D9D9D9 !important;
+  	min-height: 50px;
+  	width: 100%;  
+  	padding: 10px;
+}
+
+.cgcChatBoxRight {
+    border: 1px solid #E4E4E4;
+    padding: 15px 25px 15px 15px;
+    background: #F0F0F0;
+}
+
+
+
+.chatEntryBoxRight:-ms-input-placeholder{
+	font-size: 13px;
+	color: #C1C1C1;
+}
+
+.chatEntryBoxRight::-webkit-resizer{ 
+    border: 0px solid rgba(0,0,0,0); 
+}
+
+.chatEntryBoxRight {
+  width: 100%;
+  line-height:20px;
+  border: 1px solid #D9D9D9 !important;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  font-family: 'Roboto' !important;
+  overflow: hidden;
+  outline: none;
+  height: 2em;
+  resize: none;
+  max-height: 14em;
+}
+
+
+
+
+.chatEntryBoxLeft::-webkit-input-placeholder{
+	font-size: 13px !important;
+	color: #C1C1C1;
+}
+
+.chatEntryBoxLeft:-ms-input-placeholder{
+	font-size: 13px !important;
+	color: #C1C1C1;
+}
+
+.chatEntryBoxLeft::-webkit-resizer{ 
+    border: 0px solid rgba(0,0,0,0); 
+}
+
+.chatEntryBoxLeft{
+      border: 0px solid #D9D9D9 !important;
+	  font-size: 13px;
+	  color: #333333;
+	  bottom: 0px;
+	  line-height: 20px;
+	  outline: none;
+	  width: 100%;
+	  overflow: hidden;
+	  font-family: 'Roboto' !important;
+	  height: 20px;
+	  resize: none;
+	  min-height: 20px;
+	  max-height: 8em;
+}
+
+.chatEntryBoxFullInnerBorder{
+    box-shadow: inset 0 0 1px 1px #0099cc;
+}
+
+.chatEntryBoxTopInnerBorder{
+    border-top:1px solid #0099cc !important;
+}
+
+.cgcHeaderBarStyle{
+    width: 100%;
+    height:9% !important;
+    background-repeat:no-repeat;
+}
+
+.cgcProfilePanel{
+    width: 100%;
+    padding-left: 55px;
+    padding-bottom:0px;
+    padding-top:10px;
+}
+
+.cgcNavigationButton{
+    text-align: left;
+    text-shadow: none;
+	font-size: 13px !important;
+	padding: 0px !important;
+	border: 0px !important;
+}
+
+.cgcLeftNavicationHeader{
+    border-bottom: 0px solid #E5E6E7 ;
+    height: 38px;
+} 
+
+.cgcNavigationEnabled{
+    height: 38px !important;
+    width: 100%;
+    background-color:#EFEFEF;
+    border-top-right-radius: 10px !important;
+}
+
+.cgcDeactive{
+    color: #C2C2C2 !important;
+    background-color: #FFFFFF;
+    background: #FFFFFF;
+    border-bottom: 4px solid #FFFFFF !important;
+}
+
+.cgcActive{
+    color: #666666 !important;
+    background-color:#FFFFFF !important;
+    border-bottom: 4px solid #C2C2C2 !important;
+}
+
+.cgcRightPanelHeader{
+    height:32px;
+    line-height:32px;
+    vertical-align:middle;
+}
+
+.cgcRightPanelHeaderFullScreenOffChat{
+	color: rgb(102,102,102);
+    border-bottom: 1px solid #EEEEEE;
+    background-color: #FFFFFF;
+    height: 32px;
+    vertical-align: middle;
+}
+
+.cgcRightPanelHeaderFullScreenOffScreenShare{
+	color: rgb(102,102,102);
+    background-color: #3A3A3A;
+    height: 32px;
+    vertical-align: middle;
+}
+
+.cgcRightPanelHeaderFullScreenOffVideo{
+	color: rgb(102,102,102);
+    background-color: #3A3A3A;
+    height: 32px;
+    vertical-align: middle;
+}
+
+.cgcRightPanelHeaderFullScreenOnChat{
+	color: rgb(102,102,102);
+	border-bottom: 1px solid #EEEEEE;
+    background-color: #FFFFFF;
+    height: 32px;
+    vertical-align: middle;
+}
+
+.cgcRightPanelHeaderFullScreenOnScreenShare{
+	color: rgb(102,102,102);
+    background-color: #000000;
+    height: 32px;
+    vertical-align: middle;
+}
+
+.cgcRightPanelHeaderFullScreenOnVideo{
+	color: rgb(102,102,102);
+    background-color: #000000;
+    height: 32px;
+    vertical-align: middle;
+}
+
+.cgcChatPanelBorderColor{
+    border : 0px solid #E5E6E7 ;
+}
+
+.cgcVideoPanelBorder{
+    border-top : 16px solid #3a3a3a;
+    border-left:15px solid #3a3a3a;
+    border-right:15px solid #3a3a3a;
+    border-bottom:16px solid #3a3a3a;
+}
+
+.cgcVideoPanelBackground{
+	background-color:#3A3A3A;
+}
+
+.cgcScreenPanelBorder{
+    border-top : 16px solid #3a3a3a;
+    border-left:15px solid #3a3a3a;
+    border-right:15px solid #3a3a3a;
+    border-bottom:16px solid #3a3a3a;
+}
+
+.cgcScreenPanelBackground{
+	background-color:#3A3A3A;
+}
+
+.cgcSelfView{
+    cursor: hand;
+	cursor: pointer;
+	width: 24px;
+	height: 24px;
+	z-index: 20;
+	position: absolute;
+	right: 5px;
+	left: auto;
+	top: 5px;
+	display: block;
+}
+
+.cgcDialBackground{
+    background-color:#FFFFFF;
+}
+
+.cgcParticipantMessageBackground{
+    background-color:#FFF1E2;
+}
+
+.cgcGuestMessageBackground{
+    background-color:#FFFFFF;
+}
+
+.cgcChatInfoBackground{
+    height: 16px;
+    font-size: 12px;
+}
+
+.cgcChatErrorBackground{
+    padding: 6px 15px;
+    height: 16px;
+    font-size: 16px;
+}
+
+.cgcChatUserInfo{
+    vertical-align: top;
+	color: black;
+}
+
+.cgcChatInfo{
+    vertical-align: baseline;
+}
+
+.cgcChatUserInfoFontColor{
+    color: #000000;
+    font-weight: bold;
+}
+
+.cgcChatUserInfoStatusFont{
+    font-weight: normal;
+}
+
+.cgcAlternativeNumberPopupText{
+    color:#000000;
+}
+
+
+/***************************************************
+ * The Customize CSS Classes in below.
+ ***************************************************/
+
+.cgcAudio{
+	background-color:#1B1A1A;
+}
+
+.cgcAudioHover{
+	background-color:#171616;
+}
+
+.cgcAudioPress{
+	background-color:#1A8DA5;
+}
+
+.cgcVideoOff{
+	background-color:#1B1A1A;
+}
+
+.cgcVideoOffHover{
+	background-color:#171616;
+}
+
+.cgcVideoOffPress{
+	background-color:#1A8DA5;
+}
+
+.cgcVideoOn{
+	background-color:#1D9DB8;
+}
+
+.cgcVideoOnHover{
+	background-color:#1A8DA5;
+}
+
+.cgcVideoOnPress{
+	background-color:#177E93;
+}
+
+.cgcMuteOff{
+	background-color:#1B1A1A;
+}
+
+.cgcMuteOffHover{
+	background-color:#171616;
+}
+
+.cgcMuteOffPress{
+	background-color:#1A8DA5;
+}
+
+.cgcMuteOn{
+	background-color:#1D9DB8;
+}
+
+.cgcMuteOnHover{
+	background-color:#1A8DA5;
+}
+
+.cgcMuteOnPress{
+	background-color:#177E93;
+}
+
+.cgcEndActive{
+	background-color:#DE4D4D;
+}
+
+.cgcEndHover{
+	background-color:#C74545;
+}
+
+.cgcEndPress{
+	background-color:#B23E3E;
+}
+
+.cgcCallMeButtonDisableBackground{
+	color:#797979;
+	background-color: #323131;
+}
+
+.cgcCallMeButtonEnableBackground{
+	color:#ffffff; 
+	background-color: #05d361;
+}
+
+.cgcCallMeButtonOnPressBackground{
+	color:#FFFFFF;
+	background-color: #04BD57;
+}
+
+.cgcChatInfoFontColor{
+    color: #00992d;
+}
+
+.cgcChatErrorFontColor{
+    color:#FF0000;
+}
+
+.cgcChatMessageBackgroundFirstColor{
+	background-color: #EFEFEF;
+}
+
+.cgcChatMessageBackgroundFirstColor:after{
+	border-color: transparent #EFEFEF;
+}
+
+.cgcChatMessageBackgroundSecondColor{
+	background-color: #FFFFFF;
+}
+
+.cgcChatMessageBackgroundSecondColor:after{
+	border-color: transparent #FFFFFF;
+}
+
+.cgcAlternativeNumberPopupBackground{
+    background-color: rgba(210, 210, 210, 0.8); 
+}
+
+.cgcDesktopShareImgButton{
+    cursor: hand; 
+    cursor: pointer;
+    padding: 1px;
+    font-weight: bold;
+    font-size: 11px;
+    height: 24px !important;
+	width: 54px;
+	max-width:54px;
+	min-width:24px;
+	border-radius: 12px;
+	border: 0px !important;
+	box-shadow: none !important;
+	background-image: none !important;
+	
+}
+
+.cgcDesktopSharePanel{
+    border: 0px solid;
+    padding:0px;
+    background-color: #1B1A1A;
+    max-height:400px;
+    width:275px;
+}
+
+.cgcDesktopSharePopup{
+	  padding: 10px;
+	  vertical-align: middle !important;
+	  border: 1px solid black;
+	  width:300px;
+	  position: absolute;
+	  z-index:10 !important;
+	  display: block !important;
+	  top: 40% !important;
+    left: 40% !important;
+}
+
+.cgcDesktopSharePopupText{
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 5px;
+    border-bottom: 0px;
+    font-weight: 500;
+    display: inline;
+}
+
+.cgcDesktopSharePopupButton{
+  cursor: pointer;
+  padding: 1px;
+  font-weight: bold;
+  font-size: 11px;
+  height: 24px !important;
+	width: 54px;
+	max-width:54px;
+	min-width:24px;
+	border-radius: 12px;
+	border: 0px !important;
+	box-shadow: none !important;
+	background-image: none !important;
+	top: 175px;
+}
+
+.desktopShareButtonInactiveBackground{
+	background-color: #636363;
+}
+
+.desktopShareButtonActiveBackground{
+	background-color: #1d9db8;
+}
+
+.desktopShareStopButtonDisabled{
+	opacity: 0.5;
+}
+
+.bsftPopup{
+	  background-color: #F0F0F0; 
+}
+.bsftPopupInactiveButton{
+  color: #ADADAD;
+	background-color: #636363;
+}
+.bsftPopupActiveButton{
+  color: #FFFFFF;
+	background-color: #1d9db8;
+}
+
+
+.scrollbar-macosx > .scroll-element,
+.scrollbar-macosx > .scroll-element div
+{
+	background: none;
+	border: none;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	z-index: 10;
+}
+ 
+.scrollbar-macosx > .scroll-element div {
+	display: block;
+	height: 100%;
+	left: 0;
+	top: 0;
+	width: 100%;
+}
+ 
+.scrollbar-macosx > .scroll-element .scroll-element_track { 
+	display: none; 
+}
+.scrollbar-macosx > .scroll-element .scroll-bar {
+	background-color: #6C6E71;
+	display: block;
+	 
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	opacity: 0;
+	 
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	 
+	-webkit-transition: opacity 0.2s linear;
+	-moz-transition: opacity 0.2s linear;
+	-o-transition: opacity 0.2s linear;
+	-ms-transition: opacity 0.2s linear;
+	transition: opacity 0.2s linear;
+}
+.scrollbar-macosx:hover > .scroll-element .scroll-bar,
+.scrollbar-macosx > .scroll-element.scroll-draggable .scroll-bar {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	filter: alpha(opacity=70);
+	opacity: 0.7;
+}
+ 
+ 
+.scrollbar-macosx > .scroll-element.scroll-x {
+	bottom: 0px;
+	height: 0px;
+	left: 0;
+	min-width: 100%;
+	overflow: visible;
+	width: 100%;
+}
+ 
+.scrollbar-macosx > .scroll-element.scroll-y {
+	height: 100%;
+	min-height: 100%;
+	right: 0px;
+	top: 0;
+	width: 0px;
+}
+ 
+/* scrollbar height/width & offset from container borders */
+.scrollbar-macosx > .scroll-element.scroll-x .scroll-bar { 
+	height: 7px; min-width: 10px; top: -9px; 
+}
+
+.scrollbar-macosx > .scroll-element.scroll-y .scroll-bar { 
+	left: -9px; min-height: 10px; width: 7px; 
+}
+ 
+.scrollbar-macosx > .scroll-element.scroll-x .scroll-element_outer { 
+	left: 2px; 
+}
+
+.scrollbar-macosx > .scroll-element.scroll-x .scroll-element_size { 
+	left: -4px; 
+}
+ 
+.scrollbar-macosx > .scroll-element.scroll-y .scroll-element_outer { 
+	top: 2px; 
+}
+
+.scrollbar-macosx > .scroll-element.scroll-y .scroll-element_size { 
+	top: -4px; 
+}
+ 
+/* update scrollbar offset if both scrolls are visible */
+.scrollbar-macosx > .scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_size { 
+	left: -11px; 
+}
+
+.scrollbar-macosx > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_size { 
+	top: -11px; 
+}

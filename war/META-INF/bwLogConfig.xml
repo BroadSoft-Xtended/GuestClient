@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loggingConfig  xmlns="http://schema.broadsoft.com/broadworksConfig"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaRev="17.3.33">
+  <generalSettings>
+    <enabled>true</enabled>
+    <priority>4</priority>
+    <maxQueueSize>50000</maxQueueSize>
+    <defaultSeverity>Info</defaultSeverity>
+  
+  </generalSettings>
+  <inputChannels>
+     <entry>
+      <name>Generic</name>
+     <enabled>false</enabled>
+      <severity>Info</severity>
+      <class></class>
+      <categories></categories>
+    </entry>
+	<entry>
+      <name>BWCommunicationManager</name>
+      <enabled>false</enabled>
+      <severity>Info</severity>
+      <class></class>
+      <categories></categories>
+    </entry>
+    <entry>
+      <name>BWCollaborateGuestClient</name>
+      <enabled>true</enabled>
+      <severity>Info</severity>
+      <class></class>
+      <categories></categories>
+    </entry>   
+  </inputChannels>
+  <outputChannels>
+    <entry>
+      <name>Stdout</name>
+      <enabled>false</enabled>
+      <newLinesBeforeBody>2</newLinesBeforeBody>
+      <newLinesAfterBody>1</newLinesAfterBody>
+    </entry>
+    <entry xsi:type="RotatedFileOutputChannel">
+      <name>File</name>
+      <enabled>true</enabled>
+      <newLinesBeforeBody>2</newLinesBeforeBody>
+      <newLinesAfterBody>1</newLinesAfterBody>
+      <dir>/var/broadworks/logs/xsp</dir>
+      <filePrefix>BWCollaborateGuestClient</filePrefix>
+      <fileSizeMegs>30</fileSizeMegs>
+      <numberOfFiles>100</numberOfFiles>
+    </entry>
+  </outputChannels>
+</loggingConfig>
+

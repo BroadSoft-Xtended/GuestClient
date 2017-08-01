@@ -1,0 +1,6 @@
+Name: BWCollaborateGuestClient
+Specification-Vendor: Broadsoft
+Implementation-Vendor: Broadsoft
+RELEASE_NAME: 2.0
+Version: 2.4
+Build-Number: 

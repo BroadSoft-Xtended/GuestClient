@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<project name="cgc" default="cgc.war" basedir="../">
+
+    <property name="cgc.src.dir" location="${basedir}\src" />
+    <property name="cgc.clientsource.dir" location="${basedir}\clientsource" />
+    <property name="cgc.enyo.out" location="${basedir}\war\cgc" />
+    <property name="cgc.war.src" location="${basedir}\war" />
+    <property name="cgc.web.inf" location="${cgc.war.src}\WEB-INF" />
+    <property name="cgc.minify.tool" location="${basedir}\clientsource\tools" />
+    <property name="cgc.classes.dir" location="${cgc.web.inf}\classes" />
+    <property name="cgc.meta.inf" location="${cgc.war.src}\META-INF" />
+    <property name="cgc.template.dir" location="${basedir}\template" />
+    <property name="cgc.war.name" value="BWCollaborateGuestClient" />
+    <property name="cgc.base_version" value="2.0" />
+    <property name="cgc.version" value="3.19" />
+    <property name="cgc.war.output" value="${basedir}\output" />
+
+    <path id="lib.path">
+        <fileset dir="${cgc.web.inf}\lib" includes="*.jar" />
+    </path>
+
+
+    <target name="cgc.build.all">
+        <mkdir dir="${cgc.classes.dir}" />
+        <javac target="1.6" srcdir="${cgc.src.dir}" destdir="${cgc.classes.dir}" classpathref="lib.path" />
+    </target>
+
+    <target name="cgc.minify">
+        <exec executable="${cgc.minify.tool}/deploy.bat" />
+    </target>
+
+    <target name="cgc.clean.all">       
+        <delete failonerror="false" dir="${cgc.enyo.out}\enyo" />
+        <delete failonerror="false" dir="${cgc.enyo.out}\lib" />
+        <delete failonerror="false" dir="${cgc.enyo.out}\source" />
+        <delete failonerror="false" dir="${cgc.enyo.out}\assets" />     
+        <delete failonerror="false" file="${cgc.war.src}\deploy.json" />
+        <delete>
+            <fileset dir="${cgc.war.src}">
+                <exclude name="**/enyo*"/>
+                <exclude name="**/customDir/*"/>
+                <exclude name="**/*.jar"/>              
+                <exclude name="/META-INF/*"/>
+                <exclude name="**/*web.xml"/>
+                <excludesfile name="${cgc.war.src}/cgc.jsp"/>
+                <excludesfile name="${cgc.war.src}/jquery-1.6.4.js"/>                   
+            </fileset>
+        </delete>       
+    </target>
+
+    <target name="cgc.copy.media">
+        <copy todir="${cgc.war.src}">
+            <fileset dir="${cgc.clientsource.dir}/source/webrtc/">
+                <include name="media/" />
+                <exclude name="*.js" />
+            </fileset>
+        </copy> 
+    </target>
+    
+    <target name="timestamp.target">
+    <tstamp>
+        <format property="current.time"
+            pattern="yyyyMMddHHmmss" />
+    </tstamp>
+    <echo>${current.time}</echo>
+
+	</target>
+
+    <target name="cgc.war" depends="cgc.clean.all,cgc.build.all,cgc.minify,cgc.copy.media,timestamp.target">     
+        	<war warfile="${cgc.war.output}/${cgc.war.name}_${cgc.version}.war" >
+			<!-- classes dir="${cgc.war.src}/WEB-INF/classes" /> -->
+			<fileset dir="${cgc.war.src}">
+			  <exclude name="**/servlet*.jar"/>
+				<exclude name="**/BWCommunication*.jar"/>
+				<!-- Need to exclude it since webxml is an attribute of the war tag above -->
+				<!-- exclude name="${cgc.war.src}/WEB-INF/web.xml" /> -->
+			</fileset>
+			<manifest>
+				<attribute name="Build-Name" value="${cgc.war.name}" />
+				<attribute name="Specification-Vendor" value="Broadsoft" />
+				<attribute name="Implementation-Vendor" value="Broadsoft" />
+				<attribute name="RELEASE_NAME" value="${cgc.base_version}" />
+				<attribute name="Version" value="${cgc.version}" />
+				<attribute name="Cache_Version" value="${current.time}" />
+			</manifest>
+		</war>
+    </target>
+    
+    <target name="cgc.devclean.all">
+        <delete failonerror="false" dir="${cgc.enyo.out}\bundle" />
+        <delete failonerror="false" dir="${cgc.enyo.out}\assets" />
+        <delete failonerror="false" dir="${cgc.enyo.out}\enyo" />
+        <delete failonerror="false" dir="${cgc.enyo.out}\lib" />
+        <delete failonerror="false" dir="${cgc.enyo.out}\source" />     
+        <delete failonerror="false" file="${cgc.war.src}\package.js" />         
+        <delete failonerror="false" file="${cgc.war.src}\deploy.json" />            
+        <delete failonerror="false" file="${cgc.war.src}\WEB-INF\classes\" />
+        <delete failonerror="false" dir="${cgc.war.src}/media" />
+        <delete failonerror="false" dir="${cgc.war.src}/cgc" />
+    </target>
+    
+    <target name="cgc.dev.build">
+        <javac target="1.6" srcdir="${cgc.src.dir}" destdir="${cgc.classes.dir}" classpathref="lib.path" />
+    </target>
+    
+    <target name="cgc.dev.deploy" depends="cgc.devclean.all,cgc.dev.build,cgc.copy.media">              
+        <copy todir="${cgc.enyo.out}">
+            <fileset dir="${cgc.clientsource.dir}">
+                <exclude name="build/" />
+                <exclude name="tools/" />
+                <exclude name="debug.html" />
+            </fileset>
+        </copy>         
+        
+        <copy todir="${cgc.web.inf}\classes">
+            <fileset dir="${cgc.template.dir}"> </fileset>
+        </copy>
+    </target>   
+    
+</project>

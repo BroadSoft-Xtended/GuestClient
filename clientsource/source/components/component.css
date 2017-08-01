@@ -1,0 +1,82 @@
+
+
+.bsftDrawerKnobOpen{
+    cursor: hand; 
+    cursor: pointer;
+    text-align:right;
+    width:16px; 
+    height:16px; 
+}
+.bsftDrawerKnobCloseOuterBox{
+      height: 30px !important;
+	  display: table-cell;
+	  position: relative;
+	  vertical-align: middle;
+}
+.bsftDrawerKnobClose{
+      cursor: hand; 
+      cursor: pointer;
+	  float: left;
+	  width: 14px;
+	  height: 12px;
+	  padding-right: 15px;
+	  float:right;
+}
+.bsftDrawerTitleOpen{
+    cursor: hand; 
+    cursor: pointer;
+    font-size: 12px;
+    color: #ADADAD;
+    font-weight: 500;
+    margin-left: 5px;
+    display: inline;
+}
+
+.bsftDrawerHeader{
+    min-height: 30px;
+    max-height: 30px;
+    width: 100%;
+    vertical-align: middle;
+    display: table;
+}
+
+.bsftDrawerTitleCloseOuterBox{
+    display: table-cell;
+    vertical-align: middle;
+    position: relative;
+}
+
+.bsftDrawerTitleClose{
+    cursor: hand; 
+    cursor: pointer;
+    font-size: 12px;
+    color: #ADADAD;
+    margin-left: 5px;
+    border-bottom: 0px;
+    font-weight: 500;
+    display: inline;
+}
+
+.bsftDrawerTitleActive{
+    text-decoration: none;
+    border-bottom: 1px solid #40C8AB;
+}
+
+.bsftContentPane{
+    color: white;
+    font-size: 12px;
+    width: 100%;
+    padding: 10px;
+}
+
+.bsftContentPaneItems{
+    padding: 10px;
+    border: 1px solid #2B2B2B;
+}
+
+.bsftDesktopShareDrawer{
+	border: 0px solid;
+    padding:0px;
+    background-color: #1B1A1A;
+	
+}

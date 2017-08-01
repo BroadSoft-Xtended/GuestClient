@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webappConfig>
+  <!-- General configuration for the application -->
+  <context>
+    <display>General</display>
+    <help>This level is used to control the general configuration of the
+      Collaboration web application.</help>
+  </context>
+  
+  <option>
+    <name>cgc.config.key.webrtc.enabled</name>
+    <display>General.enableWebRTC</display>
+    <help>This enables or disables the WebRTC.
+      Default is true</help>
+    <format defaultValue="true">
+       <boolean/>
+    </format>
+  </option>
+  
+  <option>
+    <name>cgc.config.key.webrtc.video.enabled</name>
+    <display>General.enableWebRTCVideo</display>
+    <help>This enables or disables the WebRTC Video.
+      Default is true</help>
+    <format defaultValue="true">
+       <boolean/>
+    </format>
+  </option>
+  
+  <option>
+    <name>cgc.config.key.inBandDTMFSupport.enabled</name>
+    <display>General.enableInBandDTMFSupport</display>
+    <help>This activate or deactivates sending the Conference Id in the To field of the SIP header while dialing the room.
+      Default is false</help>
+    <format defaultValue="false">
+       <boolean/>
+    </format>
+  </option>
+   
+  <option>
+    <name>cgc.config.key.callmenow.enabled</name>
+    <display>General.enableCallMeNow</display>
+    <help>This enables or disables the call me conference.
+      Default is true</help>
+    <format defaultValue="true">
+       <boolean/>
+    </format>
+  </option> 
+
+  <option>
+    <name>cgc.config.key.boshUrlList</name>
+    <display>General.BoshUrlList</display>
+    <help>This is the compete bosh url with http(s)://server:port/. If provided then no lookup will up happen on the domain of the guest client for bosh URl
+      Default is true</help>
+   <format list="true" defaultValue="">
+      <string minLength="1" maxLength="255"></string>
+   </format>
+  </option>  
+  
+  <option>
+    <name>cgc.config.key.custom.resourcepath</name>
+    <display>General.customResourcePath</display>
+    <help>Specifies the absolute path in the XSP to keep custom resources for localization and branding like language files, images, css</help>
+    <format defaultValue="">
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>
+  
+  <option>
+    <name>cgc.config.key.globalTransactionLimitPeriodInSeconds</name>
+    <display>General.globalTransactionLimitPeriodInSeconds</display>
+    <help>This parameter specifies the time period in seconds which is used to check the allowed number of requests to the application in this period. Default is 30 seconds.</help>
+    <format defaultValue="30">
+      <integer min="1" max="3600" />
+    </format>
+  </option>
+     
+  <option>
+    <name>cgc.config.key.globalTransactionLimit</name>
+    <display>General.globalTransactionLimit</display>
+    <help>This parameter specifies the allowed number of requests to the application during the time period specified with globalTransationLimitPeriodInSeconds. Default is 1000.</help>
+    <format defaultValue="1000">
+      <integer min="1" max="10000" />
+    </format>
+  </option>
+  
+   <option>
+    <name>cgc.config.key.leaderAcceptanceTimeOutInSeconds</name>
+    <display>General.leaderAcceptanceTimeOutInSeconds</display>
+    <help>This parameter specifies the maximum time in seconds for leader's acceptance to the guest join request. Default is 60 in seconds.</help>
+    <format defaultValue="60">
+      <integer min="10" max="120" />
+    </format>
+  </option>
+  
+  <option>
+    <name>cgc.config.key.allowHttp</name>
+    <display>General.allowHttp</display>
+    <help>Specifies if CGC is accessible over non-secured HTTP.
+      Default is true.</help>
+    <format defaultValue="true">
+      <boolean/>
+    </format>
+  </option>
+  
+   <option>
+    <name>cgc.config.key.sslServerPort</name>
+    <display>General.sslServerPort</display>
+    <help>Specifies the port configured for http ssl in the XSP.
+      Default is 443.</help>
+    <format defaultValue="443">
+      <integer min="0" max="65535" />
+    </format>
+  </option>
+  
+  <context>
+    <display>General.Captcha</display>
+    <help>This level is used to enable and disable the captcha and other related parameters like private and public keys.</help>
+  </context>  
+  <option>
+    <name>cgc.config.key.captcha.disabled</name>
+    <display>General.Captcha.disableCaptcha</display>
+    <help>This disables or enables the Captcha authentication support in the application.
+      Default is false</help>
+    <format defaultValue="false">
+       <boolean/>
+    </format>
+  </option>  
+  <option>
+    <name>cgc.config.key.recaptchapublickey</name>
+    <display>General.Captcha.reCaptchaPublicKey</display>
+    <help>This parameter specifies the public key to be used with ReCaptcha authentication</help>
+    <format defaultValue="">
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>
+  
+  <option>
+    <name>cgc.config.key.recaptchaprivatekey</name>
+    <display>General.Captcha.reCaptchaPrivateKey</display>
+    <help>This parameter specifies the private key to be used with ReCaptcha authentication</help>
+    <format defaultValue="">
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>
+  <!--
+    Application level configuration required to customize settings for
+    communication through Http
+  -->
+  <context>
+    <display>Http</display>
+    <help>This level is used to control the general configuration of the
+      Collaboration web application.</help>
+  </context>
+  <option>
+    <name>httpclient.socket.connection.timeout</name>
+    <display>Http.httpSocketTimeout</display>
+    <help>Specifies generic timeout in millisconds for http socket.
+      Default is 60000.</help>
+    <format defaultValue="60000">
+      <integer min="8000" max="3600000" />
+    </format>
+  </option>
+  <option>
+    <name>httpclient.connection.max</name>
+    <display>Http.maxHttpConnection</display>
+    <help>Specifies the maximum number of connections for http
+      communication to web application like Xsi-Actions allowed overall.
+      Default is 200.</help>
+    <format defaultValue="200">
+      <integer min="2" max="500" />
+    </format>
+  </option>
+  
+    
+  <!--
+    This configuration is used to customize ThreadPoolExecutors used in
+    the application.
+  -->
+ 
+  <!--
+    Application level configuration required to customize settings for
+    BWCommunication Utility
+  -->
+  <context>
+    <display>ProvisioningAdapter</display>
+    <help>This level is used to customize the XSP(Broadworks)
+      integration
+      related configurations for the application.</help>
+  </context>
+  <option>
+    <name>provisioning.adapter.url</name>
+    <display>ProvisioningAdapter.URL</display>
+    <help>Specifies the http scheme as http or https to access the
+      Provisioning Adapter web application. Default is http.</help>
+    <format defaultValue="">
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option> 
+ <option>
+    <name>provisioning.adapter.admin</name>
+    <display>ProvisioningAdapter.admin</display>
+    <help>Specifies the Admin name to access PA.
+    </help>
+    <format defaultValue="">
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>
+  <option>
+    <name>provisioning.adapter.admin.password</name>
+    <display>ProvisioningAdapter.password</display>
+    <help>Specifies the Admin password to access PA
+    </help>
+    <format defaultValue="">
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>
+  <option>
+   	<name>httpclient.allowselfsignedcerts</name>
+   	<display>ProvisioningAdapter.allowSelfSignedCertificates</display>
+   	<help>This allows or restricts the usage of self signed certificates for the URL.
+		Default is true
+   	</help>
+   	<format defaultValue="true">
+		<boolean/>
+   	</format>
+</option>
+  
+  <!--
+    Application level configuration required to customize settings for
+    BWCommunication Utility
+  -->
+  <context>
+    <display>BWIntegration</display>
+    <help>This level is used to customize the XSP(Broadworks)
+      integration related configurations for the application.</help>
+  </context>
+  <option>
+    <name>bwConnection.ocic.usePersistentConnections</name>
+    <display>BWIntegration.usePersistentConnections</display>
+    <help>This parameter is used to turn the Execution Server discovery
+      module on and off, and defaults to "false". When persistent
+      connections are disabled, the discovery module is disabled (not
+      running).</help>
+    <format defaultValue="true">
+      <boolean/>
+    </format>
+  </option>
+  <option>
+    <name>bwConnection.ocic.discoveryPeriod</name>
+    <display>BWIntegration.discoveryPeriod</display>
+    <help> It controls the number of seconds between each poll when the
+      Execution Server discovery module is enabled. Default is 60
+      seconds and the range is between 1 to 3600 seconds.</help>
+    <format defaultValue="60">
+      <integer min="1" max="3600" />
+    </format>
+  </option>
+  <option>
+    <name>bwConnection.ocic.application</name>
+    <display>BWIntegration.applicationID</display>
+    <help>This parameter is used to customize the ocic application Id
+      of
+      the application. OCIC application Id is mandatory for the
+      application for making oci-c request to ApplicationServer. Default
+      is Collaborate Guest Client</help>
+    <format defaultValue="com.broadsoft.guestclient">
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>  
+  <option>
+    <name>bwIntegration.mode</name>
+    <display>BWIntegration.mode</display>
+    <help>Specifies the mode, which is either AS for an Application
+      Server or NS for a Network Server. Default is 'AS'.</help>
+    <format defaultValue="AS">
+      <enum>AS,NS</enum>
+    </format>
+  </option>
+  <context>
+    <display>BWIntegration.Address</display>
+    <help>This level is used to control AS and NS Address related
+      attributes for BroadWorks Integration. Any one of AS or NS address
+      must be provided.</help>
+  </context>
+  <option>
+    <name>bwIntegration.seed.nsClusterAddress</name>
+    <display>BWIntegration.Address.NS</display>
+    <help>Specifies the Network Server(NS) IP address, host or domain.
+    </help>
+    <format>
+      <string minLength="1" maxLength="80"></string>
+    </format>
+  </option>
+  <option>
+    <name>bwIntegration.seed.asPrimaryAddress</name>
+    <display>BWIntegration.Address.asPrimary</display>
+    <help>Specifies the primary Application server's (AS) IP address,
+      host or domain.</help>
+    <format>
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>
+  <option>
+    <name>bwIntegration.seed.asSecondaryAddress</name>
+    <display>BWIntegration.Address.asSecondary</display>
+    <help>Specifies the secondary Application server's (AS) IP address,
+      host or domain.</help>
+    <format>
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>
+  <option>
+    <name>bwIntegration.seed.ocicPort</name>
+    <display>BWIntegration.Address.ocicPort</display>
+    <help>Specifies the Application Server OCI-C (to the Provisioning
+      Server process) plain tcp/ip listening port. Default is 2220.</help>
+    <format defaultValue="2220">
+     <integer min="1" max="65535" />
+    </format>
+  </option> 
+ 
+   <!--  WRS Related Configurations -->
+   <context>
+    <display>WRS</display>
+    <help>This level is used to control the WRS client configuration for Collaboration Guest Client.</help>
+  </context>
+  
+  <option>
+    <name>wrs.address.list</name>
+    <display>WRS.WSAddressList</display>
+    <help>Denotes the list of Addresses for WRS server</help>
+   <format list="true" defaultValue="">
+      <string minLength="1" maxLength="255"></string>
+   </format>
+  </option>
+  
+  <option>
+    <name>wrs.domain.to</name>
+    <display>WRS.domainTo</display>
+    <help>Configures domainTo address for WRS client configuration</help>
+    <format defaultValue="">
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>
+  
+  <option>
+    <name>wrs.domain.from</name>
+    <display>WRS.domainFrom</display>
+    <help>Configures domainFrom address for WRS client configuration</help>
+    <format defaultValue="">
+      <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>
+  
+   <option>
+    <name>wrs.stun.server</name>
+    <display>WRS.stunServer</display>
+    <help>Configures stunServer address for WRS client configuration</help>
+    <format defaultValue="">
+      <string minLength="1" maxLength="80"></string>
+    </format>
+  </option>
+  
+  <option>
+    <name>wrs.stunserver.port</name>
+    <display>WRS.stunServerPort</display>
+    <help>Configures stunPort address for WRS client configuration</help>
+    <format defaultValue="19302">
+      <integer min="1" max="65535" />
+    </format>
+  </option>
+  
+  
+  <context>
+    <display>Chrome</display>
+    <help>This level is used to control the Chrome related configuration of the
+      Collaboration web application.</help>
+  </context>
+  
+  <option>
+    <name>chrome.desktopShare.extensionId</name>
+    <display>Chrome.extensionId</display>
+    <help>This parameter specifies the Item ID of the Communicator Guest client share extension published in the Chrome webstore.</help>
+    <format defaultValue="">
+       <string minLength="1" maxLength="255"></string>
+    </format>
+  </option>
+  
+</webappConfig>
