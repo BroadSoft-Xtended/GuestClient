@@ -1,0 +1,29 @@
+{
+  "name": "Communicator Guest client share\u2122",
+  "version" : "1.0.5",
+  "description" : "The Communicator Guest client share extension to help the guest users in sharing desktop with the room attendees\u2122",
+  "manifest_version": 2,
+  "page_action": {
+		
+	},
+  "permissions": [ "desktopCapture", "activeTab"],
+  "icons": {
+    "16": "images/communicator-icon-16.png",
+    "48": "images/communicator-icon-48.png",
+    "128": "images/communicator-icon-128.png"
+   },
+  "content_scripts": [
+	{
+		"matches" : [
+			"<all_urls>"
+		],
+		"js" : ["content_script.js"],
+		"run_at" : "document_end",
+		"all_frames" : true
+	}
+  ],
+	"web_accessible_resources": ["content_script.js"],
+    "background": {
+		"scripts": ["desktopShare.js"]
+	}
+}
