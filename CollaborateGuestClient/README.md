@@ -1,6 +1,4 @@
 # GuestClient
-Open Source version of the Collaborate Guest Client
-
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------        
 Build the war file
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -16,10 +14,3 @@ c) cgc.war.output - this configuration is for configuring the output folder in w
         BWCommunicationUtility.jar <br>
         servlet-api.jar <br>
 4. For WAR creation, use the cgc.war from the ant script. This will generate the war and places it in the configured output folder. 
-
-<br><br>
-Please refer the document for steps to setup the application and further details :
-1. http://xchange.broadsoft.com/php/xchange/system/files/BroadTouch/BusinessCommunicator/Releases/Release_21/UCOne-SolutionGuide.pdf
-2. http://xchange.broadsoft.com/php/xchange/system/files/Release_21/ReleaseDocs/FeatureDescriptions/CollaborateGuestClientFD-R210.pdf
-
-
