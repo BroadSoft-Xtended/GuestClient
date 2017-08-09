@@ -1,5 +1,4 @@
 # GuestClient
-Open Source version of the Collaborate Guest Client
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------        
 Build the ScreenShare Chrome extension
