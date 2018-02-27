@@ -30,7 +30,14 @@ public class CGCFileServiceServlet extends XSPFileServiceServlet {
 	public CGCFileServiceServlet() {
 		super();
 	}
-
+	
+	@Override
+	protected void addCustomHeader(HttpServletRequest req, HttpServletResponse res) {
+		res.setHeader("Cache-Control", "must-revalidate, max-age=86400");
+		res.setHeader("Pragma", "");
+		res.setHeader("Expires", "");
+	}
+	
 	protected String getFullyQualifiedFileName(HttpServletRequest req,
 			HttpServletResponse resp) {
 
@@ -97,19 +104,19 @@ public class CGCFileServiceServlet extends XSPFileServiceServlet {
 						CONFIG_KEY_GENERAL_CUSTOM_RESOURCE_PATH);
 		if (customResourcePath != null
 				&& customResourcePath.trim().length() != 0) {
+			
+			customResourcePath = (customResourcePath.endsWith(File.separator)?customResourcePath:customResourcePath + File.separator);
+			
 			if (fileName.endsWith("gif") || fileName.endsWith("jpeg")
 					|| fileName.endsWith("png") || fileName.endsWith("bmp")
 					|| fileName.endsWith("icon") || fileName.endsWith("ico")
 					|| fileName.endsWith("svg")) {
-				customResourcePath = customResourcePath + File.separator
-						+ "images" + File.separator + fileName;
-				System.out.println(customResourcePath);
+				customResourcePath = customResourcePath	+ "images" + File.separator + fileName;
+				
 			} else if (fileName.endsWith("css")) {
-				customResourcePath = customResourcePath + File.separator
-						+ "css" + File.separator + fileName;
+				customResourcePath = customResourcePath	+ "css" + File.separator + fileName;
 			} else {
-				customResourcePath = customResourcePath + File.separator
-						+ fileName;
+				customResourcePath = customResourcePath + fileName;
 			}
             if (ChannelLoggerUtil.isLogLevelActive(COLLABORATE_GUEST_CLIENT_CHANNEL, ChannelSeverity.DEV_DEBUG)) {
                 ChannelLoggerUtil.getLogger().log(ChannelSeverity.DEV_DEBUG, CGCFileServiceServlet.class.getName(),

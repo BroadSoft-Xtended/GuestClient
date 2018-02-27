@@ -7,9 +7,9 @@
 
 var previewssender = null;
 var previewssenderuid = null;
-var divChatColour = "";
+var lastFollowUpMessageComp = null;
 var isChatPanelRightSide = true;
-var chatDivBackColor = "cgcChatMessageBackgroundFirstColor";
+var isFirstMessage = true;
 var scrollTime = -1;
 var scrollerTimer = null;
 var isChromeOnMac = function() {
@@ -18,7 +18,7 @@ var isChromeOnMac = function() {
 enyo.kind({
 	name : "kind.com.broadsoft.cgc.ChatPanel",
 	layoutKind : "FittableRowsLayout",
-	classes : "cgcChatPanel",
+	classes : "cgcChatPanel bsftChatBackground",
 	fit : true,
 	components : [
 			{
@@ -37,14 +37,20 @@ enyo.kind({
 			{
 				kind : "enyo.Scroller",
 				name : "ChatScroller",
-				classes : "cgcChatScroller cgcChatScrollerRight",
+//				classes : "cgcChatScroller cgcChatScrollerRight",
+				classes : "cgcChatScroller",
 				fit : true,
 				ontap : "setScrollofChat",
 				resizeHandler : function() {
-					var chatScrollerHeight = getHeight(this.owner.id)-75;
-						chatScrollerHeight = chatScrollerHeight-getHeight(this.owner.$.textInput.id);
-						this.applyStyle("max-height",chatScrollerHeight+"px");
-						this.applyStyle("min-height",chatScrollerHeight+"px");
+					var chatScrollerHeight = getHeight(this.owner.id)- getHeight("chatPanel_control");
+					chatScrollerHeight = chatScrollerHeight-(getOuterHeight(this.owner.$.divcapchat.id));
+					this.applyStyle("max-height",chatScrollerHeight+"px !important");
+					this.applyStyle("min-height",chatScrollerHeight+"px !important");
+						
+//					var chatScrollerHeight = getHeight(this.owner.id)-75;
+//						chatScrollerHeight = chatScrollerHeight-getHeight(this.owner.$.textInput.id);
+//						this.applyStyle("max-height",chatScrollerHeight+"px");
+//						this.applyStyle("min-height",chatScrollerHeight+"px");
 				},
 				allowHtml : true,
 				rendered : function () {
@@ -62,12 +68,17 @@ enyo.kind({
 					{
 						kind : "enyo.Scroller",
 						name : "MacChatScroller",
-						classes : "cgcChatScroller cgcChatScrollerRight",
+//						classes : "cgcChatScroller cgcChatScrollerRight",
+						classes : "cgcChatScroller",
 						fit : true,
 						ontap : "setScrollofChat",
 						resizeHandler : function() {
-							var chatScrollerHeight = getHeight(this.owner.id)-75;
-								chatScrollerHeight = chatScrollerHeight-getHeight(this.owner.$.textInput.id);
+//								var chatScrollerHeight = getHeight(this.owner.id)-75;
+//								chatScrollerHeight = chatScrollerHeight-getHeight(this.owner.$.textInput.id);
+								
+								var chatScrollerHeight = getHeight(this.owner.id)- getHeight("chatPanel_control");
+								chatScrollerHeight = chatScrollerHeight-(getOuterHeight(this.owner.$.divcapchat.id));
+								
 								this.applyStyle("max-height",chatScrollerHeight+"px");
 								this.applyStyle("min-height",chatScrollerHeight+"px");
 						},
@@ -103,25 +114,25 @@ enyo.kind({
 					}
 				]
 			},
-			{
-				name : "divcap",
-				tag : "div",
-				classes : "cgcChatPanelHeader"
-
-			},
+//			{
+//				name : "divcap",
+//				tag : "div",
+//				classes : "cgcChatPanelHeader"
+//
+//			},
 			
 			
 			{
 				name : "divcapchat",
 				tag : "div",
-				classes : "cgcChatBoxRight",
+				classes : "cgcChatBoxRight bsftSeparators bsftContentBackground",
 				components:[
 			
 					{
 						name : "textInput",
 						id : "cgcTextArea",
 						kind : "enyo.TextArea",
-						classes : "chatEntryBoxRight",
+						classes : "chatEntryBoxLeft bsftContentBackground bsftDimmedText",
 						attributes : {
 							maxlength : 5021,
 							required : "required"
@@ -158,6 +169,8 @@ enyo.kind({
 	},
     onChangeTextArea : function(inSender, inEvent) {
     		this.$.textInput.resized();
+//    		var height = getHeight(this.id)-getHeight(this.$.divcapchat.id) - 105;
+//    		this.autoscroll();
     },
 	showFullScreen : function(inSender, inEvent) {
 
@@ -172,27 +185,23 @@ enyo.kind({
 			this.appendChat();
 			inEvent.preventDefault();
 		}
-		if (!window.cgcComponent.basePanel.getIsFullScreen() && 
-				!window.cgcComponent.basePanel.$.cgcRightPanel.getChatWidget()) {
-			inEvent.preventDefault();
-		}
 	},
 	keyUp : function(inSender, inEvent){
 		if(this.$.textInput.value != "") {
-			if(isChatPanelRightSide){
-				this.$.textInput.removeClass("chatEntryBoxTopInnerBorder");
+//			if(isChatPanelRightSide){
+//				this.$.textInput.removeClass("chatEntryBoxTopInnerBorder");
 				this.$.textInput.addClass("chatEntryBoxFullInnerBorder");
 				this.$.textInput.addClass("chatEntryBoxActive");
-			}else{
-				this.$.divcapchat.removeClass("chatEntryBoxFullInnerBorder");
-				this.$.divcapchat.addClass("chatEntryBoxTopInnerBorder");
-			}
+//			}else{
+//				this.$.divcapchat.removeClass("chatEntryBoxFullInnerBorder");
+//				this.$.divcapchat.addClass("chatEntryBoxTopInnerBorder");
+//			}
 		} else {
-				this.$.textInput.removeClass("chatEntryBoxTopInnerBorder");
+//				this.$.textInput.removeClass("chatEntryBoxTopInnerBorder");
 				this.$.textInput.removeClass("chatEntryBoxFullInnerBorder");
 				this.$.textInput.removeClass("chatEntryBoxActive");
 				
-				this.$.divcapchat.removeClass("chatEntryBoxTopInnerBorder");
+//				this.$.divcapchat.removeClass("chatEntryBoxTopInnerBorder");
 				this.$.divcapchat.removeClass("chatEntryBoxFullInnerBorder");
 				this.$.divcapchat.removeClass("chatEntryBoxActive");
 		}
@@ -206,7 +215,8 @@ enyo.kind({
 	showChatMessage : function(inEvent, data) {
 		sender = data.sender;
 		message = data.message;
-		if(data.jid == window.cgcProfile.guestImpDetails.loginId){
+//		if(data.jid == window.cgcProfile.guestImpDetails.loginId){
+		if(data.jid == window.cgcProfile.guestImpDetails.room + "/" + window.cgcProfile.guestImpDetails.loginId){
 			this.createChatElements( undefined,sender, message, true);
 		}else{
 			this.createChatElements( data.jid,sender, message, false);
@@ -215,53 +225,55 @@ enyo.kind({
 
 	showChatStatusMessage : function(inEvent, data) {
 		var message = data.message;
-		var isUserInfo = data.avatar;
-		var action = "";
-		var isImgAvailable = false;
-		var img = "";
-		if(isUserInfo){
-			action = data.action;
-			img = data.image;
-			if(img){
-				isImgAvailable = true;
+		if (message) {
+			var isUserInfo = data.avatar;
+			var action = "";
+			var isImgAvailable = false;
+			var img = "";
+			if(isUserInfo){
+				action = data.action;
+				img = data.image;
+				if(img){
+					isImgAvailable = true;
+				}
 			}
-		}
-		
-		var chatUserInfo = "cgcChatInfo";
-		var fontColor = "cgcChatInfoFontColor";
-		if(isUserInfo){
-			chatUserInfo = "cgcChatUserInfo";
-			fontColor = "cgcChatUserInfoFontColor"
-		}
-		if (!(message == null || message == "")) {
+			
+			var chatUserInfo = "cgcChatInfo";
+			var fontWeight = "";
+			if(isUserInfo){
+				chatUserInfo = "cgcChatUserInfo";
+				fontWeight = "cgcFontBold"
+			}
+			
+			var chatBubbleSeperatorClass = "";
+			if(!isFirstMessage){
+				chatBubbleSeperatorClass = " cgcChatbubbleSeperator";
+			} else {
+				isFirstMessage = false;
+			}
+			
 			previewssender = null;
 			previewssenderuid = null;
 			
-			var chatScroller  = this.$.ChatScroller;
-			if(isChromeOnMac()) {
-				chatScroller  = this.$.MacChatScroller;
-			} else {
-				chatScroller  = this.$.ChatScroller;
-			}
+			var chatScroller = this.getChatScroller();
 			chatScroller.createComponent({
 						kind : "cgc.ChatInfoItem",
 						fit: true,
 						allowHtml : true,
-						classes : "cgcInfoAndErrorDiv",
+						classes : "cgcInfoAndErrorDiv" + chatBubbleSeperatorClass,
 							
 						components:[{
-							kind : "enyo.FittableColumns",
 							allowHtml : true,
-							classes : fontColor + " cgcChatInfoBackground",
+							classes : fontWeight + " cgcChatInfoBackground bsftChatSecondaryText",
 							components:[{
-								tag : "div",
+								tag : "font",
 								classes : chatUserInfo,
 								allowHtml : this.matchURLWithHTMLLinks(message),
 								content : this.replaceURLWithHTMLLinks(message)
 							},{
-								tag : "div",
+								tag : "font",
 								allowHtml : true,
-								classes : chatUserInfo + " cgcChatUserInfoStatusFont",
+								classes : chatUserInfo + " cgcFontNormal bsftChatSecondaryText",
 								content : "&nbsp;" + action,
 								showing : isUserInfo
 							}]
@@ -281,23 +293,25 @@ enyo.kind({
 			previewssender = null;
 			previewssenderuid = null;
 			
-			var chatScroller  = this.$.ChatScroller;
-			if(isChromeOnMac()) {
-				chatScroller  = this.$.MacChatScroller;
+			var chatBubbleSeperatorClass = "";
+			if(!isFirstMessage){
+				chatBubbleSeperatorClass = " cgcChatbubbleSeperator";
 			} else {
-				chatScroller  = this.$.ChatScroller;
+				isFirstMessage = false;
 			}
+			
+			var chatScroller = this.getChatScroller();
 			chatScroller.createComponent({
 				kind : "cgc.ChatErrorItem",
 				allowHtml : true,
 				components : [ {
 					tag : "div",
-					classes : "cgcInfoAndErrorDiv",
+					classes : "cgcInfoAndErrorDiv" + chatBubbleSeperatorClass,
 					components:[{
 					kind : "enyo.FittableColumns",
 					style : "vertical-align: baseline;white-space: pre-wrap;word-wrap: break-word;",
 					allowHtml : true,
-					classes : " cgcChatErrorFontColor",
+					classes : " bsftChatErrorFontColor",
 					content : message
 				}]
 				
@@ -307,96 +321,98 @@ enyo.kind({
 			this.autoscroll();
 		}
 	},
+	getChatScroller : function(){
+		var chatScroller;
+		if(isChromeOnMac()) {
+			chatScroller =  this.$.MacChatScroller;
+		} else {
+			chatScroller = this.$.ChatScroller;
+		}
+		if(!chatScroller.$.chatContentPane){
+			chatScroller.createComponent({
+				tag : "div",
+				name : "chatContentPane",
+				classes : "cgcChatContentPane"
+			});
+		}
+		return chatScroller.$.chatContentPane;
+	},
 	createChatElements : function(jid,sender, message, clearText) {
-		var chatDivClasses=chatDivBackColor;
-		var mainDiv = "cgcChatSenderMainDiv";
-		var chatContentStyle = "cgcChatContentFirstStyle";
 		var senderUid = sender;
 		// for getting the guest name to show in chat panel
-		sender = getGuestName(senderUid);
+		sender = window.cgcComponent.xmppInterface.getContactNameFromJid(senderUid);
+		//window.stropheXMPPInterface.getGuestName(senderUid);
 		
-		var owner = undefined;
-		if(jid){
-			owner = window.cgcComponent.controlPanel.getRole(jid.split("/")[1]);
-		}
+		
+		var messageTime = "";
+		
 		var profileUser = window.cgcProfile.firstName+" "+window.cgcProfile.lastName;
-		var date = new Date();
-		var hours = date.getHours();
-		var mins = date.getMinutes();
-		var ampm = hours < 12 ? " am" : " pm";
+		
 		var img = undefined;
 		if(jid){
-			img =  window.cgcComponent.controlPanel.getImage(jid.split("/")[1]);
+			img =  window.cgcComponent.xmppInterface.getContactAvatar(jid.split("/")[1]);
 		}
 		if (!(message == null || message.trim() == "")) {
+			var date = new Date();
+			var hours = date.getHours();
+			var mins = date.getMinutes();
+			var ampm = hours < 12 ? " am" : " pm";
 			hours = hours > 12 ? (hours - 12) : hours;
 			mins = mins < 10 ? ("0" + mins) : mins;
+			messageTime = hours + ":" + mins + ampm;
+			var senderSeperator = "";
+			if(previewssenderuid && previewssenderuid !== senderUid && !lastFollowUpMessageComp){
+				senderSeperator = "cgcChatbubbleSeperator "
+			}
+			
 			if (previewssenderuid != senderUid) {
 				previewssenderuid = senderUid;
 				previewssender = sender;
-				if(owner){
-					owner = " &bull; " + owner + " &bull; ";
-				}else{
-					owner = " &bull; ";
-				}
-				owner=owner+ hours + ":" + mins + ampm;
-				
-				
-						if(chatDivClasses=="cgcChatMessageBackgroundFirstColor"){
-							chatDivClasses = "cgcChatMessageBackgroundSecondColor";
-							
-						}else{
-							chatDivClasses = "cgcChatMessageBackgroundFirstColor";
-							
-						}
-						chatDivBackColor = chatDivClasses;
 			} else {
 				sender = "";
-				owner = "";
 			}
-			var heightofImg  = "height: auto;width: 28px;display: inline-table;";
 			if(clearText){
 				this.$.textInput.set("placeholder", htmlEscape(jQuery.i18n.prop("cgc.label.chat.hint")));
-			}else{
-				heightofImg  = "height: auto;width: 28px;display: inline-table;";
-				divChatColour = "cgcParticipantMessageBackground";
 			}
-			heightofImg = heightofImg + "float: left;";
 			if(this.matchURLWithHTMLLinks(message)){
 				message = htmlEncode(message);
 			}
 			if (sender.length != 0) {
-				
-				
-				
 				var isImgAvailable = true;
-				
-				var cgcChatAvatar = "cgcChatAvatar";
+				var cgcChatAvatarImg = "cgcChatAvatarImg";
 				if(!img){
 					isImgAvailable = false;
-					chatContentStyle = "cgcChatContentOtherStyle";
-					heightofImg  = "height:28px;width:28px;float: right;";
-					cgcChatAvatar = "cgcChatEmptyAvatar";
 				}
-				chatContentStyle = chatContentStyle + " " + chatDivClasses;
 				
-				var chatScroller  = this.$.ChatScroller;
-				if(isChromeOnMac()) {
-					chatScroller  = this.$.MacChatScroller;
-				} else {
-					chatScroller  = this.$.ChatScroller;
+				var chatScroller = this.getChatScroller();
+				if(jid){
+					chatScroller.createComponent({
+						tag : "div",
+						name : "",
+						classes : "cgcChatItemSenderDetails bsftChatPrimaryText cgcChatbubbleSeperator",
+						content: sender
+					});
 				}
+				
+				var chatBubbleSeperatorClass = "";
+				if(!isFirstMessage){
+					chatBubbleSeperatorClass = " cgcChatbubbleSeperator";
+				} else {
+					isFirstMessage = false;
+				}
+					
 				var comp = chatScroller.createComponent({
 						kind : "cgc.ChatItemHeader",
 						kind : "enyo.FittableColumns",
-						classes : mainDiv,
+						classes : (jid ? "cgcChatReceiverMainDiv" : "cgcChatSenderMainDiv" + chatBubbleSeperatorClass),
 						published:{
 							messageComp:undefined,
 							imageComp:undefined
 						},
 						components:[{
 							tag : "div",
-							style : heightofImg,
+							classes: (jid && isImgAvailable ? "cgcChatAvatarImgBox" : "cgcHide"),
+//							style : "height:28px;width:28px;float: left;",
 							rendered : function(){
 								if(!isImgAvailable){
 									this.destroy();
@@ -405,93 +421,116 @@ enyo.kind({
 								}
 							},
 							components:[{
-							tag : "img",
-							classes : cgcChatAvatar,
-							src : img,
-							fit : true,
-							showing : isImgAvailable
-						}]
+								tag : "img",
+								classes : cgcChatAvatarImg,
+								src : img,
+								fit : true,
+								showing : isImgAvailable
+							}]
+						},
+						{
+							tag : "div",
+							classes: "cgcChatDefaultAvatar bsftDefaultAvatarBorder bsftChatPrimaryText bsftFontRobotoLightItalic " + (jid && !isImgAvailable ? "" : "cgcHide"),
+							content: sender ? getFirstAndLastName_Character({name:sender}) : "",
+							rendered : function() {
+								if(window.cgcProfile.name.length > 35){
+									this.setAttribute("title", jQuery.i18n.prop("cgc.label.room.title",
+											getFirstAndLastName_Character(window.cgcProfile.guestImpDetails)));
+								}
+								this.setContent(getFirstAndLastName_Character(window.cgcProfile.guestImpDetails));
+							}
 						},{
 						kind : "FittableRows",
-						classes : chatContentStyle ,
+//						classes : jid ? "cgcChatReceiverMessage cgcChatReceiverFirstMessage bsftIncomingChatBalloon" :"cgcChatSenderMessage cgcChatSenderFirstMessage bsftOutgoingChatBalloon",
+						classes : "cgcFlexGrowFull",
+						allowHtml : true,
 						rendered : function(){
-							
 							comp.setMessageComp(this);
 						},
 						components : [{
-											kind : "enyo.FittableRows",
-											classes : "cgcChatInnerBox",
-											allowHtml : true,
-											components : [ {
-												tag : "div",
-												classes : "cgcChatItemMessage",
-												allowHtml : this.matchURLWithHTMLLinks(message),
-												content : this.replaceURLWithHTMLLinks(message)
-												},{
-												kind : "enyo.FittableColumns",
-												classes : "cgcChatDetails",
-												components : [ {
-												tag : "div",
-												content : sender,
-												allowHtml : true,
-												classes : "cgcChatItemHeader",
-												},{
-												tag : "div",
-												content : owner,
-												allowHtml : true,
-												classes : "cgcChatItemHeaderTime",
-												} ]
-											}]
-										}],
-						allowHtml : true
-
+							kind : "enyo.FittableRows",
+							classes : "cgcMessageContent " + (jid ? "cgcChatReceiverMessage cgcChatReceiverFirstMessage bsftIncomingChatBalloon" :"cgcChatSenderMessage cgcChatSenderFirstMessage bsftOutgoingChatBalloon"),
+							allowHtml : true,
+							components : [ {
+								tag : "div",
+								classes : "cgcChatItemMessage " + (jid ? "bsftIncomingChatText" : "bsftOutgoingChatText"),
+								allowHtml : this.matchURLWithHTMLLinks(message),
+								content : this.replaceURLWithHTMLLinks(message, (jid ? "bsftIncomingChatText" : "bsftOutgoingChatText"))
+								}]
+							}]
+						},
+						{
+							kind : "enyo.FittableColumns",
+							classes : "cgcFlexShrinkNone " + (jid ? "cgcChatRightsideTime" : "cgcChatLeftsideTime"),
+							components : [ {
+							tag : "div",
+							content : messageTime,
+							allowHtml : true,
+							classes : "cgcChatItemHeaderTime bsftChatSecondaryText",
+							} ]
 						}]
 				});
+				lastFollowUpMessageComp = undefined;
 			} else {
-				chatContentStyle = "cgcChatContentOtherStyle";
-				
-				var chatScroller  = this.$.ChatScroller;
-				if(isChromeOnMac()) {
-					chatScroller  = this.$.MacChatScroller;
-				} else {
-					chatScroller  = this.$.ChatScroller;
+				if(lastFollowUpMessageComp){
+					if(jid){
+						lastFollowUpMessageComp.removeClass("cgcChatReceiverLastMessage");
+						lastFollowUpMessageComp.addClass("cgcChatReceiverMiddleMessage");
+					} else {
+						lastFollowUpMessageComp.removeClass("cgcChatSenderLastMessage");
+						lastFollowUpMessageComp.addClass("cgcChatSenderMiddleMessage");
+					}
 				}
+				
+				var chatScroller = this.getChatScroller();
 				var comp = chatScroller.createComponent({
 					kind : "cgc.ChatItem",
 					kind : "enyo.FittableRows",
-					classes : "cgcChatMessageUser",
+					classes : "cgcChatMessageUser " + (jid ? "" : "cgcFlexRowReverse"),
 					allowHtml : true,
 					published:{
 						messageComp:undefined,
 					},
 					components : [ {
 						tag : "div",
-						classes : chatContentStyle +" "+chatDivClasses,
+						classes: "cgcChatNoContentWOAvatar cgcFlexShrinkNone" + (jid ? "" : " cgcHide"),
+					},
+				    {
+						tag : "div",
+//						name: "messageContainer",
+//						classes : jid ? "cgcChatReceiverMessage cgcChatReceiverLastMessage bsftIncomingChatBalloon" :"cgcChatSenderMessage cgcChatSenderLastMessage bsftOutgoingChatBalloon",
+						classes : "cgcFlexGrowFull",
 						rendered : function(){
 							
 							comp.setMessageComp(this);
 						},
 						components : [ {
-							tag : "div",
-							allowHtml : this.matchURLWithHTMLLinks(message),
-							content : this.replaceURLWithHTMLLinks(message),
-							classes : "cgcChatItemMessage",
-						},{
-							kind : "enyo.FittableColumns",
-							classes : "cgcChatDetails",
-							style : "padding-left: 0px",
+							tag: "div",
+							classes: "cgcMessageContent " + (jid ? "cgcChatReceiverMessage cgcChatReceiverLastMessage bsftIncomingChatBalloon" :"cgcChatSenderMessage cgcChatSenderLastMessage bsftOutgoingChatBalloon"),
 							components : [ {
-							tag : "div",
-							content : hours + ":" + mins + ampm,
-							classes : "cgcChatItemHeaderTime",
-							showing : true
-							} ]
+								tag : "div",
+								allowHtml : this.matchURLWithHTMLLinks(message),
+								content : this.replaceURLWithHTMLLinks(message, (jid ? "bsftIncomingChatText" : "bsftOutgoingChatText")),
+								classes : "cgcChatItemMessage " + (jid ? "bsftIncomingChatText" : "bsftOutgoingChatText"),
+							}]
 						}]
-					} ]
+					},
+					{
+						kind : "enyo.FittableColumns",
+						classes: "cgcFlexShrinkNone",
+						components : [ {
+						tag : "div",
+						content : messageTime,
+						classes : "cgcChatItemHeaderTime bsftChatSecondaryText " + (jid ? "cgcChatRightsideTime" : "cgcChatLeftsideTime"),
+						showing : true
+						} ]
+					}]
 				});
+				lastFollowUpMessageComp = comp.children[1].children[0];
+				
 			}
-			if (!window.cgcComponent.basePanel.getIsFullScreen() || !window.cgcComponent.basePanel.getIsViewableChat()) {
-					window.cgcComponent.basePanel.showPopup(previewssender,message);
+			if (window.cgcComponent.basePanel.getIsFullScreen() || !window.cgcComponent.basePanel.getIsChatPaneShowing()) {
+					window.cgcComponent.basePanel.showChatPopup(previewssender,message);
 			}
 			
 			if(isChromeOnMac()) {
@@ -501,14 +540,13 @@ enyo.kind({
 			}
 			
 			this.autoscroll();
-			
 		}
 		if (clearText) {
 			this.$.textInput.set("value", "");
 
 		}
 	},
-	replaceURLWithHTMLLinks : function(text) {
+	replaceURLWithHTMLLinks : function(text, styleClass) {
 		if(this.matchURLWithHTMLLinks(text)){
 			var re = /(\(.*?)?\b((?:https?|ftp|file):\/\/[-a-z0-9+&@#\/%?=~_()|!:,.;]*[-a-z0-9+&@#\/%=~_()|])/ig;
 		    return text.replace(re, function(match, lParens, url) {
@@ -533,7 +571,12 @@ enyo.kind({
 		                rParens = m[2] + rParens;
 		            }
 		        }
-		        return lParens + "<a href='" + url + "'  target='_blank' >" + url + "</a>" + rParens;
+		        if(styleClass){
+		        	styleClass = "class='" + styleClass + " " + "cgcChatBubbleLink" + "'";
+		        } else{
+		        	styleClass = "class='cgcChatBubbleLink'";
+		        } 
+		        return lParens + "<a href='" + url + "'  target='_blank' " + styleClass + ">" + url + "</a>" + rParens;
 		    });
 		}else{
 			return text;
@@ -548,50 +591,50 @@ enyo.kind({
 		
 		if(!isRight){
 			if(isChromeOnMac()) {
-				this.$.MacChatScroller.addClass("cgcChatScrollerLeft");
-				this.$.MacChatScroller.removeClass("cgcChatScrollerRight");
+//				this.$.MacChatScroller.addClass("cgcChatScrollerLeft");
+//				this.$.MacChatScroller.removeClass("cgcChatScrollerRight");
 			} else {
-				this.$.ChatScroller.addClass("cgcChatScrollerLeft");
-				this.$.ChatScroller.removeClass("cgcChatScrollerRight");
+//				this.$.ChatScroller.addClass("cgcChatScrollerLeft");
+//				this.$.ChatScroller.removeClass("cgcChatScrollerRight");
 			}
 			this.$.divcapchat.removeClass("cgcChatBoxRight");
 			this.$.divcapchat.addClass("cgcChatBoxLeft");
-			this.$.textInput.removeClass("chatEntryBoxRight");
-			this.$.textInput.addClass("chatEntryBoxLeft");
+			this.$.textInput.removeClass("chatEntryBoxLeft");
+			this.$.textInput.addClass("chatEntryBoxRight");
 		}else{
 			if(isChromeOnMac()) {
-				this.$.MacChatScroller.removeClass("cgcChatScrollerLeft");
-				this.$.MacChatScroller.addClass("cgcChatScrollerRight");	
+//				this.$.MacChatScroller.removeClass("cgcChatScrollerLeft");
+//				this.$.MacChatScroller.addClass("cgcChatScrollerRight");	
 			} else {
-				this.$.ChatScroller.removeClass("cgcChatScrollerLeft");
-				this.$.ChatScroller.addClass("cgcChatScrollerRight");
+//				this.$.ChatScroller.removeClass("cgcChatScrollerLeft");
+//				this.$.ChatScroller.addClass("cgcChatScrollerRight");
 			}
 			
 			this.$.divcapchat.removeClass("cgcChatBoxLeft");
 			this.$.divcapchat.addClass("cgcChatBoxRight");
-			this.$.textInput.addClass("chatEntryBoxRight");
-			this.$.textInput.removeClass("chatEntryBoxLeft");
+			this.$.textInput.addClass("chatEntryBoxLeft");
+			this.$.textInput.removeClass("chatEntryBoxRight");
 		}
 		if(this.$.textInput.value != "") {
-			if(!isRight){
-				this.$.divcapchat.removeClass("chatEntryBoxFullInnerBorder");
-				this.$.divcapchat.addClass("chatEntryBoxTopInnerBorder");
-				
-				this.$.textInput.removeClass("chatEntryBoxTopInnerBorder");
-				this.$.textInput.removeClass("chatEntryBoxFullInnerBorder");
-				
-			}else{
-				this.$.textInput.removeClass("chatEntryBoxTopInnerBorder");
+//			if(!isRight){
+//				this.$.divcapchat.removeClass("chatEntryBoxFullInnerBorder");
+//				this.$.divcapchat.addClass("chatEntryBoxTopInnerBorder");
+//				
+//				this.$.textInput.removeClass("chatEntryBoxTopInnerBorder");
+//				this.$.textInput.removeClass("chatEntryBoxFullInnerBorder");
+//				
+//			}else{
+//				this.$.textInput.removeClass("chatEntryBoxTopInnerBorder");
 				this.$.textInput.addClass("chatEntryBoxFullInnerBorder");
 				
-				this.$.divcapchat.removeClass("chatEntryBoxTopInnerBorder");
+//				this.$.divcapchat.removeClass("chatEntryBoxTopInnerBorder");
 				this.$.divcapchat.removeClass("chatEntryBoxFullInnerBorder");
-			}
+//			}
 		} else {
-				this.$.textInput.removeClass("chatEntryBoxTopInnerBorder");
+//				this.$.textInput.removeClass("chatEntryBoxTopInnerBorder");
 				this.$.textInput.removeClass("chatEntryBoxFullInnerBorder");
 				
-				this.$.divcapchat.removeClass("chatEntryBoxTopInnerBorder");
+//				this.$.divcapchat.removeClass("chatEntryBoxTopInnerBorder");
 				this.$.divcapchat.removeClass("chatEntryBoxFullInnerBorder");
 		}
 		isChatPanelRightSide = isRight;
@@ -615,52 +658,53 @@ enyo.kind({
 		}
 		 
 	},autoscrollasynch : function() {	
-		if(isChromeOnMac()) {
-			var box = document.getElementById('chatPanel_MacChatScroller');
-			box.scrollTop = box.scrollHeight;
-		}else{
-			var box = document.getElementById('chatPanel_ChatScroller');
-			box.scrollTop = box.scrollHeight;
-		}
+//		if(isChromeOnMac()) {
+//			var box = document.getElementById('chatPanel_MacChatScroller');
+//			box.scrollTop = box.scrollHeight;
+//		}else{
+//			var box = document.getElementById('chatPanel_ChatScroller');
+//			box.scrollTop = box.scrollHeight;
+//		}
 		
-		if(true) return;
+//		if(true) return;
 		
-		//TODO: Analyse the below code for autoscroll performance 
-		if(window.navigator.platform.toLowerCase().indexOf('mac') !== -1){
-			this.$.ChatScroller.addClass("cgcChatScrollerMac");
-		}else{
-			this.$.ChatScroller.addClass("scrollbar-inner");
-			this.$.ChatScroller.addClass("cgcChatScrollerNonMac");
-		}
-		
-		this.layoutRefresh();
-		if(isChromeOnMac()) {
-			window.heightOfChatDiv = this.$.MacChatScroller.id;	
-		} else {
-			window.heightOfChatDiv = this.$.ChatScroller.id;	
-		}
-		var scroller = document.getElementById(window.heightOfChatDiv);
-		if (scroller != null) {
-			var height = scroller.scrollHeight - $(scroller).height();
-			
-			window.heightOfChatPanel = getHeight(this.owner.id);
-			window.chatTextBox = this.$.textInput;
-			$("#"+window.heightOfChatDiv).scrollTop( height );
-				
-			if(window.navigator.platform.toLowerCase().indexOf('mac') == -1){
-				document.addEventListener('keydown', chatScrollPage);
-				window.chatCustomScrollar = jQuery('.scrollbar-inner').scrollbar();
-				window.chatCustomScrollar.setScrollCurrentPosition(height);
+		if(this.$.ChatScroller){
+			//TODO: Analyse the below code for autoscroll performance 
+			if(window.navigator.platform.toLowerCase().indexOf('mac') !== -1){
+				this.$.ChatScroller.addClass("cgcChatScrollerMac");
+			}else{
+				this.$.ChatScroller.addClass("scrollbar-inner");
+				this.$.ChatScroller.addClass("cgcChatScrollerNonMac");
 			}
 			
-			/* if(isChromeOnMac()) {
-				document.addEventListener('keydown', chatScrollPage);
-				window.chatCustomScrollar = jQuery('.scrollbar-macosx').scrollbar();
-				window.chatCustomScrollar.setScrollCurrentPosition(height);
-			} */
-			
+//			this.layoutRefresh();
+			if(isChromeOnMac()) {
+				window.heightOfChatDiv = this.$.MacChatScroller.id;	
+			} else {
+				window.heightOfChatDiv = this.$.ChatScroller.id;	
+			}
+			var scroller = document.getElementById(window.heightOfChatDiv);
+			if (scroller != null) {
+				var height = scroller.scrollHeight - $(scroller).height();
+				
+				window.heightOfChatPanel = getHeight(this.owner.id);
+				window.chatTextBox = this.$.textInput;
+				$("#"+window.heightOfChatDiv).scrollTop( height );
+					
+				if(window.navigator.platform.toLowerCase().indexOf('mac') == -1){
+					document.addEventListener('keydown', chatScrollPage);
+					window.chatCustomScrollar = jQuery('.scrollbar-inner').scrollbar();
+					window.chatCustomScrollar.setScrollCurrentPosition(height);
+				}
+				
+				/* if(isChromeOnMac()) {
+					document.addEventListener('keydown', chatScrollPage);
+					window.chatCustomScrollar = jQuery('.scrollbar-macosx').scrollbar();
+					window.chatCustomScrollar.setScrollCurrentPosition(height);
+				} */
+				
+			}
 		}
-		
 	},
 	refreshSelf : function() {
 		this.$.ChatScroller.render();

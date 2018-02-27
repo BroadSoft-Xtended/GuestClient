@@ -40,7 +40,7 @@ enyo.kind({
 				var profileData = data.split(',');
 				var len = profileData.length;
                 if (len >= 4) {
-					window.cgcProfile.name=data.slice(0, data.lastIndexOf(profileData[len-3])-1);
+					window.cgcProfile.name=window.escapeHTML(data.slice(0, data.lastIndexOf(profileData[len-3])-1));
 					window.cgcProfile.broadworksId = profileData[len-3];
 					window.cgcProfile.mucseed = profileData[len-2];
 					window.cgcProfile.muchashedroom = profileData[len-1];

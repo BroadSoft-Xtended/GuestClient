@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schema.broadsoft.com/broadworksConfig"
+  attributeFormDefault="unqualified" elementFormDefault="qualified" 
+  targetNamespace="http://schema.broadsoft.com/broadworksConfig" version="18.0.715">
+
+<!-- Inclusions -->
+  <xs:element name="loggingConfig">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="generalSettings">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element default="true" name="enabled" type="xs:boolean">
+                <xs:annotation>
+                  <xs:documentation>This parameter turns logging on and off.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="priority">
+                <xs:annotation>
+                  <xs:documentation>This parameter specifies the priority of the logging thread.  The value "1" indicates the lowest priority and "5"indicates the highest.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1" />
+                    <xs:maxInclusive value="5" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element default="50000" name="maxQueueSize">
+                <xs:annotation>
+                  <xs:documentation>This parameter specifies the maximum size of the logging queue.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:minInclusive value="0" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="defaultSeverity" type="LogSeverity">
+                <xs:annotation>
+                  <xs:documentation>This parameter specifies the default logging severity level.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element default="false" name="showThreadName" type="xs:boolean">
+                <xs:annotation>
+                  <xs:documentation>This parameter enables thread name logging.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="inputChannels">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:restriction base="Collection">
+                <xs:sequence>
+                  <xs:element maxOccurs="unbounded" minOccurs="0" name="entry" type="InputChannel"/>
+                </xs:sequence>
+              </xs:restriction>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="outputChannels">
+          <xs:complexType>
+            <xs:complexContent>
+              <xs:restriction base="Collection">
+                <xs:sequence>
+                  <xs:element maxOccurs="unbounded" minOccurs="0" name="entry" type="OutputChannel" />
+                </xs:sequence>
+              </xs:restriction>
+            </xs:complexContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="schemaRev" type="xs:token" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="ChannelName">
+    <xs:restriction base="xs:token" />
+  </xs:simpleType>
+  <xs:simpleType name="LogSeverity">
+    <xs:annotation>
+      <xs:documentation>Specifies the logging severity level.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Debug"/>
+      <xs:enumeration value="FieldDebug"/>
+      <xs:enumeration value="Info"/>
+      <xs:enumeration value="Notice"/>
+      <xs:enumeration value="Warn"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="InputChannel">
+    <xs:sequence>
+      <xs:element name="name" type="ChannelName">
+        <xs:annotation>
+          <xs:documentation>This parameter specifies the name of the logging input channel</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="enabled" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>This parameter turns logging on and off for the input channel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="severity" nillable="true" type="LogSeverity">
+        <xs:annotation>
+          <xs:documentation>This parameter specifies the severity level of the logging input channel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="class" type="xs:token">
+        <xs:annotation>
+          <xs:documentation>Qualified name of the input channel class.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="categories">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:restriction base="Collection">
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="name" type="xs:string"/>
+                      <xs:element name="includes">
+                        <xs:complexType>
+                          <xs:complexContent>
+                            <xs:restriction base="Collection">
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="value" type="xs:string"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:restriction>
+                          </xs:complexContent>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:restriction>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="OutputChannel">
+    <xs:sequence>
+      <xs:element name="name" type="ChannelName">
+        <xs:annotation>
+          <xs:documentation>This parameter specifies the name of the logging output channel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="enabled" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>This parameter turns logging on and off to the logging output channel.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element default="2" name="newLinesBeforeBody" type="xs:nonNegativeInteger"/>
+      <xs:element default="1" name="newLinesAfterBody" type="xs:nonNegativeInteger"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RotatedFileOutputChannel">
+    <xs:complexContent>
+      <xs:extension base="OutputChannel">
+        <xs:sequence>
+          <xs:element name="dir" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>This parameter specifies the directory where the log files are located.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="filePrefix" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>This parameter specifies the prefix of the log files.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="fileSizeMegs" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>This parameter specifies the maximum size of a log file.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="numberOfFiles" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>This parameter specifies the maximum number of log files that exist before the old log files are deleted.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType abstract="true" name="Collection">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="entry"/>
+    </xs:sequence>
+    <xs:attribute name="keys" type="Keys" />
+    <xs:anyAttribute />
+  </xs:complexType>
+  <xs:simpleType name="Keys">
+    <xs:list itemType="xs:Name" />
+  </xs:simpleType>
+</xs:schema>

@@ -10,12 +10,13 @@ import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_DISABLE_C
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_ENABLE_CALLMENOW;
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_ENABLE_WEBRTC;
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_ENABLE_WEBRTCVIDEO;
+import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_WEBRTCVIDEO_RESOLUTION;
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_LEADER_ACCEPTANCE_TIMEOUT;
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_RECAPTCHA_PRIVATE;
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_RECAPTCHA_PUBLIC;
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_TXN_GLOBAL_LIMIT;
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_TXN_GLOBAL_LIMIT_PERIOD_IN_SEC;
-import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_IN_BAND_DTMF_SUPPORT_ENABLED;
+import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_GENERAL_SEND_CONFID_AS_SIP_URI_HEADER_ENABLED;
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_INTERNAL_DEV_MODE;
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_INTERNAL_FORCE_MEETME_FOR_CALLMENOW;
 import static com.broadsoft.cgc.server.AppConstants.CONFIG_KEY_PA_HOST_ADMIN;
@@ -122,6 +123,8 @@ public class CollaborateGuestClientServletContextListener extends
 		configuration.setConfiguration(
 				CONFIG_KEY_GENERAL_ENABLE_WEBRTCVIDEO, "true");
 		configuration.setConfiguration(
+		        CONFIG_KEY_GENERAL_WEBRTCVIDEO_RESOLUTION, "R_640x480");
+		configuration.setConfiguration(
 				CONFIG_KEY_GENERAL_ENABLE_CALLMENOW, "true");
 		configuration.setConfiguration(
 				CONFIG_KEY_GENERAL_BOSH_URL, "");
@@ -144,7 +147,7 @@ public class CollaborateGuestClientServletContextListener extends
 				CONFIG_KEY_GENERAL_RECAPTCHA_PUBLIC, "");
 		
 		configuration.setConfiguration(
-				CONFIG_KEY_GENERAL_IN_BAND_DTMF_SUPPORT_ENABLED, "false");
+				CONFIG_KEY_GENERAL_SEND_CONFID_AS_SIP_URI_HEADER_ENABLED, "false");
 		
 
 		// Default for Http configurations
@@ -215,6 +218,17 @@ public class CollaborateGuestClientServletContextListener extends
 		}
 		configuration.setConfiguration("bwLogger.webapp.logFileName",
 				logFileName);
+		
+		
+		//Backward compatibility to set the option for sending confid with SIP URI invite
+		String oldConfig = configuration.getConfiguration("cgc.config.key.inBandDTMFSupport.enabled");
+		String newConfig = configuration.getConfiguration(CONFIG_KEY_GENERAL_SEND_CONFID_AS_SIP_URI_HEADER_ENABLED);
+		if( (newConfig == null || newConfig.trim().length()==0)
+				&& (oldConfig != null && oldConfig.trim().length()>0)){
+			configuration.setConfiguration(
+					CONFIG_KEY_GENERAL_SEND_CONFID_AS_SIP_URI_HEADER_ENABLED, oldConfig);
+		}
+		
 	}
 
 	/*

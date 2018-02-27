@@ -1,5 +1,4 @@
 enyo.depends(
-		"xmpputil.js",
-		"background.js",
+		"ussController.js",
 		"USS.js"
 );

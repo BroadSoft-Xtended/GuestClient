@@ -1,4 +1,6 @@
 enyo.depends(
+
+		
 // Layout library
 "$lib/layout",
 
@@ -7,6 +9,9 @@ enyo.depends(
 				// $lib/onyx/source,
 // "Theme.less", // uncomment this line, and follow the steps described in
 // Theme.less
+
+//Broadsoft Document Utility
+"lib",
 
 //Broadsoft Component integration
 "components",

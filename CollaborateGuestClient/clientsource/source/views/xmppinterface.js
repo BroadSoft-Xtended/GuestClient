@@ -17,50 +17,61 @@ enyo
 
 			create : function() {
 				this.inherited(arguments);
-				stropheConnect(window.cgcProfile.guestImpDetails.loginId,
+				if(LOGGER.API.isInfo()){
+					    LOGGER.API.info("xmppinterface.js:", " Created XMPP Interface");
+	            }
+				window.stropheXMPPInterface.init(window.cgcProfile.guestImpDetails.loginId,
 						window.cgcProfile.guestImpDetails.password,
 						window.cgcProfile.guestImpDetails.room,
 						window.cgcProfile.guestImpDetails.boshUrl,
 						window.cgcProfile.guestImpDetails.firstName,
 						window.cgcProfile.guestImpDetails.lastName,
 						window.cgcProfile.guestImpDetails.ownerId, this);
+				window.stropheXMPPInterface.connect();
 			},
-			initialRoster : [],
-			backupRoster : [],
-			kickout : function(user) {
-				console.log("CollaborateGuestClient:XMPPInterface:"
-						+ window.cgcProfile.name + " has kicked out the guest");
-				window.cgcComponent.basePanel.setIsEndWebRTCRequested(true);
+			
+			participants : [],
+			
+			
+			//Start event handlers for StropheInterface
+			onKickout : function(user) {
+                if(LOGGER.API.isInfo()){
+				    LOGGER.API.info("xmppinterface.js:", window.cgcProfile.name + " has removed the guest");
+                }
+				window.cgcComponent.basePanel.endWebRTC();
 				window.cgcComponent.viewControl.logOut("cgc.error.muc.guest.kicked",false);
 				
 			},
-			logInTimeOut : function(leadername) {
-				console
-						.log("CollaborateGuestClient:XMPPInterface:No response received from leader's room");
+			onLogInTimeOut : function(leadername) {
+                if(LOGGER.API.isInfo()){
+				    LOGGER.API.info("xmppinterface.js:", ":No response received from leader's room");
+                }
+				this.stopSession();
 				window.cgcComponent.viewControl.reJoin();
 			},
-			logInSuccess : function(user) {
+			onLogInSuccess : function(user) {
 				enyo.Signals.send("joinRoom");
 			},
-			logInAuthFail : function(leadername) {
-				console
-						.log("CollaborateGuestClient:XMPPInterface:Authentication Failure");
+			onLogInAuthFail : function(leadername) {
+                if(LOGGER.API.isInfo()){
+				    LOGGER.API.info("xmppinterface.js:", leadername + "has not authroised you to join the room");
+                }
+				
 				window.cgcComponent.viewControl.logOut(htmlEscape(jQuery.i18n.prop(
 						"cgc.error.muc.join.request.declined",
 						window.cgcProfile.name)),false);
 				
 			},
-			logInFailure : function() {
+			onLogInFailure : function() {
+                LOGGER.API.error("xmppinterface.js:", "Failed to logIn UMS");
 
-				console
-						.log("CollaborateGuestClient:XMPPInterface:Failed to logIn UMS");
 				window.cgcComponent.viewControl.logOut(htmlEscape(jQuery.i18n.prop(
 						"cgc.error.muc.join.request.declined",
 						window.cgcProfile.name)),false);
 				
 
 			},
-			chatReceived : function(jid,sender, message) {
+			onChatReceived : function(jid,sender, message) {
 				// Check here for any signal of screen share
 				try {
 					var messageDecoded = window.unescapeHTML(message);
@@ -69,29 +80,27 @@ enyo
 						var xmlNode = Strophe.xmlHtmlNode(messageDecoded);
 						ussShare = $(xmlNode).find("uss-share");
 					} catch (e) {
-						console
-								.log("CollaborateGuestClient:XMPPInterface:Incoming message is probably a chat message. Error while parsing the incoming XML - "
-										+ e.message);
+                        LOGGER.API.warn("xmppinterface.js:", "Incoming message is probably a chat message. Error while parsing the incoming XML - "	+ e.message);
 					}
 					
 					if(ussShare != null && ussShare.length>0) {
+						
 						var roomIp = $(ussShare).find("room-ip").text();
 						var roomId = $(ussShare).find("room-id").text();
 						var roomAddress = $(ussShare).find("room-address").text();
 						var roomFeatures = $(ussShare).find("room-features").find("n1\\:feature, feature");
-						console.log("xmpp :: ussShare :: " + new XMLSerializer().serializeToString(xmlNode));
+                        
 						
 	                    var roomUrl = (roomAddress && roomAddress.trim())?roomAddress.trim():roomIp.trim();
 						
 						if (roomUrl != "" && roomId != "") {
 							
-							BoshSession.lastReceivedUSSInvitation = message;
-							console.log("xmpp ::  isUSSConnected ::  "+ isUSSConnected() + " :: previousUSSInvitation :: "+BoshSession.lastReceivedUSSInvitation);
-							if (!isUSSConnected()) {
+							window.stropheXMPPInterface.setLastReceivedUSSInvitation(message);
+							if (!ussController.isUSSConnected()) {
 								
-								startUSSConnection(roomIp.trim(), BoshSession.jid,
-										BoshSession.jid.split("/")[0], window.cgcProfile.guestImpDetails.firstName + " " + window.cgcProfile.guestImpDetails.lastName,
-										roomId, window.cgcComponent.xmppInterface, true);
+								ussController.startUSSConnection(roomUrl, window.stropheXMPPInterface.getJid(),
+										window.stropheXMPPInterface.getBareJid(), window.cgcProfile.guestImpDetails.firstName + " " + window.cgcProfile.guestImpDetails.lastName,
+										roomId, window.cgcComponent.xmppInterface);
 
 							}
 							
@@ -99,9 +108,12 @@ enyo
 						
 						} else {
 							
-							BoshSession.ownerresrc = $(ussShare).find("room-features").attr("contact");
+							window.stropheXMPPInterface.setOwnerSrcWithResource ( $(ussShare).find("room-features").attr("contact"));
 							if(roomFeatures.length != 0 && $(roomFeatures).attr('xmlns:n1') == 'urn:xmpp:broadsoft:bsftfeature1') {
-								console.log("Owner has allowed participants to share screen");
+                                if(LOGGER.API.isInfo()){
+                                    LOGGER.API.info("xmppinterface.js:", "Owner has allowed participants to share screen");
+                                }
+								
 								enyo.Signals
 									.send(
 										"onDesktopShareAccessSignal",
@@ -111,7 +123,9 @@ enyo
 							
 								return;
 							} else {
-								console.log("Owner has stopped participants from sharing screen");
+								if(LOGGER.API.isInfo()){
+                                    LOGGER.API.info("xmppinterface.js:", "Owner has stopped participants from sharing screen");
+                                }
 								enyo.Signals
 									.send(
 										"onDesktopShareAccessSignal",
@@ -132,97 +146,117 @@ enyo
 						});
 					}
 				} catch (e) {
-					console
-							.error("CollaborateGuestClient:XMPPInterface:Error while processing incoming message:"
-									+ e.message);
-					if(e.stack)
-					console.log(e.stack);
+					LOGGER.API.warn("xmppinterface.js:", "Error while processing incoming message:%o", e);
+
 				}
 
 				
 			},
-			showScreenSharePanel : function() {
-
-				window.cgcComponent.basePanel.showScreenSharePanel();
-
+			onConfDisco : function(){
+				enyo.Signals.send("onConfDisco");
 			},
-			presenceReceived : function(contact) {
-				console
-						.log("CollaborateGuestClient:XMPPInterface:Presence received from:"
-								+ JSON.stringify(contact));
-				if (!BoshSession.isJoined && contact.type == "MUC") {
-					this.initialRoster.push(contact);
-					console.dir(this.initialRoster);
+			onPresenceReceived : function(contact) {
+				
+				if (!window.stropheXMPPInterface.getIsGuestJoinedRoom() && contact.type == "MUC") {
+					this.participants.push(contact);
+					
 				} else {
 					if(contact.name){
 						enyo.Signals.send("onPresence", contact);
 					}
 				}
 			},
-			screenShareEnded : function() {
-				console
-				.log("CollaborateGuestClient:XMPPInterface:screenShareEnded Desktop Share Ended");
-				window.cgcComponent.basePanel.removeScreenSharePanel();
+			onSessionClosed : function(leadername) {
+                LOGGER.API.warn("xmppinterface.js", "Guest session terminated, may be due to network issue");
+				window.cgcComponent.viewControl.logOut("cgc.error.muc.session.closed");
 			},
+			onUnreachableBoshUrl : function(leadername) {
+				LOGGER.API.warn("xmppinterface.js", "Bosh url is not reachable");
+				window.cgcComponent.viewControl.logOut(htmlEscape(jQuery.i18n.prop(
+						"cgc.error.ums.connect",
+						window.cgcProfile.name)),false);
+			},
+			onUpdateAvatar : function(jid, imgBase64Encoded) {
+				enyo.Signals.send("onAvatar",{
+					jid : jid,
+					img : imgBase64Encoded
+				});
+			},
+			//End event handlers for StropheInterface
+			
+			
+			
 			sendChat : function(message) {
-				BoshSession.sendMessageMUC(message);
+				window.stropheXMPPInterface.sendMessageMUC(message);
 			},
 			conferenceInfoResult : function(info) {
 				var query = $(info).find('query');
 				var from = $(query).find('x');
 				var field = $(from).find('field');
 			},
-			stropheDisconnect : function(){
-				console
-				.log("CollaborateGuestClient:XMPPInterface: Strophe connection has been disconnected");
-				stropheDisconnect();
+			stopSession : function(){
+				if(LOGGER.API.isInfo()){
+                    LOGGER.API.info("xmppinterface.js:", "Stopping XMPPSession.");
+                }
+				this.participants=null;
+				window.stropheXMPPInterface.terminate();
 			},
-			clearStropheConnection : function(){
-				clearStropheConnection();
-			},
-			sessionClosed : function(leadername) {
-				console
-						.log("CollaborateGuestClient:XMPPInterface:Guest session terminated, may be due to network issue");
-				window.cgcComponent.viewControl.logOut("cgc.error.muc.session.closed");
-			},
-			unreachableBoshUrl : function(leadername) {
-				console
-				.log("CollaborateGuestClient:XMPPInterface: Bosh url is not reachable");
-				window.cgcComponent.viewControl.logOut(htmlEscape(jQuery.i18n.prop(
-						"cgc.error.pa.provision",
-						window.cgcProfile.name)),false);
-			},
-			updateAvatar : function(jid, imgBase64Encoded) {
-				enyo.Signals.send("onAvatar",{
-					jid : jid,
-					img : imgBase64Encoded
-				});
-			},
-			startDesktopShare : function(){	
-				console
-				.log("CollaborateGuestClient:XMPPInterface: Request PassFloor request to owner");
-				BoshSession.startDesktopShare();
-			},
-			startUSSDesktopShare : function(jid, roomIp, roomId, roomAddr) {
-				console.log("CollaborateGuestClient:XMPPInterface: To start USS connection for desktop share");
-				
-				if(isUSSConnected()){
-					startShare();
-				}else{
-					startUSSConnection(roomIp, jid,
-						jid.split("/")[0], window.cgcProfile.guestImpDetails.firstName + " " + window.cgcProfile.guestImpDetails.lastName, roomId, window.cgcComponent.xmppInterface, false);
-				}
+			
+
+			requestDesktopShare : function(){	
+				LOGGER.API.info("xmppinterface.js", "Request PassFloor request to owner");
+				window.stropheXMPPInterface.sendPassFloorRequest();
 			},
 			republishUSSRoom : function() {
-				if(isFloorHolder()){
-					console.log("CollaborateGuestClient:XMPPInterface: Resume desktop share");
-					BoshSession.sendDesktopShareMsg(BoshSession.lastReceivedUSSInvitation);
+				if(ussController.isFloorHolder()){
+					LOGGER.API.debug("xmppinterface.js:", "Republish USS room info");
+					window.stropheXMPPInterface.sendDesktopShareMsg();
 				}
 			},
+			getContactNameFromJid : function(src){
+				var srcName= src;
+				if (src == window.stropheXMPPInterface.getBareJid()) {
+					srcName = window.cgcProfile.firstName + " "
+					        + window.cgcProfile.lastName;
+				} 
+				else {
+					var contact = this.getContactFromJid(src);
+					srcName = (contact && contact.name) ? contact.name
+					        : src;
+					if (contact && contact.isOwner) {
+						srcName = contact.name + " ("
+						        + htmlEscape(jQuery.i18n.prop("cgc.label.owner")) + ")";
+					}
+				}
+				return srcName;
+			},
+			//this returns null if contact details is not found
+			getContactNameFromJid2 : function(src){
+				var srcName= null;
+				if (src == window.stropheXMPPInterface.getBareJid()) {
+					srcName = window.cgcProfile.firstName + " "
+					        + window.cgcProfile.lastName;
+				} 
+				else {
+					var contact = this.getContactFromJid(src);
+					if(contact && contact.name){
+						
+						if (contact.isOwner) {
+							srcName = contact.name + " ("
+							        + htmlEscape(jQuery.i18n.prop("cgc.label.owner")) + ")";
+						}else{
+							srcName =  contact.name;
+						}
+					}
+					
+				}
+				return srcName;
+			},
+			//this returns jid if contact details is not found
 			getContactFromJid : function(jid){
-				var contactRef= jid;
-				for ( var i=0;i < this.backupRoster.length;i++) {
-					var contact = this.backupRoster[i];
+				var contactRef= null;
+				for ( var i=0;i < this.participants.length;i++) {
+					var contact = this.participants[i];
 					if (contact != null && contact.resource === jid) {
 						contactRef = contact;
 						
@@ -231,6 +265,61 @@ enyo
 			
 				}
 				return contactRef;
+			},
+			getContactAvatar : function(jid){
+				var contact = window.cgcComponent.xmppInterface.getContactFromJid(jid);
+				return (contact?contact.image:null);
+			},
+			getParticipants:function(){
+				return this.participants;
+			},
+			getParticipantsCount: function(){
+				return this.participants?this.participants.length+1:0;
+			},
+			addParticipant: function(contact){
+				var isNewParticiapnt = true;
+				for ( var i=0;i < this.participants.length;i++) {
+					var contactCache = this.participants[i];
+					if (contactCache != null && contactCache.resource === contact.resource) {
+						isNewParticiapnt = false;
+						
+						
+						break;
+					}
+				}
+				if(isNewParticiapnt){
+					this.participants.push(contact);
+					enyo.Signals.send("onChatInfoMessage", {
+						message : contact.name,
+						avatar : true,
+						action : htmlEscape(jQuery.i18n
+								.prop("cgc.info.muc.participant.join"))
+					});
+				}
+			},
+			removeParticipant: function(nick){
+				
+				for ( var i=0;i < this.participants.length;i++) {
+					var contact = this.participants[i];
+					if (contact != null && contact.resource === nick) {
+						this.participants.splice(i, 1);
+						enyo.Signals.send("onChatInfoMessage", {
+							message : contact.name,
+							avatar : true,
+							action : htmlEscape(jQuery.i18n
+									.prop("cgc.info.muc.participant.left"))
+						});
+						
+						if(contact.isOwner) {
+							enyo.Signals.send("onDesktopShareAccessSignal", {
+								access : false
+							});
+						}
+						
+						break;
+					}
+
+				}
 			}
 
 		});

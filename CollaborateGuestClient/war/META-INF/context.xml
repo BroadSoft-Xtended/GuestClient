@@ -1,5 +1,5 @@
 <!-- The contents of this file will be loaded for each web application -->
-<Context path="/cgc" docBase="BWCollaborateGuestClient_3.19" swallowOutput="true">
+<Context path="/cgc" docBase="BWCollaborateGuestClient_4.0.1" swallowOutput="true">
 
     <!-- Default set of monitored resources -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>

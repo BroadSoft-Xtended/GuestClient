@@ -4,6 +4,6 @@
 * Proprietary Property of BroadSoft, Inc. Gaithersburg, MD.
 */
 
-enyo.depends("views.js", "statusPage.js", "controlpanel.js", "basepanel.js",
-		"loginWidget.js", "leftpanel.js", "rightpanel.js", "chatpanel.js",
-		"screenWidget.js", "timoutLogin.js", "xmppinterface.js", "webrtcWidget.js");
+enyo.depends("viewController.js", "statusPage.js", "rootpanel.js", "chatPopUp.js", "basepanel.js",
+		"loginWidget.js", "dockerpanel", "viewpanel.js", "chatpanel.js",
+		"screenShareWidget.js", "timeoutLogin.js", "xmppinterface.js", "webrtcWidget.js", "welcome.js");

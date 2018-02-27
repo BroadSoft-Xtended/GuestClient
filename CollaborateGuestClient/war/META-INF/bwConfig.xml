@@ -26,11 +26,11 @@
        <boolean/>
     </format>
   </option>
-  
+
   <option>
-    <name>cgc.config.key.inBandDTMFSupport.enabled</name>
-    <display>General.enableInBandDTMFSupport</display>
-    <help>This activate or deactivates sending the Conference Id in the To field of the SIP header while dialing the room.
+    <name>cgc.config.key.sendConfIdAsSipURIHeader.enabled</name>
+    <display>General.enableSendingConfIdAsSipUriHeader</display>
+    <help>parameter controls whether the Conference Id is sent in the To field of the SIP header while dialing the room.
       Default is false</help>
     <format defaultValue="false">
        <boolean/>

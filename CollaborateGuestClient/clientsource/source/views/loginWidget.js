@@ -11,50 +11,63 @@ enyo.kind({
 	kind : "Control",
 	kind : "FittableRows",
 	name : "kind.com.broadsoft.cgc.JoinPage",
-	fit : true,
+//	fit : true,
 	create : function() {
 		this.inherited(arguments);
 		window.cgcComponent.joinPage = this;
 			document.title = htmlEscape(jQuery.i18n.prop(
 					"cgc.label.room.title", window.cgcProfile.name));
 	},
-	components : [ {
+	components : [ 
+	{
 		tag : "div",
 		id : "com.broadsoft.cgc.joinPageHeader",
-		name : "joinError",
+		name : "toppaddingLoginpage",
 		allowHtml : true,
 		classes : "cgcJoinPageHeader",
 
 		content : ""
 	}, 
-	{kind: "FittableColumns", fit: true, style: "text-align:center;", components: [
+	{kind: "FittableColumns", style: "text-align:center;", components: [
 	    {
-	    	classes : "cgcJoinPageOuterBox",
+	    	classes : "cgcJoinPageOuterBox bsftSeparators",
 		    components:[
 				{
 					tag : "div",
 					classes : "cgcJoinPageLogoOuterBox",
 					components : [ {
-						
 							tag : "img",
 							id : "com.broadsoft.cgc.joinPageLogo",
 							name : "joinPageLogo",
 							classes : "cgcJoinPageLogo",
-							src : "branding/assets/applogo.png",
-							
+							src : "branding/assets/applogo.png?ts=" + window.ts,
 					}]
-					
 				},
 				{tag : "div", classes : "cgcLogoSeperator", name: "logoSeperatorDIV"},
 				{
 					name: "LoginBox",
 				    kind: "kind.com.broadsoft.cgc.LoginWidgetActual",
 				    classes:"cgcLoginBox"
-					
 				},
-				
+				{
+					tag : "div",
+					classes : "cgcJoinPageFooterBox",
+					components : [ {
+							tag : "img",
+							id : "com.broadsoft.cgc.joinPageLogo",
+							name : "joinPageFooter",
+							classes : "cgcJoinPageFooterLogo",
+							src : "branding/assets/footer_logo_129x29.png?ts=" + window.ts,
+							
+					}]
+				}
 			]
 	    },
+		{
+			tag : "div",
+			classes : "cgcAppVersion bsftVersionText",
+			content : window.cgcConfig.warVersion
+		}
 	
 	]}
 
@@ -77,7 +90,7 @@ enyo
 						{
 							name : "LoginHeader",
 							content : "",
-							classes : "cgcLoginHeader",
+							classes : "cgcLoginHeader bsftHeaders bsftMediumFont",
 							allowHtml:true,
 							rendered : function() {
 								this.setContent(jQuery.i18n.prop("cgc.label.room.title",
@@ -88,14 +101,14 @@ enyo
 							name : "RoomHeader",
 							content : "",
 							allowHtml : true,
-							classes : "cgcRoomHeader",
+							classes : "cgcRoomHeader cgcLoginPageLabel",
 							rendered : function() {
 								this.setContent(jQuery.i18n.prop(
 										"cgc.info.sign-in.instruction",
 										window.cgcProfile.name));
 							}
 						},
-						{tag : "div", style : "height : 32px;", name: "roomHeaderSeparator"},
+						{tag : "div", classes : "cgcRoomHeaderSeparator", name: "roomHeaderSeparator"},
 						{
 							tag : "div",
 							classes : "cgcLoginOuterBox",
@@ -106,12 +119,12 @@ enyo
 										components : [ {
 											name : "FirstName",
 											kind : "onyx.InputDecorator",
-											classes : "nice-padding cgcFirstandLastNameText",
+											classes : "nice-padding cgcFirstandLastNameText bsftContentBackground bsftInputFieldOutline bsftInputBoxBorder",
 											id : "loginFirstName",
 											components : [ {
 												name : "FirstNameText",
 												kind : "onyx.Input",
-												classes : "cgcLoginFirstAndLastNameText",
+												classes : "cgcLoginFirstAndLastNameText bsftDimmedText bsftPrimaryContentText",
 												fit : true,
 												attributes : {
 													oncontextmenu : "return false;",
@@ -127,19 +140,19 @@ enyo
 											} ]
 										} ]
 									},
-									{tag : "div", style : "height : 7px;", name: "firstNameSeparator"},
+									{tag : "div", classes : "cgcLoginInputSeparator", name: "firstNameSeparator"},
 									{
 										tag : "div",
 										classes : "cgcLoginInputBox",
 										components : [ {
 											name : "LastName",
 											kind : "onyx.InputDecorator",
-											classes : "nice-padding cgcFirstandLastNameText",
+											classes : "nice-padding cgcFirstandLastNameText bsftContentBackground bsftInputFieldOutline bsftInputBoxBorder",
 											id : "loginLastName",
 											components : [ {
 												name : "LastNameText",
 												kind : "onyx.Input",
-												classes : "cgcLoginFirstAndLastNameText",
+												classes : "cgcLoginFirstAndLastNameText bsftDimmedText bsftPrimaryContentText",
 												attributes : {
 													oncontextmenu : "return false;",
 													maxlength : 36,
@@ -163,14 +176,15 @@ enyo
 									},
 									{
 										tag : "div",
-										classes : "cgcCaptchaErrorBorderDiv",
+										name : "captchaOuterBox",
+										classes : "cgcCaptchaErrorBorderDiv cgcHide",
 										components : [{
 											tag : "div",
 											id : "com.broadsoft.cgc.captchaErrorLabel",
 											name : "captchaError",
 											fit : true,
 											allowHtml : true,
-											classes : "cgcCaptchaErrorLabel cgcHide",
+											classes : "cgcCaptchaErrorLabel bsftMediumFont bsftSymbolicRed cgcHide",
 
 											content : ""
 										},
@@ -186,17 +200,16 @@ enyo
 											}
 										}]
 									},
-									{tag : "div", classes : "cgcJoinButtonBox", name: "joinButtonTopPadding"},
 									{
 										tag : "div",
 										name : "loginDiv",
-										
+										classes : "cgcJoinButtonBox",
 										components : [ {
 											kind : "onyx.Button",
 											id : "com.broadsoft.cgc.joinButton",
 											name : "joinButton",
 											disabled : true,
-											classes : "cgcJoinButton",
+											classes : "cgcJoinButton bsftPrimaryButton bsftPrimaryButtonReverse",
 											events: {
 												onmousemove : "onBlurLoginButtonColor",
 												onmouseout : "onOutLoginButtonColor",
@@ -218,9 +231,10 @@ enyo
 			captureImage : function(reInit) {
 				if (window.cgcConfig.enableCaptcha == "true" && window.cgcConfig.reCaptchaPublicKey != "") {
 					this.$.dynamic_recaptcha.addClass("cgcRecaptchaBox");
-					console.log("CollaborateGuestClient:loginWidget:captureImage Request for getting captcha image");
+
 					recaptchCapDiv = this.$.captchaError;
 					this.$.recaptchCap.removeClass("cgcHide");
+					this.$.captchaOuterBox.removeClass("cgcHide");
 					
 					if(Recaptcha){
 					var value = Recaptcha.create(window.cgcConfig.reCaptchaPublicKey,
@@ -229,8 +243,7 @@ enyo
 								callback : reInit
 							});
 					}else{
-						console
-						.log("CollaborateGuestClient:loginWidget: reCaptcha is not reachable");
+						LOGGER.API.warn("loginWidget:", "reCaptcha is not reachable");
 						window.cgcComponent.viewControl.logOut(htmlEscape(jQuery.i18n.prop(
 								"cgc.error.pa.provision",
 								window.cgcProfile.name)),false);
@@ -245,8 +258,7 @@ enyo
 				var recaptcha_response_field = "";
 				if (isAccessRecaptcha && window.cgcConfig.enableCaptcha == "true" && window.cgcConfig.reCaptchaPublicKey != "") {
 					if (Recaptcha.get_response() == "") {
-						console.log("CollaborateGuestClient:loginWidget:doJoin validate recaptcha");
-						
+												
 						window.cgcComponent.joinPage.showError(htmlEscape(jQuery.i18n
 								.prop("cgc.error.captcha.response.failed")));
 						this.$.joinButton.setDisabled(false);
@@ -265,7 +277,7 @@ enyo
 				this.$.joinButton.setDisabled(true);
 				$
 						.post(
-								urls.paServletUrl,
+								window.cgcConfig.ServiceAPIs.paServletUrl,
 								{
 									leaderBWUserId : window.cgcProfile.broadworksId,
 									impFirstName : window.cgcProfile.firstName,
@@ -279,19 +291,18 @@ enyo
 								function(data, textStatus, jqXHR) {
 
 									window.cgcProfile.guestImpDetails = data;
-									console
-											.log("CollaborateGuestClient:loginWidget:doJoin Successfuly received response against provisioning the guest in the IMP guest domain");
-										enyo.Signals.send("onLogin");
+									enyo.Signals.send("onLogin");
 
 								})
 						.fail(
 								function(data, jqXHR, textStatus, errorThrown) {
-
-									window.cgcProfile.guestImpDetails = JSON
-									.parse(data.responseText);
-									if (window.cgcProfile.guestImpDetails.error == 'cgc.error.captcha.response.failed') {
-										console
-												.log("CollaborateGuestClient:loginWidget:doJoin There is an error with reCaptcha challenge and reCaptcha response: "
+									try{
+										window.cgcProfile.guestImpDetails = JSON
+										.parse(data.responseText);
+									}catch(e){}
+									
+									if (window.cgcProfile.guestImpDetails && window.cgcProfile.guestImpDetails.error == 'cgc.error.captcha.response.failed') {
+										LOGGER.API.warn("loginWidget:","There is an error with reCaptcha challenge and reCaptcha response: "
 														+ data.responseText);
 										window.cgcComponent.joinPage
 												.showError(htmlEscape(jQuery.i18n
@@ -299,8 +310,7 @@ enyo
 										window.cgcComponent.joinPage.$.LoginBox.reloadCaptcha();
 
 									} else {
-										console
-												.log("CollaborateGuestClient:loginWidget:doJoin Failed to provisioned the guest in the IMP domain: "
+										LOGGER.API.warn("loginWidget:","Failed to provisioned the guest in the IMP domain: "
 														+ data.responseText);
 										enyo.Signals.send("onLogin");
 									}
@@ -311,9 +321,6 @@ enyo
 			reloadCaptcha : function() {
 				
 				this.$.joinButton.setDisabled(true);
-				this.$.joinButton.removeClass("cgcJoinButtonOnBlurColor");
-				this.$.joinButton.removeClass("cgcJoinButtonOnSelectColor");
-				this.$.joinButton.removeClass("cgcJoinButtonActiveColor");
 				this.$.joinButton.addClass("cgcJoinButton");
 				this.captureImage(reInitate);
 
@@ -384,8 +391,6 @@ enyo
 					this.onOutLoginButtonColor(inSender, inEvent);
 				} else {
 					this.$.joinButton.setDisabled(true);
-					this.$.joinButton.removeClass("cgcJoinButtonOnBlurColor");
-					this.$.joinButton.removeClass("cgcJoinButtonActiveColor");
 					this.$.joinButton.addClass("cgcJoinButton");
 					return;
 				}
@@ -398,17 +403,9 @@ enyo
 			},
 			
 			onBlurLoginButtonColor : function(inSender, inEvent) {
-				if(this.isEnableAction()){
-					this.$.joinButton.removeClass(".cgcJoinButtonOnBlurColor");
-					this.$.joinButton.removeClass("cgcJoinButtonActiveColor");
-					this.$.joinButton.addClass("cgcJoinButtonOnBlurColor");
-				}
 			},
 
 			onOutLoginButtonColor : function(inSender, inEvent) {
-				if(this.isEnableAction()){
-				this.$.joinButton.addClass("cgcJoinButtonActiveColor");
-				}
 			},
 			
 			onSelectLoginButtonColor : function(inSender, inEvent) {
@@ -420,7 +417,6 @@ enyo
 			onReleaseLoginButtonColor : function(inSender, inEvent) {
 				if(this.isEnableAction()){
 				this.$.joinButton.removeClass("cgcJoinButtonOnSelectColor");
-				this.$.joinButton.addClass("cgcJoinButtonActiveColor");
 				}
 			}
 			

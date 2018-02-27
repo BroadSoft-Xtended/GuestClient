@@ -1,137 +1,9 @@
+
 enyo.kind({
 	name: "kind.cgc.com.broadsoft.Drawer",
 	kind:  "FittableRows",
     fit:true,
-    open:false,
-    style:" height:30px; overflow:hidden;",
-    
-	components:[
-      { layoutKind : "FittableColumnsLayout",
-		name: "drawerHeader",
-        fit:true,
-        classes: "bsftDrawerHeader",
-		components:[{
-			name:"title",
-            kind: "enyo.FittableRows",
-            classes: "bsftDrawerTitleCloseOuterBox",
-            components:[
-             {
-            	 tag:"div", 
-            	 classes : "bsftDrawerTitleClose", 
-            	 name:"titleText", 
-            	 id:"titleText",
-            	 allowHtml:true, 
-            	 content:""
-             }],
-            ontap:"openCloseDrawer"
-		  },{
-				name:"drawerKnob",
-				tag : "enyo.FittableRows",
-                classes : "bsftDrawerKnobCloseOuterBox",
-				ontap : "openCloseDrawer",
-                components:[{
-                     tag : "img",
-                     name : "arrowofdialInfo",
-                     classes: "bsftDrawerKnobClose",
-				     src : "branding/assets/right-arrow.svg"
-                   }
-                ]
-		  }
-		]
-      },{
-         kind: "enyo.FittableRows",
-         name: "contentPane",
-         classes: "bsftContentPane",
-         components:[
-           {
-		      kind: "enyo.FittableRows",
-		      name: "items",
-              classes: "bsftContentPaneItems",
-		      components:[  ],
-              addItem: function(comp){
-                   
-                      if(comp){
-                        this.createComponent(comp);
-        
-                          if (this.hasNode()) {
-                              this.render();
-                          }
-                      }    
-              } 
-           }
-         ]            
-
-      }
-   ],
-   
-   openCloseDrawer: function(){
-	   
-         if(this.open){
-        	 
-             this.applyStyle("height","30px");
-             this.$.arrowofdialInfo.setSrc("branding/assets/right-arrow.svg");
-            // this.$.titleText.applyStyle("border-bottom","");
-             this.$.titleText.removeClass('bsftDrawerTitleActive');
-             
-             this.$.titleText.removeClass('bsftDrawerTitleOpen');
-             this.$.titleText.addClass('bsftDrawerTitleClose');
-             
-         }else{
-        	 
-        	 this.$.arrowofdialInfo.setSrc("branding/assets/down-arrow.svg");
-        	 this.applyStyle("height","");
-        	 if(cgcCallMeNumberText == '') {
-        		 this.$.titleText.removeClass('bsftDrawerTitleActive');
-        	 } else {
-        		 this.$.titleText.addClass('bsftDrawerTitleActive');
-        	 }
-        	 
-//             this.$.titleText.applyStyle("border-bottom","1px solid #3fc8AA");
-        	 this.$.titleText.removeClass('bsftDrawerTitleClose');
-             this.$.titleText.addClass('bsftDrawerTitleOpen');
-             
-         }
-         enyo.Signals.send("layoutRefresh");
-         this.open = !this.open;
-        
-	},
-    addElement: function(comp){
-      // created but not rendered
-      this.$.items.addItem(comp);
-      
-    },
-    setTitle: function(titleTxt){
-    	this.$.titleText.setContent(titleTxt);
-    },
-    hideHeaderBar:function(){
-    	this.$.drawerHeader.hide();
-    	this.open = false;
-    	this.openCloseDrawer();
-    },
-    showHeaderBar:function(){
-    	this.$.drawerHeader.show();
-    	this.open = true;
-    	this.openCloseDrawer();
-    },
-    getComponentCount:function(){
-    	return componentCount;
-    },
-    setActive:function(isActive){
-    	if(isActive){
-    		this.$.titleText.addClass('bsftDrawerTitleActive');
-    	}else{
-    		this.$.titleText.removeClass('bsftDrawerTitleActive');
-    	}
-    }
-})
-
-
-
-enyo.kind({
-	name: "kind.cgc.com.broadsoft.DesktopShareDrawer",
-	kind:  "FittableRows",
-    fit:true,
-    desktopShareOpen:false,
+    desktopShareOpen:true,
     expandable:true,
     style:" height:30px; overflow:hidden;",
     classes: "bsftDesktopShareDrawer",
@@ -140,7 +12,7 @@ enyo.kind({
       { layoutKind : "FittableColumnsLayout",
 		name: "desktopShareDrawerHeader",
         fit:true,
-        classes: "bsftDrawerHeader",
+        classes: "bsftDrawerHeader bsftPrimarySeparator",
 		components:[{
 			name:"shareTitle",
             kind: "enyo.FittableRows",
@@ -148,7 +20,7 @@ enyo.kind({
             components:[
              {
             	 tag:"div", 
-            	 classes : "bsftDrawerTitleClose", 
+            	 classes : "bsftDrawerTitleClose bsftHeaders bsftMediumFont", 
             	 name:"desktopShareTitleText", 
             	 id:"desktopShareTitleText",
             	 allowHtml:true, 
@@ -164,7 +36,7 @@ enyo.kind({
                      tag : "img",
                      name : "arrowofDesktopShare",
                      classes: "bsftDrawerKnobClose",
-				     src : "branding/assets/right-arrow.svg"
+				     src : "branding/assets/up-arrow.png?ts=" + window.ts
                    }
                 ]
 		  }
@@ -176,8 +48,8 @@ enyo.kind({
          components:[
            {
 		      kind: "enyo.FittableRows",
-		      name: "desktopShareItems",
-              classes: "bsftContentPaneItems",
+		      name: "items",
+//              classes: "bsftContentPaneItems",
 		      components:[  ],
               addItem: function(comp){
                    
@@ -195,9 +67,8 @@ enyo.kind({
       }
    ],
    rendered: function() {
-	   	this.$.arrowofDesktopShare.setSrc("branding/assets/down-arrow.svg");
+	   	this.inherited(arguments);
   	 	this.applyStyle("height","");
-	   
    }
 
 	,
@@ -209,26 +80,26 @@ enyo.kind({
 	   }
 	   
 	   if(this.desktopShareOpen){
-	 
 		 // If the drawer is open, then close it
-		 this.$.arrowofDesktopShare.setSrc("branding/assets/right-arrow.svg");
+		 this.$.arrowofDesktopShare.setSrc("branding/assets/down-arrow.png?ts=" + window.ts);
 		 this.$.desktopShareContentPane.hide();
-		 this.desktopShareOpen = !this.desktopShareOpen;
-     
 	   } else {
-	 
 		  // If the drawer is closed, then open it
-		  this.$.arrowofDesktopShare.setSrc("branding/assets/down-arrow.svg");
+		  this.$.arrowofDesktopShare.setSrc("branding/assets/up-arrow.png?ts=" + window.ts);
 		  this.$.desktopShareContentPane.show();
-		  this.desktopShareOpen = !this.desktopShareOpen;
-     
 	   }
+	   this.desktopShareOpen = !this.desktopShareOpen;
 	   enyo.Signals.send("layoutRefresh");
         
 	},
+	closeDrawer: function(){
+		if(this.desktopShareOpen){
+			this.openCloseDesktopShareDrawer(undefined, undefined);
+		}
+	},
     addElement: function(comp){
       // created but not rendered
-      this.$.desktopShareItems.addItem(comp);
+      this.$.items.addItem(comp);
       
     },
     disableDesktopSharePanel:function(){
@@ -242,7 +113,7 @@ enyo.kind({
     	this.desktopShareOpen = true;
     	this.$.desktopShareContentPane.show();
     	this.$.arrowofDesktopShare.show();
-    	this.$.arrowofDesktopShare.setSrc("branding/assets/down-arrow.svg");
+    	this.$.arrowofDesktopShare.setSrc("branding/assets/up-arrow.png?ts=" + window.ts);
     },
     setTitle: function(titleTxt){
     	this.$.desktopShareTitleText.setContent(titleTxt);

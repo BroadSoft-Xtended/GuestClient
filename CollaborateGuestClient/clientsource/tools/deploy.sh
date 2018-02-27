@@ -9,14 +9,17 @@ SRC="$TOOLS/.."
 # enyo location
 ENYO="$SRC/enyo"
 
+# project folder location
+PRJSRC="$SRC/.."
+
 # deploy script location
 DEPLOY="$ENYO/tools/deploy.js"
 
 # check for node, but quietly
 if command -v node >/dev/null 2>&1; then
 	# use node to invoke deploy with imported parameters
-	echo "node $DEPLOY -T -s $SRC -o $SRC/deploy $@"
-	node "$DEPLOY" -T -s "$SRC" -o "$SRC/deploy" $@
+	echo "node $DEPLOY -v -s $SRC -b clientbuild -o $PRJSRC/war/cgc $@"
+	node "$DEPLOY" -v -s "$SRC" -b clientbuild -o "$PRJSRC/war/cgc" $@
 else
 	echo "No node found in path"
 	exit 1

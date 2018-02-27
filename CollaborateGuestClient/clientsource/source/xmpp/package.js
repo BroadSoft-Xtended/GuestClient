@@ -1,5 +1,5 @@
 enyo.depends(
 		"strophe.js",
-		"stropheconnector.js",
+		"StropheXMPPWrapper.js",
 		"stropheping.js"
 );

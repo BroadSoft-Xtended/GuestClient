@@ -1,128 +1,4 @@
-/*!
- * jquery.base64.js 0.1 - https://github.com/yckart/jquery.base64.js
- * Makes Base64 en & -decoding simpler as it is.
- *
- * Based upon: https://gist.github.com/Yaffle/1284012
- *
- * Copyright (c) 2012 Yannick Albert (http://yckart.com)
- * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php).
- * 2013/02/10
- **/
-
-
-var Encoder = {};
-
-(function(Encoder){
-		var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", a256 = '', r64 = [
-		256
-	], r256 = [
-		256
-	], i = 0;
-
-	var UTF8 = {
-
-		/**
-		 * Encode multi-byte Unicode string into utf-8 multiple single-byte characters
-		 * (BMP / basic multilingual plane only)
-		 *
-		 * Chars in range U+0080 - U+07FF are encoded in 2 chars, U+0800 - U+FFFF in 3 chars
-		 *
-		 * @param {String} strUni Unicode string to be encoded as UTF-8
-		 * @returns {String} encoded string
-		 */
-		encode : function ( strUni ) {
-			// use regular expressions & String.replace callback function for better efficiency
-			// than procedural approaches
-			var strUtf = strUni.replace( /[\u0080-\u07ff]/g, // U+0080 - U+07FF => 2 bytes 110yyyyy, 10zzzzzz
-			function ( c ) {
-				var cc = c.charCodeAt( 0 );
-				return String.fromCharCode( 0xc0 | cc >> 6, 0x80 | cc & 0x3f );
-			} ).replace( /[\u0800-\uffff]/g, // U+0800 - U+FFFF => 3 bytes 1110xxxx, 10yyyyyy, 10zzzzzz
-			function ( c ) {
-				var cc = c.charCodeAt( 0 );
-				return String.fromCharCode( 0xe0 | cc >> 12, 0x80 | cc >> 6 & 0x3F, 0x80 | cc & 0x3f );
-			} );
-			return strUtf;
-		},
-
-		/**
-		 * Decode utf-8 encoded string back into multi-byte Unicode characters
-		 *
-		 * @param {String} strUtf UTF-8 string to be decoded back to Unicode
-		 * @returns {String} decoded string
-		 */
-		decode : function ( strUtf ) {
-			// note: decode 3-byte chars first as decoded 2-byte strings could appear to be 3-byte char!
-			var strUni = strUtf.replace( /[\u00e0-\u00ef][\u0080-\u00bf][\u0080-\u00bf]/g, // 3-byte chars
-			function ( c ) { // (note parentheses for precence)
-				var cc = ( ( c.charCodeAt( 0 ) & 0x0f ) << 12 ) | ( ( c.charCodeAt( 1 ) & 0x3f ) << 6 ) | ( c.charCodeAt( 2 ) & 0x3f );
-				return String.fromCharCode( cc );
-			} ).replace( /[\u00c0-\u00df][\u0080-\u00bf]/g, // 2-byte chars
-			function ( c ) { // (note parentheses for precence)
-				var cc = ( c.charCodeAt( 0 ) & 0x1f ) << 6 | c.charCodeAt( 1 ) & 0x3f;
-				return String.fromCharCode( cc );
-			} );
-			return strUni;
-		}
-	};
-
-	while ( i < 256 ) {
-		var c = String.fromCharCode( i );
-		a256 += c;
-		r256[ i ] = i;
-		r64[ i ] = b64.indexOf( c );
-		++i;
-	}
-
-	function code ( s, discard, alpha, beta, w1, w2 ) {
-		s = String( s );
-		var buffer = 0, i = 0, length = s.length, result = '', bitsInBuffer = 0;
-
-		while ( i < length ) {
-			var c = s.charCodeAt( i );
-			c = c < 256 ? alpha[ c ] : -1;
-
-			buffer = ( buffer << w1 ) + c;
-			bitsInBuffer += w1;
-
-			while ( bitsInBuffer >= w2 ) {
-				bitsInBuffer -= w2;
-				var tmp = buffer >> bitsInBuffer;
-				result += beta.charAt( tmp );
-				buffer ^= tmp << bitsInBuffer;
-			}
-			++i;
-		}
-		if ( !discard && bitsInBuffer > 0 )
-			result += beta.charAt( buffer << ( w2 - bitsInBuffer ) );
-		return result;
-	}
-
-	base64 = function ( dir, input, encode ) {
-		return dir ? null : this;
-	};
-
-	btoa = encode = function ( plain, utf8encode ) {
-		plain = utf8encode ? UTF8.encode( plain ) : plain;
-		plain = code( plain, false, r256, b64, 8, 6 );
-		return plain + '===='.slice( ( plain.length % 4 ) || 4 );
-	};
-
-	atob = decode = function ( coded, utf8decode ) {
-		coded = String( coded ).split( '=' );
-		var i = coded.length;
-		do {
-			--i;
-			coded[ i ] = code( coded[ i ], true, r64, a256, 6, 8 );
-		} while ( i > 0 );
-		coded = coded.join( '' );
-		return utf8decode ? UTF8.decode( coded ) : coded;
-	};
-	
-	Encoder.atob = atob;
-	Encoder.btoa = btoa;
-}(Encoder));
-
+importScripts('util.js', 'log.js', 'jquery.base64.js');
 
 
 	
@@ -139,26 +15,47 @@ var uss = null;
 var terminated = false;
 
 self.addEventListener( 'message', function ( e ) {
-	// console.log("uss-api command: "+e.data.cmd);
+	
+	if(LOGGER.API.isDebug()){
+		LOGGER.API.debug("USS-API"," command received from peer: "+e.data.cmd);
+	}
+	
 	switch ( e.data.cmd ) {
 
 		case 'init':
+			try{
+				LOGGER.Level = e.data.message.logLevel;
+				
+			}catch(e){}
+			
 			uss = new USS( e.data.message.ussUrl, e.data.message.src, e.data.message.isSafari, e.data.message.isIE, e.data.message.isEdge );
 
-			uss.logLevel = 1;
+			
 			uss.onconnected = function (serverCaps) {
+				if(LOGGER.API.isDevDebug()){
+					LOGGER.API.devDebug("USS-API","Send message to peer: "+serverCaps);
+				}
 				sendMessage( 'onConnected', serverCaps );
 
 			};
 
 			uss.ondisconnected = function (message) {
+				if(LOGGER.API.isDevDebug()){
+					LOGGER.API.devDebug("USS-API","Send message to peer: "+message);
+				}
 				sendMessage( 'onDisconnect', message );
 			};
             uss.onchannelreconnected = function(){
+            	if(LOGGER.API.isDevDebug()){
+					LOGGER.API.devDebug("USS-API","Send message to peer:channelReconnected ");
+				}
                 sendMessage( 'channelReconnected', '' );
             }
 			uss.onmessage = function ( message ) {
-				// console.log("uss-api event: "+message.cmd);
+
+				if(LOGGER.API.isDevDebug()){
+					LOGGER.API.devDebug("USS-API","Send message to peer: ", message);
+				}
 				switch ( message.cmd ) {
 					case 'createRoomResult':
 						sendMessage( 'onCreateRoomResult', message );
@@ -195,17 +92,28 @@ self.addEventListener( 'message', function ( e ) {
 					case 'userJoined':
 						sendMessage( 'onUserJoined', message );
 						break;
+					case 'userLeft':
+						sendMessage( 'onUserLeft', message );
+						break;
 				}
 			};
 
 			uss.onimageupdate = function ( shareMessage, format, imageData ) {
+				
 				if ( shareMessage.cmd == 'shareBase' ) {
+					if(LOGGER.API.isDebug()){
+						LOGGER.API.debug("USS-API","[TAG:IMAGE] Send Base image to peer rev= "+ shareMessage.rev, {"shareMessage":shareMessage, "format":format, "imageData":imageData});
+					}
+					
 					sendMessage( 'onShareBaseUpdate', {
 						shareMessage : shareMessage,
 						format : format,
 						imageData : imageData
 					} );
 				} else {
+					if(LOGGER.API.isDebug()){
+						LOGGER.API.debug("USS-API","[TAG:IMAGE] Send Delta image to peer rev= "+ shareMessage.rev, {"shareMessage":shareMessage, "format":format, "imageData":imageData});
+					}
 					sendMessage( 'onDeltaUpdate', {
 						shareMessage : shareMessage,
 						format : format,
@@ -215,19 +123,28 @@ self.addEventListener( 'message', function ( e ) {
 			};
 
 			uss.oncursorimageupdate = function ( imageData ) {
+				if(LOGGER.API.isDevDebug()){
+					LOGGER.API.devDebug("USS-API","[TAG:IMAGE] Send Cursor image to peer: ", {"imageData":imageData});
+				}
+				
 				if ( this.cursorImageData ) {
-					sendMessage( 'onShareCursorUpdate', {
-						format : 'image/png',
-						imageData : imageData,
-						posX : this.cursorImageData.posX,
-						posY : this.cursorImageData.posY
-					} );
+					var cursorInfo =  {
+								format : 'image/png',
+								imageData : imageData,
+								posX : this.cursorImageData.posX,
+								posY : this.cursorImageData.posY
+					};
+					if(LOGGER.API.isDevDebug()){
+						LOGGER.API.devDebug("USS-API","[TAG:IMAGE] Send cursor imagedata to peer: ", cursorInfo);
+						
+					}
+					sendMessage( 'onShareCursorUpdate', cursorInfo);
 				}
 
 			};
             
             uss.dataqueuefailed= function(){
-            
+				LOGGER.API.warn("USS-API","Send dataQueue fail notification to peer");
                 sendMessage( 'onDataQueueFailed');
             }
 
@@ -252,14 +169,14 @@ self.addEventListener( 'message', function ( e ) {
 			break;
 
 		case 'shareBase':
-			if ( uss ) {
+			if ( uss && !uss.isForcedCloseRequested()) {
 				uss.shareBase( e.data.message.src, e.data.message.share, e.data.message.rev, e.data.message.hasDelta, e.data.message.screenRect );
 			}
 
 			break;
 
 		case 'shareImage':
-			if ( uss ) {
+			if ( uss && !uss.isForcedCloseRequested()) {
 
 				uss.shareImage( e.data.message.share, e.data.message.imageData, e.data.message.rev, e.data.message.hasDelta );
 			}
@@ -267,7 +184,7 @@ self.addEventListener( 'message', function ( e ) {
 			break;
 
 		case 'shareDelta':
-			if ( uss ) {
+			if ( uss && !uss.isForcedCloseRequested()) {
 
 				uss.shareDelta( e.data.message.src, e.data.message.share, e.data.message.rev, e.data.message.deltas );
 			}
@@ -339,7 +256,6 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 	this.wsUrl = ussUrl;
 	this.readyState = WebSocket.CONNECTING; //OPEN, CLOSED
 
-	this.logLevel = 1; // higher level means more detailed logging, 0 is off
 	this.receivedServerCaps = false;
 	
 	
@@ -387,7 +303,9 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 	function connect ( reconnect ) {
         this.readyState = WebSocket.CONNECTING;
 		if ( reconnect ) {
-			console.info( LOG_PREFIX, 'Opening WebSocket (reconnect=' + reconnect + ').' );
+			if(LOGGER.API.isInfo()){
+				LOGGER.API.info( LOG_PREFIX, 'Opening WebSocket (reconnect=' + reconnect + ').' );
+			}
 		}
 
 		tries++;
@@ -403,22 +321,28 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
         
 		var localWs = ws;
 		var timeout = setTimeout( function () {
-			console.info( LOG_PREFIX, 'Timeout happened while waiting for WebSocket to connect.' );
+			LOGGER.API.warn( LOG_PREFIX, 'Closing websocket - Timeout (4 second expired) happened while waiting for WebSocket to connect.' );
 			localWs.close();
 		}, 4000 );
 
 		ws.onopen = function ( event ) {
-			console.info( LOG_PREFIX, 'WebSocket opened.' );
+			
 			clearTimeout( timeout );
+			
+			if(LOGGER.API.isInfo()){
+				LOGGER.API.info( LOG_PREFIX, 'Successfully opened the WebSocket.' );
+			}
+			
 			self.readyState = WebSocket.OPEN;
             if ( reconnect ){
                 self.onchannelreconnected();
                 reconnect = false;
             }
-			if ( self.logLevel > 2 ) {
-				console.log( LOG_PREFIX, 'Initiating Sender thread.' );
-			}
-            self.startSenderThread();
+            
+
+            
+			
+            //self.startSenderThread();
             
             if(self.isSafari || self.isIE || self.isEdge) {
 	            send( JSON.stringify( {
@@ -444,12 +368,14 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 		};
 
 		ws.onclose = function ( event ) {
-			console.log( LOG_PREFIX, 'WebSocket closed.' + ' Code:' + event.code + ' Reason:' + event.reason );
+			if(LOGGER.API.isInfo()){
+				LOGGER.API.info( LOG_PREFIX, 'WebSocket closed.' + ' Code:' + event.code + ' Reason:' + event.reason );
+			}
             transmitQueue = [];
             clearTimeout( timeout );
             self.stopSenderThread();
             if(forcedCloseRequested){
-                self.ondisconnected();
+                self.ondisconnected({'forcedCloseRequested':forcedCloseRequested});
                 self.onmessage( {
                     cmd : 'stopShare'
                 } );
@@ -466,14 +392,14 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 
 		ws.onerror = function ( event ) {
             clearTimeout( timeout );
-			console.error( LOG_PREFIX, 'WebSocket error. ' + event.name + ' ' + event.message );
+			LOGGER.API.warn( LOG_PREFIX, 'WebSocket error. ' + event.name + ' ' + event.message );
 			self.ondisconnected({forcedCloseRequested:forcedCloseRequested});
 			self.clean();
 
 		};
 	}
 
-	this.clean = function () {
+	this.stopWS = function(){
 		if ( ws ) {
 			try{ws.close();}catch(e){}
 			ws.onopen = null;
@@ -483,6 +409,9 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 			ws = null;
 		}
         ws = null;
+	}
+	this.clean = function () {
+		this.stopWS();
         tries = 0;
         forcedCloseRequested = false;		
 
@@ -535,48 +464,97 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 			}
 		}, 15000 );
 	};
-    
+    this.isForcedCloseRequested = function(){
+    	return forcedCloseRequested;
+    };
     this.stopSenderThread = function(){
         clearInterval(transmitIntervalId);
         transmitIntervalId = null;
-		if ( self.logLevel > 2 ) {
-			console.log( LOG_PREFIX, 'sender thread stopped ');
+        if(LOGGER.API.isInfo()){
+			LOGGER.API.info( LOG_PREFIX, 'Stopped the USS sender thread' );
+		}
+		
+    }
+    
+
+	this.sendDataNow = function() {
+
+		if (LOGGER.API.isInfo()) {
+			LOGGER.API.info(LOG_PREFIX, 'Send data now, data left='
+					+ transmitQueue.length);
 		}
 
-    }
+		// We can't keep dumping data on the WebSocket, have to check the
+		// data buffer and only call ws.send() only if it's empty. A
+		// transmit queue holds the data that needs to be sent.
+		var _ws = ws;
+
+		for (; transmitQueue.length > 0;) {
+
+			try {
+				if (_ws 
+						&& self.readyState == WebSocket.OPEN) {
+
+					var data = transmitQueue.shift();
+					if (data) {
+						if (LOGGER.API.isDevDebug()) {
+							LOGGER.API.devDebug(LOG_PREFIX,
+									'Sending data to USS',	data);
+						}
+						_ws.send(data);
+					}
+
+				}
+
+			} catch (error) {
+				LOGGER.API
+						.error(LOG_PREFIX, 'Error sending data to USS', error);
+			}
+		}
+		transmitQueue= [];
+	}
+    
    
     this.startSenderThread = function(){
             if(transmitIntervalId){
                 return;
             }
-			if ( self.logLevel > 2 ) {
-				console.log( LOG_PREFIX, 'sender thread started ');
+            if(LOGGER.API.isInfo()){
+				LOGGER.API.info( LOG_PREFIX, 'Started USS sender thread, data left=' +  transmitQueue.length );
 			}
+			
 			// We can't keep dumping data on the WebSocket, have to check the
 			// data buffer and only call ws.send() only if it's empty. A
 			// transmit queue holds the data that needs to be sent.
 			var _ws = ws;
 			transmitIntervalId = setInterval( function () {
-				if ( self.logLevel > 3 ) {
-					console.log( LOG_PREFIX, 'sender thread running. target data size ' +  transmitQueue.length);
+				
+				if(LOGGER.API.isDevDebug()){
+					LOGGER.API.devDebug( LOG_PREFIX, 'Sender thread is active. Target data size ' +  transmitQueue.length );
 				}
+				
 				try {
 					if ( _ws && _ws.bufferedAmount === 0 && self.readyState == WebSocket.OPEN ) {
                         
                             var data = transmitQueue.shift();
                             if ( data ) {
                                 if ( data instanceof Uint8Array ) {
-                                    if ( self.logLevel > 3 ) {
-                                        console.log( LOG_PREFIX, 'Sending binary data: ', data );
-                                    }
+                                	if(LOGGER.API.isDevDebug()){
+                    					LOGGER.API.devDebug( LOG_PREFIX, 'Sender thread sending binary image data to USS', data );
+                    				}
+                    				
+                                   
                                 } else {
-                                    if ( self.logLevel > 0 ) {
-                                        console.log( LOG_PREFIX, 'Sending: ', data );
-                                    }
+                                	if(LOGGER.API.isDevDebug()){
+                    					LOGGER.API.devDebug( LOG_PREFIX, 'Sender thread sending data to USS', data);
+                    				}
+                    				
                                 }
                                 _ws.send( data );
                             }
                         
+					}else{
+        				LOGGER.API.warn( LOG_PREFIX, 'Screen share might be slow. Websocket buffer not free to receive next data' );
 					}
 
 					//ensure all queued data is send before closing the socket.
@@ -588,7 +566,7 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
                     
                     
 				} catch ( error ) {
-					console.log( LOG_PREFIX, 'Error while sending data to websocket', error );
+    				LOGGER.API.error( LOG_PREFIX, 'Error in Sender Thread while sending data to USS', error );
 				}
 			}, 5 );    
     }
@@ -597,7 +575,11 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
     this.startImageProcessorThread = function(){
     	var self = this;
         if(!imageProcessorThread){
+        	if(LOGGER.API.isDebug()){
+    			LOGGER.API.debug( LOG_PREFIX, 'New ImageProcessorThread started.' );
+    		}
             imageProcessorThread = setInterval(function(){
+
                 var dataRev = incomingShareDataRevArray.shift();
                 if(dataRev){
                 	
@@ -608,7 +590,7 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
                         if(dataInfo){
                         	processImageData( dataInfo.shareMessage, dataInfo.imageFormat, dataInfo.imageData );
                         }else{
-                        	console.error( LOG_PREFIX, 'SSInfo:startImageProcessorThread :share data info not available for rev' + dataRev );
+            				LOGGER.API.warn( LOG_PREFIX, 'ImageProcessorThread reported issue - share data info not yet available for rev ' + dataRev );
                         }
                     }else{
                     	incomingShareDataRevArray.unshift(dataRev);
@@ -626,8 +608,8 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
     this.stopImageProcessorThread = function(){
     	clearInterval(imageProcessorThread);
         imageProcessorThread = null;
-		if ( self.logLevel > 2 ) {
-			console.log( LOG_PREFIX, 'ImageProcessorThread stopped ');
+        if(LOGGER.API.isDebug()){
+			LOGGER.API.debug( LOG_PREFIX, 'ImageProcessorThread stopped - no image data in queue to be processed' );
 		}
     }
     
@@ -642,14 +624,18 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
                 
 					var binaryData = new BinaryData();
 					binaryData.load( new Uint8Array( message.data ) );
-					if ( self.logLevel > 3 ) {
-						console.log( LOG_PREFIX, 'Received Binary Data: ', binaryData );
-					}
+					if(LOGGER.API.isDevDebug()){
+	        			LOGGER.API.devDebug( LOG_PREFIX, 'Received binary data.', binaryData );
+	        		}
+					
 					
 					if ( binaryData.command == 0 ) {
-						if ( self.logLevel > 2 ) {
-							console.log( LOG_PREFIX, "SSInfo:processMessage : processing image for revision, totalblocks, currentBlockIndex " + binaryData.revision +", "  + binaryData.totalBlocks + ", " + binaryData.blockIndex );
-						}
+						if(LOGGER.API.isDebug()){
+		        			LOGGER.API.debug( LOG_PREFIX, "Received image binary data for revision, totalblocks, currentBlockIndex "
+		        					+ binaryData.revision +", "  + binaryData.totalBlocks + ", " + binaryData.blockIndex  );
+		        		}
+						
+						
 						var imageDataBuffer = null;
 						var data = incomingShareDataRevToDataMap[binaryData.revision];
 						
@@ -670,22 +656,26 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 							if ( binaryData.blockIndex == binaryData.totalBlocks ) {
                                 data.imageFormat = binaryData.format
                                 data.isTotalDataReceived = true;
-                                if ( self.logLevel > 2 ) {
-                                	console.log( LOG_PREFIX, "SSInfo:processMessage populating image for image.Revision, share.Revision " + binaryData.revision + ", " +data.shareMessage.rev );
-                                }
+                                if(LOGGER.API.isDebug()){
+        		        			LOGGER.API.debug( LOG_PREFIX, "Image data completely received for  image.Revision, share.Revision =>" + binaryData.revision + ", " +data.shareMessage.rev  );
+        		        		}
+                                
                                 this.startImageProcessorThread();
 								
 							}else{
-								 if ( self.logLevel > 2 ) {
-									 console.log( LOG_PREFIX, "SSInfo:processMessage wating for more blocks for image revision " + binaryData.revision );
-								 }
+								if(LOGGER.API.isDebug()){
+        		        			LOGGER.API.debug( LOG_PREFIX, "Waiting for more image data image.Revision, share.Revision =>" + binaryData.revision + ", " +data.shareMessage.rev  );
+        		        		}
+								
 							}
 							
 							
 						}else{
-                            var msg = (data )? ('SSInfo:processMessage populating image Cound not queue binary Data as shareData has differnet revision than the binary image => image.Revision, share.Revision ' + binaryData.revision + ', ' +data.shareMessage.rev) :
-                        		'SSInfo:processMessage : Cound not queue binary Data as shareData is missing for image.revision' + binaryData.revision ; 
-                            console.error( LOG_PREFIX, msg );
+							
+                            var msg = (data )? ('Deleting shareDelta block as the new binary Data  has differnet revision for the shareDelta  revision => image.Revision, share.Revision ' + binaryData.revision + ', ' +data.shareMessage.rev) :
+                        		'Cound not queue binary Data as shareData is missing for image.revision' + binaryData.revision ; 
+                            LOGGER.API.warn( LOG_PREFIX, msg, {"binary": binaryData, "shareDelta":data} );
+                            delete incomingShareDataRevToDataMap[binaryData.revision];
                         }
 						
 					} else {
@@ -698,8 +688,11 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 				} else {
 					// strip CRLF, bug in USS adds CRLF incorrectly
 					var msg = message.data.replace( /[\n\r]/g, '' );
-					if ( self.logLevel > 0 && msg && msg.trim().length>0) {
-						console.debug( LOG_PREFIX, 'Received: ', msg );
+					if ( msg && msg.trim().length>0) {
+						if(LOGGER.API.isDebug()){
+		        			LOGGER.API.debug( LOG_PREFIX, "Received new message from USS " , msg );
+		        		}
+						
 					}
 					var data = JSON.parse( msg );
 					switch ( data.cmd ) {
@@ -713,10 +706,10 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 							self.receivedServerCaps = true;
 							break;
 						case 'shareBase':
-							 if ( self.logLevel > 2 ) {
-								 console.log( LOG_PREFIX, 'SSInfo:processMessage:  share cmd : ', data.rev );
-							 }
-						    
+							
+							if(LOGGER.API.isInfo()){
+			        			LOGGER.API.info( LOG_PREFIX, "Clear queued image data as a base data received for rev="+data.rev );
+			        		}
                             //remove previous delta's
 						    incomingShareDataRevArray = [];
 						    incomingShareDataRevToDataMap = {};
@@ -724,19 +717,15 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 						    incomingShareDataRevToDataMap[data.rev]={shareMessage:data,  imageData:null, isTotalDataReceived:false};
                             break;
 						case 'shareDelta':
-							 if ( self.logLevel > 2 ) {
-								 console.log( LOG_PREFIX, 'SSInfo:processMessage:  share cmd : ', data.rev );
-							 }
+							 
 							incomingShareDataRevArray.push(data.rev);
 						    incomingShareDataRevToDataMap[data.rev]={shareMessage:data, imageData:null,isTotalDataReceived:false};
 
 							break;
 						case 'shareCursor':
-							//if ( data.newImage ) {
-								self.cursorImageData = data;
-								self.cursorImageDataBuffer = null;
-								self.oncursorimageupdate(null);
-							//}
+							self.cursorImageData = data;
+							self.cursorImageDataBuffer = null;
+							self.oncursorimageupdate(null);
 							break;
 						case 'roomClosed':
 							self.stopImageProcessorThread();
@@ -753,6 +742,7 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 						case 'createRoomResult':
 						case 'setActiveShare':
 						case 'userJoined':
+						case 'userLeft':
 							self.onmessage( data );
 							break;
 						case 'roleChanged':
@@ -764,7 +754,7 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 					}
 				}
 			} catch ( error ) {
-				console.log( error );
+				LOGGER.API.error("USS-API","Exception wile process message: ",error);
 			}
 		}
 	}
@@ -790,18 +780,13 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 			format = 'image/webp';
 		}
 
-		if ( self.logLevel > 2 ) {
-			console.log( LOG_PREFIX, 'Sending shareImage for rev ' + shareMessage.rev );
-		}
+		
 		self.onimageupdate( shareMessage, format, self.isSafari?Encoder.btoa( binary ):btoa( binary ) );
 		
 	}
 
 	function processCursorImageData () {
-		if ( self.logLevel > 3 ) {
-			console.log( LOG_PREFIX, 'Processing ' + self.cursorImageDataBuffer.length + ' bytes of cursor image data' );
-		}
-
+		
 		var binary = '';
 		var len = self.cursorImageDataBuffer.length;
 		for ( var i = 0; i < len; i++ ) {
@@ -813,25 +798,38 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 
 	function send ( data ) {
         
-        self.startSenderThread();
-		if ( ws !== null && self.readyState == WebSocket.OPEN && !forcedCloseRequested ) {
+		if ( ws !== null && self.readyState == WebSocket.OPEN ) {
 			if ( transmitQueue.length <= QUEUE_LIMIT ) {
-				if ( self.logLevel > 3 ) {
-					console.log( LOG_PREFIX, "queue size: " + transmitQueue.length );
+				if(LOGGER.API.isDevDebug()){
+					LOGGER.API.devDebug("USS-API","Pushing data to queue ", data);
 				}
+				
 				transmitQueue.push( data );
+				if(forcedCloseRequested ){
+					self.sendDataNow();
+		        }
+				else{
+					self.startSenderThread();
+					
+		            
+				}
+				
 			} else {
-				console.error( LOG_PREFIX, 'Transmit queue limit exceeded. Sender thread present ' + (transmitIntervalId != null) );
+				
+				
+				LOGGER.API.error( LOG_PREFIX, 'Data queue failed due to transmit queue limit exceeded. '  );
                 self.dataqueuefailed();
                 transmitQueue= [];
 			}
 
 			/*
-			 * if (data instanceof Uint8Array) { if (self.logLevel > 1) {
+			 * if (data instanceof Uint8Array) { if (LOGGER.API.isDevDebug()) {
 			 * console.log(LOG_PREFIX, 'Sending binary data: ', data); }
-			 * ws.send(data.buffer); } else { if (self.logLevel > 0) {
+			 * ws.send(data.buffer); } else { if (LOGGER.API.isDevDebug()) {
 			 * console.log(LOG_PREFIX, 'Sending: ', data); } ws.send(data); }
 			 */
+		}else{
+			LOGGER.API.error( LOG_PREFIX, 'Data queue failed due to invalid state of websocket. ', ws );
 		}
 	}
 
@@ -841,8 +839,10 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 
 	this.stop = function ( src, share, isOwner, isFloorHolder) {
 		if ( ws && this.readyState == WebSocket.OPEN ) {
-			console.log( LOG_PREFIX, ' Force closing WebSocket.' );
-
+			if(LOGGER.API.isInfo()){
+				LOGGER.API.info(LOG_PREFIX,"stopping the USS session");
+			}
+			forcedCloseRequested = true;
 			var self = this;
             
             if(isOwner || isFloorHolder){
@@ -855,7 +855,16 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 				
 				self.closeRoom( src );
 			}
-            forcedCloseRequested = true;
+			
+			if(LOGGER.API.isInfo()){
+				LOGGER.API.info(LOG_PREFIX,"Force closing websocket");
+			}
+			self.stopWS();
+			self.ondisconnected({'forcedCloseRequested':forcedCloseRequested});
+			self.clean();
+			
+			
+           
 		}
 	};
 
@@ -974,21 +983,28 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 	};
 
 	this.stopShare = function ( src, share ) {
-        transmitQueue = [];
-		send( JSON.stringify( {
-			cmd : 'stopShare',
-			src : src,
-			share : share
-		} ) );
+		if(share){
+			transmitQueue = [];
+			send( JSON.stringify( {
+				cmd : 'stopShare',
+				src : src,
+				share : share
+			} ) );
 
+			
+		}
+        
 		send( JSON.stringify( {
 			cmd : 'setActiveShare'
 		} ) );
-        
 
 	};
 
 	this.shareImage = function ( shareId, imageData, revision, isDelta ) {
+		if(!shareId){
+			LOGGER.API.warn("USS-API","Could not send ImageData as shareId is missing");
+			return;
+		}
 		var MAX_BLOCK_SIZE = 2048; //4000;
 		var format = 'J';
 		if ( imageData.indexOf( 'png;' ) > 0 ) {
@@ -1036,9 +1052,13 @@ function USS ( ussUrl, jid, isSafari, isIE, isEdge) {
 			blockIndex++;
 			send( blockData );
 			if ( totalBlocks > 0 ) {
-				if ( self.logLevel > 2) {
-					console.log( LOG_PREFIX, 'Queued ' + bytes.length + ' bytes of image data in ' + totalBlocks + ' blocks' );
+				if(LOGGER.API.isDevDebug()){
+					LOGGER.API.devDebug("USS-API",'Queued data to be send to USS ' 
+							+ bytes.length + ' bytes of image data in ' + totalBlocks + ' blocks', 
+							{shareId:shareId, imageData:imageData, revision:revision, isDelta:isDelta});
 				}
+
+			
 			}
 		}
 	};

@@ -2,11 +2,198 @@
 @CHARSET "ISO-8859-1";
 
 body{
-	overflow: hidden; width: 100%; height: 100%;font-family: 'Roboto' !important; background-color: #FFFFFF;cursor:default;
+	overflow: auto !important;
+	width: 100%;
+	height: 100%;
+	font-family: 'Roboto', -apple-system, Arial, Helvetica, sans-serif !important;
+	background-color: #FFFFFF;
+	cursor: default;
 }
+
+input, textarea, select, button {
+	font-family: 'Roboto', -apple-system, Arial, Helvetica, sans-serif !important;
+}
+
+/* Chrome grammarly start */
+grammarly-ghost{
+	display: none !important;
+}
+html > div{
+	display: none !important;
+}
+/* Chrome grammarly end */
+
+.cgcHide{
+    display : none !important;
+}
+.cgcShow{
+    display : inline-flex !important;
+}
+.cgcFloatRight{
+	float: right !important;
+}
+.cgcFloatLeft{
+	float: left !important;
+}
+.cgcFontNormal{
+    font-weight: normal;
+}
+.cgcFontBold{
+	font-weight: bold
+}
+.cgcBorderNone{
+	border: none !important;
+}
+.cgcFlexRowReverse{
+    flex-direction: row-reverse;
+}
+.cgcFlexShrinkNone{
+	flex-shrink: 0 !important;
+}
+.cgcFlexGrowFull{
+	flex-grow: 1 !important;
+}
+.cgcFullHeight{
+	height: 100% !important;
+}
+.cgcFullWidth{
+	width: 100% !important;
+}
+.cgcPostionRelative{
+	position: relative;
+}
+.cgcFontTransparent{
+	color: transparent !important;
+}
+.cgcDisabled{
+	pointer-events: none;
+    opacity: 0.5;
+}
+.bsftDisabledBG{
+	cursor: default !important;
+    opacity: 0.5;
+}
+.cgcDisplayInline{
+	display: inline-block;
+}
+.cgcTextEllipsis{
+	text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.bsftMediumFont{
+	font-weight: 500;
+}
+.bsftFontRobotoRegular{
+	font-weight: 400;
+}
+.bsftFontRobotoLightItalic{
+	font-weight: 300;
+	font-style: italic;
+}
+.bsftFontRobtoCondensed{
+	font-family: 'Roboto Condensed', 'Roboto', -apple-system, Arial, Helvetica, sans-serif;
+	font-weight: 400;
+}
+.cgcInvisible{
+    visibility: hidden !important;
+}
+
 .cgcViewControl{
-    background: #f6f6f6;
     overflow:auto;
+    height: 100%;
+    width: 100%;
+}
+
+.cgcPopuBackground{
+	width: 100%;
+	height: 100%;
+	background: #000000;
+	opacity: 0.5;
+	z-index: 30;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    cursor: default !important;
+}
+
+.cgcWelcomePopup {
+	max-width: 713px;
+	z-index: 31;
+}
+
+.cgcWelcomeScreenContainer{
+    padding: 24px 40px 24px 40px;
+	border-radius: 10px;
+}
+
+.cgcWelcomeScreenHeaderBox{
+	height: auto;
+    width: 100%;
+    border-width: 0px 0px 1px 0px;
+    text-align: center;
+}
+
+.cgcWelcomeScreenHeader {
+    font-size: 30px;
+}
+
+.cgcWelcomeScreenHeaderDesc{
+	padding: 10px 0px;
+}
+
+.cgcWelcomeScreenHeaderDescColor{
+	color: #475561 !important;
+}
+
+.cgcWelcomeScreenItem {
+    height: auto;
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    padding: 15px 10px 20px 0px;
+    border-width: 0px 0px 1px 0px;
+}
+
+.cgcWelcomeScreenItemImgBox{
+	flex-shrink: 0;
+    width: 100px;
+    text-align: center;
+}
+.cgcWelcomeScreenItemImg {
+    height: 33px;
+    width: 47px;
+    flex-shrink: 0;
+}
+
+.cgcWelcomeScreenItemImgTitle {
+	font-size: 15px;
+    width: auto;
+    padding-top: 5px;
+}
+.bsftWelcomeScreenDesc{
+	font-size: 14px;
+}
+.bsftWelcomeScreenDesc>font{
+	font-weight: 600;
+}
+
+.cgcWelcomeScreenButtonBox {
+    padding-top: 24px;
+    height: 39px;
+    width: 100%;
+    text-align: center;
+}
+
+.cgcWelcomeScreenButton {
+    height: 100%;
+    width: 240px;
+    border-radius: 6px;
+    border: none !important;
+    font-size: 16px;
+    outline: none;
+    background-image: none !important;
 }
 
 .cgcErrorItem{
@@ -23,24 +210,44 @@ body{
     position: static;
     font-size: 12px;
 }
-
-.cgcChatAvatar{
-    width: 28px;
-    height: 28px;
+.cgcChatDefaultAvatar{
+    height: 44px !important;
+    width: 44px !important;
     float: left;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    font-size: 22px;
+    line-height: 40px;
+    text-align: center;
+    text-transform: lowercase;
+    border: 1px;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+.cgcChatAvatarImgBox{
+    height: 44px;
+    width: 44px;
+    float: left;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+.cgcChatAvatarImg{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
 }
 
-.cgcChatEmptyAvatar{
-    display : none;
-    height: 28px !important;
-    width: 29px;
-    float: right;
-    margin-left: 10px;
-}
+/* .cgcChatEmptyAvatar{ */
+/*     display : none; */
+/*     height: 28px !important; */
+/*     width: 29px; */
+/*     float: right; */
+/*     margin-left: 10px; */
+/* } */
 
 .cgcChatMessageUser{
-    display: inline-block;
-    margin-bottom: 2px;
+    display: flex;
+    margin-top: 8px;
     width:100%;
 }
 
@@ -52,17 +259,92 @@ body{
 }
 
 .cgcChatSenderMainDiv{
-    padding-bottom:4px;
-    display: inline-block;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
     width: 100%;
-    padding-top: 12px;
 }
 
 .cgcChatReceiverMainDiv{
-    padding-bottom:2px;
-    display: block;
-    width: 80%;
-    padding-top: 1px;
+    display: flex;
+    width: 100%;
+}
+
+.cgcChatbubbleSeperator{
+	padding-top: 20px !important;
+}
+
+.cgcChatSenderTime {
+    float: left;
+    width: auto;
+    position: absolute;
+    top: calc(50% - 7px);
+    left: 0px;
+    color: rgb(170, 170, 170);
+    font-size: 14px;
+    line-height: 14px;
+}
+.cgcChatContentDiv {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+.cgcMessageContent {
+    text-align: left;
+    padding: 16px;
+}
+.cgcOutgoingChatTheme {
+    background-color: #35AFF9;
+    border: 1px solid #35AFF9;
+}
+.cgcChatReceiverMessage {
+    float: left !important;
+    width: auto;
+    max-width: 484px !important;
+    box-sizing: border-box;
+}
+.cgcChatSenderMessage {
+    float: right !important;
+    width: auto;
+    max-width: 484px !important;
+    box-sizing: border-box;
+}
+.cgcChatSenderFirstMessage {
+    color: rgb(255, 255, 255);
+    border-radius: 24px 24px 0px;
+}
+.cgcChatReceiverFirstMessage{
+    border-radius: 24px 24px 24px 0px;
+}
+.cgcChatSenderMiddleMessage {
+    color: rgb(255, 255, 255);
+    border-radius: 24px 0px 0px 24px;
+}
+.cgcChatReceiverMiddleMessage {
+    color: rgb(51, 51, 51);
+    border-radius: 0px 24px 24px 0px;
+}
+.cgcChatReceiverLastMessage {
+    color: rgb(51, 51, 51);
+    border-radius: 0px 24px 24px;
+}
+.cgcChatSenderLastMessage {
+    border-radius: 24px 0px 24px 24px;
+}
+.cgcChatNoContentWOAvatar {
+    height: 44px;
+    width: 44px;
+    margin-right: 20px;
+    float: left !important;
+}
+.cgcChatItemSenderDetails{
+    font-weight: 500;
+    width: auto;
+    line-height: 16px;
+    text-align: left;
+    font-size: 14px;
+    margin-left: 80px;
+    padding-bottom: 4px;
 }
 
 .cgcCollaborateGuestClient{
@@ -73,7 +355,7 @@ body{
 .cgcAlternativeNumberPopup{
     border-radius: 5px;
     font-size:70%;
-    padding: 10px; 
+    padding: 13px; 
     max-height: 150px;
     height: auto; 
     max-width:280px;
@@ -81,35 +363,143 @@ body{
     overflow-y:auto;
 }
 
+.cgcAlternativeNumberPopupBox{
+   	padding: 5px;
+    border-radius: 4px;
+    border-width: 3px 0px 0px;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.8);
+}
+
+.cgcAlternativeNumberPopup:before1 {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: calc(50% - 7px);
+    border-style: solid;
+    border-width: 0px 13px 15px;
+    display: block;
+    width: 0;
+    z-index: 0;
+}
+
+.cgcAlternativeNumberPopup:after {
+    top: 5px;
+    content: "";
+    position: absolute;
+    left: calc(50% - 7px);
+    border-style: solid;
+    border-width: 0 7px 8px;
+    display: block;
+    width: 0;
+    z-index: 0;
+    transform-origin: 0 0;
+    transform: rotate(0deg);
+}
+
+.cgcAlternativeNumberHeader{
+    border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    height: 15px;
+    padding: 5px;	
+}
+
+.cgcAlternativeNumberBody{
+    padding: 5px;	
+}
+
+.cgcAlternativeNumberRecord{
+    padding: 5px 0px;	
+}
+
 .cgcLoginHeader{
     font-size: 19px;
-    padding-bottom: 5px;
+    padding-bottom: 8px;
     text-align: center;
-    color: #0D9DBA; 
-	font-weight: 500;
 }
 
 .cgcRoomHeader{
-    font-size: 13px;
-    color: #a1a1a1;
+    font-size: 15px;
     text-align: center;
 }
-
+.cgcLoginPageLabel{
+	color: #646464 !important;
+}
+.cgcLoginInputSeparator{
+	height: 4px;
+}
+.cgcRoomHeaderSeparator{
+	height: 20px;
+}
 .cgcTimeoutLoginBox{
     display: inline-block;
     width: auto !important;
     padding-right: 50%;
     padding-top: 10px;
 }
+.cgcLeaderProfileContainer{
+	height: 48px !important;
+    position: relative;
+}
+.cgcLeaderProfileInnerBox{
+	height: 36px;
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+.cgcLeaderAvatar{
+	background-color: #FFFFFF;
+    flex-shrink: 0;
+    height: 32px;
+    width: 32px;
+    margin-left: 8px;
+    margin-top: 2px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 0px 2px #FFFFFF;
+}
+.cgcLeaderDefaultAvatar{
+    background-color: #FFFFFF;
+    flex-shrink: 0;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    font-size: 18px;
+    text-transform: lowercase;
+    text-align: center;
+    margin-top: 2px;
+    margin-left: 8px;
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    box-shadow: 0px 0px 0px 2px #FFFFFF;
+}
+.cgcLeaderRoomInfoBox{
+	display: flex;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 8px;
+    white-space: pre;
+    max-width: calc(100% - 52px);
+    line-height: 36px
+}
+.cgcLeaderRoomInfoBoxTitle{
+    font-size: 15px;
+    white-space: pre;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+}
 
 .cgcGuestProfile{
-	max-width: 220px;
+	max-width: 305px;
 	white-space: nowrap;
 	overflow: hidden;
 	vertical-align: middle;
 	display: table-cell;
 	text-overflow: ellipsis;
-	padding-left:7px;
+	padding-left:8px;
 }
 
 .cgcGuestYou{
@@ -119,12 +509,20 @@ body{
 }
 
 .cgcChatItemHeaderTime{
-    color: #999999;
-    font-size:11px; 
-    padding-top:10px;
+    font-size:13px; 
     border-bottom: 1px black;
     display: inline;
     height:initial;
+}
+
+.cgcChatLeftsideTime{
+    float: left !important;
+    margin-right: 15px;
+}
+
+.cgcChatRightsideTime{
+    float: right !important;
+    margin-left: 15px;
 }
 
 .cgcGuestRole{
@@ -137,79 +535,122 @@ body{
 	display: table-cell;
 }
 
-.cgcLeftPanelVideoBackground{
+.cgcDockerPanelVideoBackground{
 	background:rgb(194, 192, 192);
 	text-align: -webkit-center;
 	width:100%;
 	height: 100%;
 }
 
-.cgcRightPanelVideoBackground{
-    background-color: #3a3a3a;
+.cgcViewPanelVideoContainer{
 	width: 100% !important;
 	height: 100% !important;
 	display: flex !important;
 }
 
 .cgcVideoPanel{
-    height:0px;
+    height:270px !important;
     width:100%;
     padding:0px;
-    min-height:0px;
-    max-height:240px
+    max-height:276px
+}
+
+.cgcStatusPageBox{
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	text-align:center;
 }
 
 .cgcJoinPage{
     text-align: center;
-    max-width:345px;
+    width: 100%;
+    flex-grow: 1;
+    margin-bottom: 80px;
+}
+
+.cgcJoinPage > div:not(.cgcLoginOuterBox){
+	margin: 0px 10px;
 }
 
 .cgcJoinPageOuterBox{
     background: #ffffff;
-    padding-top: 52px;
-    padding-bottom: 61px;
-    padding-left:40px;
-    padding-right:40px;
+    padding-top: 40px;
+    min-height: 328px !important;
     height: auto !important;
-    min-width: 360px !important;
-	max-width: 425px !important;
+    width: 328px !important;
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px;
+    position: relative;
+}
+.cgcJoinPageBrowserNotificationMsg{
+	height: 110px;
+	max-height: 110px;
+}
+.cgcPostLoginBrowserNotificationMsg{
+	height: auto;
+}
+.cgcBrowserNotificationMsg{
+    border-width: 0px 0px 0px 5px;
+    padding-left: 10px;
+    min-height: 24px;
+    font-size: 13px;
+    line-height: 24px;
+    font-style: normal;
 }
 
 .cgcJoinPageHeader{
-    text-align:center;
-    font-style:italic; 
-    color:red;
-    font-size:15px;
-    width:auto;
-    height:110px;
+/* 	width: 100%; */
+/*     height:110px; */
 }
 
 .cgcJoinPageLogoOuterBox{
     text-align: center;
+    height: 56px;
 }
 
 .cgcJoinPageLogo{
-    max-width: 345px;
-    text-align:center;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    text-align: center;
 }
 
 .cgcLogoSeperator{
-    height : 38px;
+    height : 20px;
 }
 
 .cgcLoginBox{
+	flex-grow: 1;
     display: -webkit-box;
 	-webkit-box-pack: center;
 	-webkit-box-align: center;
 }
 
-.cgcTimeoutRejoinHeader{
-    height: 110px;
+.cgcJoinPageFooterBox {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0px;
 }
 
-.cgcRejoinHeader{
-    height:110px;
-    width:auto;
+.cgcJoinPageFooterLogo{
+    align-self: center;
+    height: 18px;
+}
+
+.cgcAppVersion{
+	text-align: center;
+    font-size: 10px;
+    font-weight: 900;
+    padding-top: 5px;
+    height: 15px !important;
 }
 
 .cgcWaitForLeaderAcceptanceWidget{
@@ -220,9 +661,9 @@ body{
 .cgcApploadingimgBox{
     width: 60px !important;
     height: 60px !important;
-    padding-top: 25px;
-    padding-bottom: 25px;
-    text-align:center;
+    padding-top: 28px;
+    padding-bottom: 8px;
+    text-align: center;
     margin: auto;
 }
 
@@ -242,110 +683,105 @@ body{
 }
 
 .cgcStatusMessageBox{
-    font-size: 16px;
-    font-weight: bold;
+	margin-top: 28px;
+    font-size: 15px;
     text-align: center;
-    color: #333333;
-    padding-left: 15px;
-    padding-right: 15px;
 }
 
 .cgcStatusProgressInfoMessageBox{
-    font-size: 14px;
-    font-weight: normal;
+    font-size: 15px;
     text-align: center;
-    color: #333333;
-    padding-left: 45px;
-    padding-right: 45px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .cgcStatusProgressWarningMessageBox{
-    font-size: 14px;
-    font-weight: normal;
+    font-size: 15px;
     text-align: center;
-    color: #333333;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.cgcStatusDismissedMessageBox {
+	margin-top: 40px;
+}
+
+.cgcStatusDismissedMessage {
+	font-size: 15px;
+	margin-bottom: 8px;
+}
+
+.cgcLoginDeclinedRoomHeader{
+    font-size: 19px;
+    text-align: center;
+    margin-top: 8px;
 }
 
 .cgcStatusUnSupportedBrowerMessageBox{
-      font-size: 14px;
-	  font-weight: normal;
-	  text-align: left;
-	  color: #B5ADAD;
-	  padding-left: 15px;
+	margin: 36px;
+    font-size: 15px;
+    font-weight: normal;
+    text-align: center;
 }
 
-.cgcRightPanelHeaderButtons{
+.cgcViewPanelHeaderButtons{
     text-align:right;
-    padding-right:12px;
     display: table-cell;
+    width: auto !important;
+    float: right;
 }
 
 .cgcChatimg{
     height: 13px;
     width: 16px;
 }
-
+.cgcParticipantAvatarContainer{
+	width: 36px !important;
+    vertical-align: middle;
+    height: 36px !important;
+}
+.cgcParticipantAvatar{
+	height: 36px;
+	width: 36px;
+	border-radius: 50%;
+}
+.cgcParticipantDefaultAvatar{
+    background-color: #FFFFFF;
+    height: 34px;
+    width: 34px;
+    line-height: 34px;
+    font-size: 18px;
+    text-transform: lowercase;
+    text-align: center;
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    position: absolute;
+    top: 50%;
+    transform: translate(0%, -50%)
+}
 .cgcParticipantContent{
 	border-right: 1px solid lightgrey;
 	color: #666666;
 	font-size: 13px;
+   	padding: 8px 8px 0px 8px;
+   	position: relative;
 }
 
 .cgcParticipantYou{
-	background-color: #F3F5F6;
-	height: 49px;
-	line-height:49px;
+	height: 52px;
+	line-height:52px;
 	vertical-align:middle;
-	padding-left: 14px;
+   	border-width: 0px 0px 1px 0px;
 }
 
-.cgcHeaderParticipantsLabel{
-    font-size: 18px;
-    color: white;
-    padding-left: 5px;
-    height: 30px !important;
-    width: 90%;
-    padding-top: 5px;
-}
-
-.cgcHeaderParticipantsImg{
-    width: 22px !important;
-    height: 22px !important;
-    padding-top: 2px;
-}
-
-.cgcHeaderChatImg{
-    width: 22px !important;
-    height: 22px !important;
-    padding-top: 2px;
-}
-
-.cgcHeaderProfile{
-    vertical-align: sub;
-    padding-left: 10px;
-    padding-bottom:0px;
-    color:#FFFFFF;
-    font-size: 18px;
-}
-
-.cgcHeaderSubProfile{
-    vertical-align: sub;
-    padding-left: 10px;
-    font-style: italic;
-    font-family: -webkit-body;
-    padding-bottom: 0px;
-    color: #EADEDE;
-    font-size: 14px;
-}
-
-.cgcLeftNavicationContent{
-	height: 38px;border-right: 1px solid #E5E5E5;
+.cgcDockerNavicationContent{
+	height: 100%;
 }
 
 .cgcAccordionItems{
     height:auto;
+    max-height: 100% !important;
     background-color: #ffffff;
 }
 
@@ -354,7 +790,8 @@ body{
 }
 
 .cgcHeaderParticipants{
-    height: auto;
+    height: 100%;
+    max-height: 100% !important;
 }
 
 .cgcParticipantPopup{
@@ -375,12 +812,13 @@ body{
 
 .cgcMuteButtonHeader {
     cursor: pointer;
-    height:32px
+    height:32px;
     vertical-align: middle;
     line-height: 32px;
     text-align: center;
     cursor: pointer;
-    margin-right:18px;
+    margin-right:6px;
+    border: 0px;
 }
 
 .cgcFullScreenImg{
@@ -393,37 +831,16 @@ body{
 }
 
 .cgcFullScreenLabelOff{
-    cursor: pointer;
-    height:32px
     vertical-align: middle;
-    line-height: 32px;
-    text-align: center;
     cursor: pointer;
+    height: auto;
+    width: auto;
+    border: 0px;
 }
 
-.cgcFullScreenLabelOn{
-    cursor: hand; 
-    cursor: pointer;
-    color: #78B9CE;
-    padding-left: 5px;
-    padding-top: 10px;
-    padding-right: 10px;
-    vertical-align: sub;
-    font-size: 12px;
-    float: right;
-    text-decoration: underline;
-    font-weight: bold;
-}
-
-.cgcRightPanelHeaderLabel{
-      font-size: 12px;
-	  height: 32px !important;
-	  font-weight: bold;
-	  vertical-align: middle;
-	  padding-left: 10px;
-	  margin: 0 auto;
-	  display: table-cell;
-	  width: 100%;
+.cgcViewPanelInnerContainer{
+	border-width: 0px 1px 0px 0px;
+	position: relative;
 }
 
 .cgcHeaderStyle{
@@ -441,15 +858,6 @@ body{
     padding-top:20px;
     background-color:#2C92B3;
     height: auto !important;
-}
-
-.cgcFooterbox{
-    padding-top:5px;
-    font-style:italic; 
-    color:red;
-    font-size:15px;
-    width:auto;
-    height:40%
 }
 
 .cgcFooterInnerbox{
@@ -489,10 +897,10 @@ body{
 }
 
 .cgcWebRTCPanel{
-    height: 64px !important;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
+    height: auto !important;
     padding: 0px;
+    display: flex;
+    flex-direction: row;
 }
 
 .cgcCallButtonDiv{
@@ -501,29 +909,119 @@ body{
 
 .cgcBasePanel{
     width:100%; 
-    height: 100%; 
+    height: 100%;
+    display: flex;
 }
 
-.cgcLeftPanel{
-    width: 320px;
-    min-width:320px;
-    max-width:320px; 
-    height: 100%; 
+.cgcDockerPanel{
+    width: 359px;
+    min-width:359px;
+    max-width:359px; 
+    height: 100%;
+    -webkit-user-select: none;  
+	-moz-user-select: none;    
+	-ms-user-select: none;      
+	user-select: none;
 }
 
-.cgcRightPanel{
-    background: white;
-    width:100% ;
+.cgcViewPanel{
+    /* background: white; */
+/*     width:100% !important; */
     height: 100%; 
+    border-width: 3px 0px 0px 0px;
+}
+
+.cgcConnectorShareButton{
+	width: 89px;
+	padding: 8px 0px 0px 0px;
+    cursor: pointer;
+    position: relative;
 }
 
 .cgcConnectorButton {
-	border-right: 1px solid #000000;
-	width: 107px;
-    vertical-align: middle;
-    line-height: 62px;
-    text-align: center;
+	width: 89px;
+	padding: 8px 0px 0px 0px;
     cursor: pointer;
+    position: relative;
+    margin-right: 1px;
+}
+.cgcFullScreenIconBox {
+    padding: 0px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: auto;
+    display: flex;
+    background: #000000;
+}
+.cgcConnectorButtonHoverCover{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+}
+.cgcConnectorButtonIconBox {
+    padding: 0px;
+    width: 47px;
+    height: 33px;
+    margin: auto;
+    display: flex;
+}
+.cgcConnectorButtonIcon{
+    height: 33px;
+    width: 47px;
+    margin: auto;
+}
+.cgcFullScreenButtonIcon{
+    margin: auto;
+    height: 15px;
+    width: 15px;
+}
+.cgcFullScreenButtonFSIcon{
+    margin: auto;
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+}
+.cgcConnectorButtonIconTitle{
+    font-size: 9px;
+    line-height: 10px;
+    text-align: center;
+    padding-top: 8px;
+    padding-bottom: 6px;
+    border-width: 0px 0px 2px 0px;
+    height: 10px;
+    border-style: solid;
+    border-color: transparent;
+    width: 100%;
+}
+.cgcConnectorButtonTooltip {
+	visibility: hidden;
+    display: inline-table;
+    width: auto;
+    max-width: 100%;
+    text-align: center;
+    padding: 2px 5px;
+    position: absolute;
+    z-index: 1;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    font-size: 10px;
+}
+
+.cgcConnectorButton:hover .cgcConnectorButtonTooltipVisble {
+	animation: showEffect 1.0s forwards;
+}
+@keyframes showEffect {
+    99% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: visible;
+  }
 }
 
 .cgcLeftPannelDefaultColor {
@@ -531,15 +1029,16 @@ body{
 }
 
  .cgcChatScrollerLeft {
-	padding-left: 5px !important;
+/* 	padding-left: 5px !important; */
 }
 
  .cgcChatScrollerRight {
-	padding-left: 25px !important;
+/* 	padding-left: 20px !important; */
+/*     padding-right: 20px !important; */
 }
 
 .cgcChatScroller{
-	border:none; 
+	border:none;
 }
 
 .cgcChatScrollerMac{
@@ -552,33 +1051,33 @@ body{
 	border:none; 
 	overflow-x: hidden !important;
 	overflow-y: hidden !important;
+	font-size: 0px;
 }
 
+.cgcChatContentPane {
+	word-break: break-word;
+    max-width: 832px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+   	padding-left: 20px !important;
+    padding-right: 20px !important;
+}
 
-        
+.cgcChatBubbleLink{
+	word-break: break-all;
+}
 
 .cgcPadding{
     padding:2px;
 }
 
-.cgcChatItemHeader{
-    color: #999999;
-    font-weight:bold;
-    font-size: 11px;
-    padding-top: 10px;
-    border-bottom: 1px black;
-    display: inline;
-}
-
 .cgcChatItemMessage{
     height: initial;
-	font-size: 13px;
+	font-size: 14px;
 	white-space: pre-wrap;
 	word-wrap: break-word;
-	padding-top: 5px;
 	width: 100%;
-	max-width:600px;
-	color: #666666;
 }
 
 .cgcLoggedUserWidget{
@@ -622,65 +1121,62 @@ body{
 }
 
 .cgcJoinButtonBox{
-    padding-top: 33px;
+    padding-top: 24px;
+    height: 39px;
 }
 
 .cgcJoinButton{
-    height: 48px;
-    width: 273px;
-    border-radius: 20px;
-    background-color: #cccccc;
-    font-size: 16pt;
-    font-weight: bold;
-    color: rgb(171, 171, 171);
+    height: 100%;
+    width: 240px;
+    border-radius: 6px;
+    border: none !important;
+    font-size: 16px;
+    background-image: none !important;
 }
 
-.cgcJoinButtonOnBlurColor{
-    background-color: #1a8da5;
-    color: #ffffff;
+.cgcTabHeading{
+    padding-top: 5px !important;
+    height: calc(100% - 5px);
+    float: left;
 }
 
-.cgcJoinButtonActiveColor{
-    background-color: #1d9db8;
-    color: #ffffff;
-}
-
-.cgcJoinButtonOnSelectColor{
-    background-color: #177e93;
-    color: #ffffff;
-}
-
-.cgcHide{
-    display : none !important;
-}
-
-.cgcShow{
-    display : inline-flex !important;
+.cgcVideoTabHeading{
+    text-align: left;
+    text-shadow: none;
+    font-size: 13px !important;
+    padding: 0px 8px !important;
+    height: 26px !important;
+    line-height: 32px;
+    background-color: #FFFFFF !important;
+    width: auto !important;
+    margin-top: 5px;
+    box-sizing: border-box;
 }
 
 .cgcParticipantsCount{
-    background-color: #c2c2c2;
-	font-size: 13px;
-	color: #FFFFFF;
-	border-radius: 2px;
-	min-width: 21px;
-	margin-left: 5px;
-	text-align: center;
-	height: 18px;
-	line-height: 18px;
-	width: auto;
-	display: inherit;
+    font-size: 13px;
+    font-weight: normal;
+    border-radius: 13px;
+    min-width: 16px;
+    margin-left: 4px;
+    margin-top: 5px;
+    text-align: center;
+    height: 16px;
+    line-height: 13px;
+    width: auto;
+    display: inherit;
+    box-sizing: border-box;
+    padding: 2px 4px;
 }
 
 .cgcParticipantDetails{
     overflow: hidden;
-	border-bottom: 1px solid #E5E5E5;
-	padding-left: 14px;
-	width: 305px;
-	line-height:49px;
-	vertical-align:middle;
-	//display: inline-table;
-	margin: auto;
+    border-width: 0px 0px 1px 0px;
+    width: 100%;
+    height: 51px;
+    line-height: 51px;
+    vertical-align: middle;
+    margin: auto;
 }
 
 .cgcParticipantPhoto{
@@ -689,10 +1185,10 @@ body{
 }
 
 .cgcParticipantRecord{
-    padding-left: 7px;
+    padding-left: 8px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	max-width: 150px;
+	max-width: 305px;
 	overflow: hidden;
 	display: table-cell;
 }
@@ -743,15 +1239,13 @@ body{
 }
 
 .cgcDialInfoWidget{
-	padding-bottom:5px;
-	padding-top:5px;
 	color:#CCCCCC;
 	font-size:12px;
 	width:auto;
 	display: inline-block;
 }
 
-.cgcDailInOption{
+.cgcDialInOption{
 	padding-bottom:10px;
 	padding-top:10px;
 	color:#CCCCCC;
@@ -760,41 +1254,28 @@ body{
 	display: inline-block;
 }
 
-.cgcCallMeNowLableHide{
-    cursor: hand; 
-    cursor: pointer;
-    float: right;
-    color: #0C91E0;
-    font-size: 10px;
-    font-weight: bold;
-    text-decoration: underline;
-}
-
 .cgcCallMeNowLabel{
-    color:#666666;
-    font-size: 12px;
-    font-weight: bold;
+    color: #CCCCCC;
+    font-size: 13px;
+    height: 13px;
+    margin-bottom: 8px;
 }
 
 .cgcCallMeLable{
-	color:#cccccc;
-    font-size: 12px;
+	color: #474747;
+    font-size: 14px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    min-height: 18px
 }
 
 .cgcCallMeInputText{
 	width: 100%;
 	cursor: text !important;
-	font-size: 12px !important;
+	font-size: 14px !important;
+	line-height: 14px;
+    height: 14px !important;
     color:#000000;
-}
-
-.cgcCallMeInputText::-ms-clear {
-    display: none;
-}
-
-.cgcCallMeInputText:-ms-input-placeholder{
-	color:    #c1c1c1 !important;
-	padding: 3px;
 }
 
 .cgcDialInfoLabel{
@@ -809,31 +1290,67 @@ body{
     max-width:290px;
 }
 
+.cgcDialInOptionBox{
+	display: flex;
+	align-items: center;
+}
+.cgcDialInOptionLabel{
+   	font-size: 13px;
+   	line-height: 13px;
+    height: 13px;
+    padding-right: 10px;
+    
+}
+.cgcDialInNumber{
+    margin-top: 4px;
+    font-size: 14px;
+    color: #474747;
+}
+.cgcDialInExtensionLabelSeperator{
+	margin-top: 8px;
+	margin-left: 4px;
+    display: flex;
+    align-items: baseline;
+}
+.cgcDialInExtensionLabel{
+	font-size: 13px;
+    white-space: pre;
+}
+.cgcDialInExtensionNumber{
+	font-size: 14px;
+	color: #474747;
+}
+
 .cgcLoggedInUserWidget{
     min-height:60px; 
     max-height:140px
 }
 
 .cgcCallMeWidget{
-    padding-top:10px;
-    padding-bottom:20px;
     color:#B5B5B5;
     font-size:12px;
     width:100%;
+    margin-top: 12px;
 }
 
+.cgcCallMeNumberTextContainer{
+	margin-left: 4px;
+}
 .cgcCallMeNumberText{
     cursor: text;
     margin-right:10px;
     min-width:170px;
-    background-color: white;
     height: 32px !important;
+    box-shadow: none !important;
+    border: 1px solid #E8E8E8;
+    border-radius: 4px;
+    padding: 8px 8px 8px 8px !important;
 }
 
-.cgcCallMeNumberActiveTextBorder{
-    border: 2px solid #0099cc !important;
-    box-shadow: 0.5px 0.5px 0.5px 0.5px #0099cc !important;
-}
+/* .cgcCallMeNumberActiveTextBorder{ */
+/*     border: 2px solid #0099cc !important; */
+/*     box-shadow: 0.5px 0.5px 0.5px 0.5px #0099cc !important; */
+/* } */
 
 .cgcCallMeImgWidget{
     padding:0px;
@@ -855,12 +1372,12 @@ body{
 .cgcConferencePanel{
     border: 0px solid;
     padding:0px;
-    background-color: #1B1A1A;
-    max-height:400px;
-    width:320px;
+/*     background-color: #1B1A1A; */
+/*     max-height:400px; */
+    width:100%;
 }
 
-.cgcLeftPanelSideBar{
+.cgcDockerPanelSideBar{
     cursor: pointer;
     height : 12px;
     width: 10px;
@@ -881,14 +1398,15 @@ body{
     vertical-align: text-top;
 }
 
+.AlternativeExpandContainer{
+	display: flex;
+}
+
 .cgcAlternativeExpand{
     cursor: hand;
 	cursor: pointer;
-	position: absolute;
-	width: 14px !important;
-	height: 12px !important;
-	margin-top: 40px;
-	margin-left: 20px;
+	width: 12px !important;
+	height: 8px !important;
 }
 
 .cgcChatPanel{
@@ -897,6 +1415,11 @@ body{
     display: inline-block;
     max-height:100%;
     max-width:100%;
+    -webkit-user-select: text;  
+	-moz-user-select: text;    
+	-ms-user-select: text;      
+	user-select: text;
+    user-select: text;
 }
 
 .cgcChatPanelHeader{
@@ -905,7 +1428,7 @@ body{
 }
 
 .cgcChatPanelFooter{
-	height:15px;
+	height:8px;
 	width:100%
 }
 
@@ -916,7 +1439,6 @@ body{
 
 .cgcLoginOuterBox{
     display: inline-block;
-    padding-top: 10px;
 }
 
 .cgcLoginInputBox{
@@ -925,11 +1447,12 @@ body{
 }
 
 .cgcLoginFirstAndLastNameText{
-    height: 40px;
+    height: 37px;
     width: 100%;
+    font-size: 15px !important;
 }
 
-.cgcLoginFirstAndLastNameText::-ms-clear {
+ .cgcLoginFirstAndLastNameText::-ms-clear {
     display: none;
 }
 
@@ -938,10 +1461,10 @@ body{
 	font-size: 15px !important;
 }
 
-.cgcLoginFirstAndLastNameTextColor{
-    color: #333333;
-    font-size: 15px !important;
-}
+/* .cgcLoginFirstAndLastNameTextColor{ */
+/*     color: #333333; */
+/*     font-size: 15px !important; */
+/* } */
 
 .cgcRecaptchaBox{
     height: 100%;
@@ -950,19 +1473,19 @@ body{
 
 .cgcFirstandLastNameText{
     background-color: #ffffff;
-    width: 265px;
+    width: 232px;
     height: 37px;
     padding: 0px;
     padding-left: 6px;
     border: 1px solid #E8E8E8;
-    border-radius: 4px;
+    border-radius: 6px;
     box-shadow: none !important;
 }
 
-.cgcFirstandLastNameActiveTextBorder{
-    border-color: #0099cc !important;
-    box-shadow: 0.5px 0.5px 0.5px 0.5px #0099cc !important;
-}
+/* .cgcFirstandLastNameActiveTextBorder{ */
+/*     border-color: #0099cc !important; */
+/*     box-shadow: 0.5px 0.5px 0.5px 0.5px #0099cc !important; */
+/* } */
 
 .cgcFullScreenPanelOn{
     width : 10px;
@@ -973,14 +1496,6 @@ body{
     width : 8px;
     height : 100%;
     border-right:3px solid #E6E6E6
-}
-
-.cgcDialInfoLabelBox{
-    float: left;
-    width: 100%;
-    padding-top: 0px;
-    padding-right: 10px;
-    padding-left: 10px;
 }
 
 .cgcDialInfoImage{
@@ -1000,8 +1515,8 @@ body{
 	text-align: left;
 	font-size: 12px;
 	padding-left: 5px;
-	background-color: #000000;
-	color: #B5B5B5;
+/* 	background-color: #000000; */
+/* 	color: #B5B5B5; */
 	vertical-align: middle;
 	line-height: 32px;
 	text-overflow: ellipsis;
@@ -1023,14 +1538,14 @@ body{
 .cgcCallMeImgNowButton{
     cursor: hand; 
     cursor: pointer;
-    padding: 5px;
-    font-weight: bold;
-    font-size: 11px;
+    padding: 5px 20px;
+    font-size: 14px;
+    color: #FFFFFF !important;
     height: 32px !important;
 	width: auto;
 	max-width:100px;
 	min-width:64px;
-	border-radius: 30px;
+	border-radius: 5px;
 	border: 0px !important;
 	box-shadow: none !important;
 	background-image: none !important;
@@ -1064,66 +1579,56 @@ body{
 }
 
 .cgcCaptchaErrorLabel{
-	  background-color: #FF0000;
-	  padding: 10px;
-	  font-size: 13px;
-	  border-radius: 5px;
-	  color: #ffffff;
-	  font-weight: bold;
-	  display: table-caption;
-	  min-width:300px;
-	  
+	font-size: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: table-caption;
+    width: 300px;
 }
 
 .cgcInfoAndErrorDiv{
-	display: inline-flex;
-	padding-top:10px;
-	margin:0 auto;
-	padding-left: 10px;
-	width:95%;
+	display: flex;
+	box-sizing: border-box;
+	margin-left: 80px;
 }
 
-.cgcLoginError{
-   	background-color: #FF0000;
-	width: 253px;
-	font-size: 12px;
-	font-weight: bold;
-	margin:0 auto;
-	color: #FFFFFF;
-	border-radius: 5px;
-	padding: 10px;
+.cgcLoginTimeoutErrorBox{
+    text-align: center;
+    text-align: -webkit-center;
 }
 
-.cgcBrowserSupportErrorPanel {
-    background-color: #FF0000;
+.cgcLoginTimeoutError{
+    width: 230px;
+    font-size: 15px;
+    margin-top: 28px;
+    margin-bottom: 16px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* .cgcBrowserSupportErrorPanel {
     padding: 10px;
-    font-size: 13px;
-    border-radius: 5px;
-    color: #fff;
+    font-size: 15px;
     width: 100%;
     display:inline;
     display: -ms-grid;
     text-align: center;
-}
+} */
 
 .cgcErrorPanel{
-    background-color: #FF0000;
-	padding: 10px;
-	font-size: 13px;
-	border-radius: 5px;
-	color: #ffffff;
-	width: 253px;
+    font-size: 15px !important;
+    border-radius: 5px;
+    width: 265px;
 }
 
 .cgcInfoPanel{
-	padding: 10px;
-	font-size: 13px;
+	font-size: 15px;
 	border-radius: 5px;
 	color: #000000;
 	width: 253px;
 }
 
-.cgcRightPanelComponentContainer{
+.cgcViewPanelComponentContainer{
 	height:100%;
 }
 
@@ -1131,8 +1636,8 @@ body{
     font-size: 16px;
     padding-left: 15px;
 	padding-right: 15px;
-    width: 640px !important;
-    max-width:100%;
+    min-width: 240px ;
+    max-width:calc(100% - 20px);
     word-wrap: break-word;
     text-overflow:ellipsis;
     overflow: hidden;
@@ -1141,90 +1646,90 @@ body{
 }
 
 .cgcChatMessagePopup{
-	overflow: hidden;
-	left: 0%;
-	max-width: 70%;
-	color: #FFFFFF;
-	max-height: 115px;
-	height: auto;
-	background-color: rgba(0, 0, 0, 0.8);
-	display: flex;
-	bottom:11px;
-	z-index: 1;
-	padding-top: 14px;
-	padding-bottom: 14px;
+    overflow: hidden;
+    left: 0%;
+    color: #FFFFFF;
+    max-height: 115px;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    bottom: 11px;
+    z-index: 1;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    margin-left: 9px;
 }
 
-.cgcChatContainer  .cgcChatContentFirstStyle{
+.cgcChatContainer {
 	min-width: 80%;
 }
 
-.cgcChatContainer  .cgcChatContentOtherStyle{
+.cgcChatContainer {
 	min-width: 80%;
 }
 
-.cgcChatContentFirstStyle {
-    position: relative;
-    padding-left: 8px !important;
-	padding: 5px;
-	margin-right: 50px;
-	margin-left: 12px;
-	border: 2px solid #EFEFEF;
-	display: inline-block;
-	color: #333;
-	-moz-border-radius: 10px !important;
-	border-radius: 3px;
-	max-width: 80%;
-}
+/* .cgcChatContentFirstStyle { */
+/*     position: relative; */
+/*     padding-left: 8px !important; */
+/* 	padding: 5px; */
+/* 	margin-right: 50px; */
+/* 	margin-left: 12px; */
+/* 	border: 2px solid #EFEFEF; */
+/* 	display: inline-block; */
+/* 	color: #333; */
+/* 	-moz-border-radius: 10px !important; */
+/* 	border-radius: 3px; */
+/* 	max-width: 80%; */
+/* } */
 
-.cgcChatContentFirstStyle:before {
-	  bottom: auto !important;
-	  left: -9px;
-	  border-width: 0px 9px 10px 0px;
-	  border-color: transparent #EFEFEF;
-	  content: "";
-	  position: absolute;
-	  border-style: solid;
-	  display: block;
-	  margin-top: -7.2px;
-	  top: 5.4px;
-}
+/* .cgcChatContentFirstStyle:before { */
+/* 	  bottom: auto !important; */
+/* 	  left: -9px; */
+/* 	  border-width: 0px 9px 10px 0px; */
+/* 	  border-color: transparent #EFEFEF; */
+/* 	  content: ""; */
+/* 	  position: absolute; */
+/* 	  border-style: solid; */
+/* 	  display: block; */
+/* 	  margin-top: -7.2px; */
+/* 	  top: 5.4px; */
+/* } */
 
-.cgcChatContentFirstStyle:after {
-      top: 8.2px;
-	  bottom: auto;
-	  left: -4.5px;
-	  border-width: 0px 9px 10px 0px;
-	  content: "";
-	  position: absolute;
-	  display: block;
-	  border-style: solid;
-	  margin-top: -8.2px;
-}
+/* .cgcChatContentFirstStyle:after { */
+/*       top: 8.2px; */
+/* 	  bottom: auto; */
+/* 	  left: -4.5px; */
+/* 	  border-width: 0px 9px 10px 0px; */
+/* 	  content: ""; */
+/* 	  position: absolute; */
+/* 	  display: block; */
+/* 	  border-style: solid; */
+/* 	  margin-top: -8.2px; */
+/* } */
 
-.cgcChatContentOtherStyle {
-    font-size: 13px;
-	white-space: pre-wrap;
-	word-wrap: break-word;
-	margin-left: 40px;
-	max-width: 80%;
-	margin-right: 2%;
-	border: 2px solid #EFEFEF;
-	display: inline-block;
-	border-radius: 3px;
-	padding-left: 8px !important;
-	padding: 5px;
-}
+/* .cgcChatContentOtherStyle { */
+/*     font-size: 13px; */
+/* 	white-space: pre-wrap; */
+/* 	word-wrap: break-word; */
+/* 	margin-left: 40px; */
+/* 	max-width: 80%; */
+/* 	margin-right: 2%; */
+/* 	border: 2px solid #EFEFEF; */
+/* 	display: inline-block; */
+/* 	border-radius: 3px; */
+/* 	padding-left: 8px !important; */
+/* 	padding: 5px; */
+/* } */
 
-.cgcChatInnerBox{
-	margin-top: 0.1px;
-	width: 100%;
-}
+/* .cgcChatInnerBox{ */
+/* 	margin-top: 0.1px; */
+/* 	width: 100%; */
+/* } */
 
-.cgcChatDetails{
-	padding-top: 10px;
-	font-size: 11px;
-}
+/* .cgcChatDetails{ */
+/* 	padding-top: 10px; */
+/* 	font-size: 11px; */
+/* } */
 
 .cgcOuterBoxRight {
   	height: 71px;
@@ -1239,22 +1744,46 @@ body{
 }
 
 .cgcChatBoxLeft {
-	border-top: 1px solid #D9D9D9 !important;
-  	min-height: 50px;
-  	width: 100%;  
-  	padding: 10px;
+	border-width: 2px 0px 0px 0px;
+  	width: 100%;
+  	height: auto !important;
 }
 
 .cgcChatBoxRight {
-    border: 1px solid #E4E4E4;
-    padding: 15px 25px 15px 15px;
-    background: #F0F0F0;
+	border-width: 2px 0px 0px 0px;
 }
 
+.chatEntryBoxLeft:-ms-input-placeholder{
+	font-size: 13px;
+}
 
+.chatEntryBoxLeft::-webkit-resizer{ 
+    border: 0px solid rgba(0,0,0,0); 
+}
+
+.chatEntryBoxLeft {
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 20px;
+    border: 0px;
+    font-family: 'Roboto', -apple-system, Arial, Helvetica, sans-serif !important;
+    overflow: hidden;
+    outline: none;
+    resize: none;
+    min-height: 36px !important;
+    height: 36px;
+    max-height: 14em;
+    padding: 8px;
+    display: block;
+}
+
+.chatEntryBoxRight::-webkit-input-placeholder{
+	font-size: 13px !important;
+	color: #C1C1C1;
+}
 
 .chatEntryBoxRight:-ms-input-placeholder{
-	font-size: 13px;
+	font-size: 13px !important;
 	color: #C1C1C1;
 }
 
@@ -1262,52 +1791,23 @@ body{
     border: 0px solid rgba(0,0,0,0); 
 }
 
-.chatEntryBoxRight {
-  width: 100%;
-  line-height:20px;
-  border: 1px solid #D9D9D9 !important;
-  padding-left: 10px;
-  padding-bottom: 5px;
-  padding-top: 5px;
-  font-family: 'Roboto' !important;
-  overflow: hidden;
-  outline: none;
-  height: 2em;
-  resize: none;
-  max-height: 14em;
-}
-
-
-
-
-.chatEntryBoxLeft::-webkit-input-placeholder{
-	font-size: 13px !important;
-	color: #C1C1C1;
-}
-
-.chatEntryBoxLeft:-ms-input-placeholder{
-	font-size: 13px !important;
-	color: #C1C1C1;
-}
-
-.chatEntryBoxLeft::-webkit-resizer{ 
-    border: 0px solid rgba(0,0,0,0); 
-}
-
-.chatEntryBoxLeft{
-      border: 0px solid #D9D9D9 !important;
-	  font-size: 13px;
-	  color: #333333;
-	  bottom: 0px;
-	  line-height: 20px;
-	  outline: none;
-	  width: 100%;
-	  overflow: hidden;
-	  font-family: 'Roboto' !important;
-	  height: 20px;
-	  resize: none;
-	  min-height: 20px;
-	  max-height: 8em;
+.chatEntryBoxRight{
+	border: 0px !important;
+	font-size: 13px;
+	color: #333333;
+	bottom: 0px;
+	line-height: 20px;
+	outline: none;
+	width: 100%;
+	overflow: hidden;
+	font-family: 'Roboto', -apple-system, Arial, Helvetica, sans-serif !important;
+	resize: none;
+	height: 36px;
+	min-height: 36px;
+	max-height: 8em;
+	padding: 8px;
+	box-sizing: border-box;
+	display: block;
 }
 
 .chatEntryBoxFullInnerBorder{
@@ -1315,7 +1815,7 @@ body{
 }
 
 .chatEntryBoxTopInnerBorder{
-    border-top:1px solid #0099cc !important;
+/*     border-top:1px solid #0099cc !important; */
 }
 
 .cgcHeaderBarStyle{
@@ -1334,95 +1834,77 @@ body{
 .cgcNavigationButton{
     text-align: left;
     text-shadow: none;
-	font-size: 13px !important;
-	padding: 0px !important;
-	border: 0px !important;
+    font-size: 13px !important;
+    padding: 0px 8px !important;
+    /* border: 0px !important; */
+    height: 31px !important;
+    line-height: 31px;
+    background-color: #FFFFFF !important;
+    width: auto !important;
 }
 
-.cgcLeftNavicationHeader{
-    border-bottom: 0px solid #E5E6E7 ;
-    height: 38px;
+.cgcDockerNavicationHeader{
+    border-width: 0px 0px 2px 0px;
+    height: 34px;
 } 
 
 .cgcNavigationEnabled{
-    height: 38px !important;
+    height: 32px !important;
     width: 100%;
-    background-color:#EFEFEF;
-    border-top-right-radius: 10px !important;
+    border-width: 0px  0px 2px 0px;
 }
 
 .cgcDeactive{
-    color: #C2C2C2 !important;
+    border: 0px !important;
     background-color: #FFFFFF;
     background: #FFFFFF;
-    border-bottom: 4px solid #FFFFFF !important;
+    height: 31px !important;
 }
 
-.cgcActive{
-    color: #666666 !important;
-    background-color:#FFFFFF !important;
-    border-bottom: 4px solid #C2C2C2 !important;
+.cgcActiveNavigator{
+    border-width: 0px 0px 3px 0px !important;
+    height: 34px !important;
 }
 
-.cgcRightPanelHeader{
+.cgcViewPanelHeader{
     height:32px;
     line-height:32px;
     vertical-align:middle;
 }
 
-.cgcRightPanelHeaderFullScreenOffChat{
-	color: rgb(102,102,102);
-    border-bottom: 1px solid #EEEEEE;
-    background-color: #FFFFFF;
-    height: 32px;
+.cgcViewPanelHeaderFullScreenOffScreenShare{
+    height: 42px;
     vertical-align: middle;
+    padding: 6px;
 }
 
-.cgcRightPanelHeaderFullScreenOffScreenShare{
-	color: rgb(102,102,102);
-    background-color: #3A3A3A;
-    height: 32px;
+.cgcViewPanelHeaderFullScreenOffVideo{
+    height: 42px;
     vertical-align: middle;
+    padding: 6px;
 }
 
-.cgcRightPanelHeaderFullScreenOffVideo{
-	color: rgb(102,102,102);
-    background-color: #3A3A3A;
-    height: 32px;
-    vertical-align: middle;
+
+.cgcViewPanelHeaderFullScreenOnScreenShare{
+    height: 42px;
+    padding: 6px;
 }
 
-.cgcRightPanelHeaderFullScreenOnChat{
-	color: rgb(102,102,102);
-	border-bottom: 1px solid #EEEEEE;
-    background-color: #FFFFFF;
-    height: 32px;
+.cgcViewPanelHeaderFullScreenOnVideo{
+    height: 42px;
     vertical-align: middle;
-}
-
-.cgcRightPanelHeaderFullScreenOnScreenShare{
-	color: rgb(102,102,102);
-    background-color: #000000;
-    height: 32px;
-    vertical-align: middle;
-}
-
-.cgcRightPanelHeaderFullScreenOnVideo{
-	color: rgb(102,102,102);
-    background-color: #000000;
-    height: 32px;
-    vertical-align: middle;
+    padding: 6px;
 }
 
 .cgcChatPanelBorderColor{
-    border : 0px solid #E5E6E7 ;
+/*     border : 1px solid #E5E6E7 ; */
 }
 
 .cgcVideoPanelBorder{
-    border-top : 16px solid #3a3a3a;
-    border-left:15px solid #3a3a3a;
-    border-right:15px solid #3a3a3a;
-    border-bottom:16px solid #3a3a3a;
+/*     border-top : 16px solid #3a3a3a; */
+/*     border-left:15px solid #3a3a3a; */
+/*     border-right:15px solid #3a3a3a; */
+/*     border-bottom:16px solid #3a3a3a; */
 }
 
 .cgcVideoPanelBackground{
@@ -1430,14 +1912,48 @@ body{
 }
 
 .cgcScreenPanelBorder{
-    border-top : 16px solid #3a3a3a;
-    border-left:15px solid #3a3a3a;
-    border-right:15px solid #3a3a3a;
-    border-bottom:16px solid #3a3a3a;
+/*     border-top : 16px solid #3a3a3a; */
+/*     border-left:15px solid #3a3a3a; */
+/*     border-right:15px solid #3a3a3a; */
+/*     border-bottom:16px solid #3a3a3a; */
 }
 
 .cgcScreenPanelBackground{
 	background-color:#3A3A3A;
+}
+
+.cgcRemoteVideoContainer {
+	background-color: #000000;
+	position: relative;
+	margin: auto !important;
+	height: 0px;
+	width: 0px;
+}
+.cgcRemoteVideo {
+	position: absolute;
+	background-color: #000000;
+	height: 100%;
+	width:100%;
+	border: none;
+}
+
+.cgcLocalVideo {
+    position: absolute;
+    top: auto;
+    right: 30px;
+    left: auto;
+    bottom: -20px;
+     height: 25%;
+    max-width: 25%;
+    background-color: #000000;
+    z-index: 99;
+    border-radius: 6px;
+    border: 1px;
+}
+
+.cgcVideoPanel .cgcLocalVideo{
+	bottom: 10px;
+	right: 10px;
 }
 
 .cgcSelfView{
@@ -1457,16 +1973,16 @@ body{
     background-color:#FFFFFF;
 }
 
-.cgcParticipantMessageBackground{
-    background-color:#FFF1E2;
-}
+/* .cgcParticipantMessageBackground{ */
+/*     background-color:#FFF1E2; */
+/* } */
 
 .cgcGuestMessageBackground{
     background-color:#FFFFFF;
 }
 
 .cgcChatInfoBackground{
-    height: 16px;
+    min-height: 16px;
     font-size: 12px;
 }
 
@@ -1478,144 +1994,10 @@ body{
 
 .cgcChatUserInfo{
     vertical-align: top;
-	color: black;
 }
 
 .cgcChatInfo{
     vertical-align: baseline;
-}
-
-.cgcChatUserInfoFontColor{
-    color: #000000;
-    font-weight: bold;
-}
-
-.cgcChatUserInfoStatusFont{
-    font-weight: normal;
-}
-
-.cgcAlternativeNumberPopupText{
-    color:#000000;
-}
-
-
-/***************************************************
- * The Customize CSS Classes in below.
- ***************************************************/
-
-.cgcAudio{
-	background-color:#1B1A1A;
-}
-
-.cgcAudioHover{
-	background-color:#171616;
-}
-
-.cgcAudioPress{
-	background-color:#1A8DA5;
-}
-
-.cgcVideoOff{
-	background-color:#1B1A1A;
-}
-
-.cgcVideoOffHover{
-	background-color:#171616;
-}
-
-.cgcVideoOffPress{
-	background-color:#1A8DA5;
-}
-
-.cgcVideoOn{
-	background-color:#1D9DB8;
-}
-
-.cgcVideoOnHover{
-	background-color:#1A8DA5;
-}
-
-.cgcVideoOnPress{
-	background-color:#177E93;
-}
-
-.cgcMuteOff{
-	background-color:#1B1A1A;
-}
-
-.cgcMuteOffHover{
-	background-color:#171616;
-}
-
-.cgcMuteOffPress{
-	background-color:#1A8DA5;
-}
-
-.cgcMuteOn{
-	background-color:#1D9DB8;
-}
-
-.cgcMuteOnHover{
-	background-color:#1A8DA5;
-}
-
-.cgcMuteOnPress{
-	background-color:#177E93;
-}
-
-.cgcEndActive{
-	background-color:#DE4D4D;
-}
-
-.cgcEndHover{
-	background-color:#C74545;
-}
-
-.cgcEndPress{
-	background-color:#B23E3E;
-}
-
-.cgcCallMeButtonDisableBackground{
-	color:#797979;
-	background-color: #323131;
-}
-
-.cgcCallMeButtonEnableBackground{
-	color:#ffffff; 
-	background-color: #05d361;
-}
-
-.cgcCallMeButtonOnPressBackground{
-	color:#FFFFFF;
-	background-color: #04BD57;
-}
-
-.cgcChatInfoFontColor{
-    color: #00992d;
-}
-
-.cgcChatErrorFontColor{
-    color:#FF0000;
-}
-
-.cgcChatMessageBackgroundFirstColor{
-	background-color: #EFEFEF;
-}
-
-.cgcChatMessageBackgroundFirstColor:after{
-	border-color: transparent #EFEFEF;
-}
-
-.cgcChatMessageBackgroundSecondColor{
-	background-color: #FFFFFF;
-}
-
-.cgcChatMessageBackgroundSecondColor:after{
-	border-color: transparent #FFFFFF;
-}
-
-.cgcAlternativeNumberPopupBackground{
-    background-color: rgba(210, 210, 210, 0.8); 
 }
 
 .cgcDesktopShareImgButton{
@@ -1635,75 +2017,64 @@ body{
 	
 }
 
-.cgcDesktopSharePanel{
-    border: 0px solid;
-    padding:0px;
-    background-color: #1B1A1A;
-    max-height:400px;
-    width:275px;
-}
+/* .cgcDesktopSharePanel{ */
+/*     border: 0px solid; */
+/*     padding:0px; */
+/*     background-color: #1B1A1A; */
+/*     max-height:400px; */
+/*     width:275px; */
+/* } */
 
 .cgcDesktopSharePopup{
-	  padding: 10px;
-	  vertical-align: middle !important;
-	  border: 1px solid black;
-	  width:300px;
-	  position: absolute;
-	  z-index:10 !important;
-	  display: block !important;
-	  top: 40% !important;
-    left: 40% !important;
+    padding: 25px;
+    vertical-align: middle !important;
+    border: 1px;
+    border-radius: 6px;
+    width: 210px;
+    position: absolute;
+    z-index: 21 !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.cgcDesktopSharePopupIcon{
+	margin-bottom: 15px;
+    width: 36px;
+    height: 36px;
+    align-self: center;
 }
 
 .cgcDesktopSharePopupText{
-    cursor: pointer;
     font-size: 12px;
-    margin-left: 5px;
     border-bottom: 0px;
     font-weight: 500;
     display: inline;
+    margin-bottom: 25px;
 }
 
 .cgcDesktopSharePopupButton{
-  cursor: pointer;
-  padding: 1px;
-  font-weight: bold;
-  font-size: 11px;
-  height: 24px !important;
-	width: 54px;
-	max-width:54px;
-	min-width:24px;
-	border-radius: 12px;
-	border: 0px !important;
-	box-shadow: none !important;
-	background-image: none !important;
-	top: 175px;
+    cursor: pointer;
+    padding: 1px;
+    font-size: 11px;
+    height: 24px !important;
+    width: 54px;
+    max-width: 54px;
+    min-width: 24px;
+    border-radius: 4px;
+    border-width: 1px;
+    box-shadow: none !important;
+    background-image: none !important;
+    top: 175px;
 }
 
-.desktopShareButtonInactiveBackground{
-	background-color: #636363;
+.cgcShareButtonHoverCover{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    border-radius: 4px;
 }
-
-.desktopShareButtonActiveBackground{
-	background-color: #1d9db8;
-}
-
-.desktopShareStopButtonDisabled{
-	opacity: 0.5;
-}
-
-.bsftPopup{
-	  background-color: #F0F0F0; 
-}
-.bsftPopupInactiveButton{
-  color: #ADADAD;
-	background-color: #636363;
-}
-.bsftPopupActiveButton{
-  color: #FFFFFF;
-	background-color: #1d9db8;
-}
-
 
 .scrollbar-macosx > .scroll-element,
 .scrollbar-macosx > .scroll-element div
@@ -1803,3 +2174,211 @@ body{
 .scrollbar-macosx > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_size { 
 	top: -11px; 
 }
+
+
+/***************************************************
+ * The Customize CSS Classes in starts from here.
+ ***************************************************/
+.bsftPrimaryBackground{
+	background-color: #2dbd9b !important;
+}
+.bsftPrimaryButton{
+	background-color: #2DBD9B !important;
+}
+.bsftPrimaryButton[disabled]{
+	opacity: 0.5 !important;
+}
+.bsftPrimarySeparator{
+	border-color: #2DBD9B !important;
+	border-style: solid;
+}
+.bsftPrimaryButtonReverse{
+	color: #FFFFFF !important;
+}
+.bsftCallControlsBackground{
+	background-color: #F0F0F0 !important;
+}
+.bsftChatBackground{
+	background-color: #f8f8f8 !important;
+}
+.bsftIncomingChatBalloon{
+	background-Color: #FFFFFF !important;	
+}
+.bsftOutgoingChatBalloon{
+	background-Color: #627789 !important;	
+}
+.bsftIcon{
+	color: #2d2d2d;
+}
+.bsftSelectedIcon{
+	color: #2dbd9b !important;
+}
+.bsftSymbolicRed{
+	Color: #FF3347 !important;
+}
+/* .bsftHoverBackground { */
+/* 	background-Color: #000000 !important; */
+/* 	opacity: 0.1; */
+/* } */
+.bsftHoverBackground {
+	background-Color: #000000 !important;
+	opacity: 0;
+}
+:not(.bsftDisabledBG) > .bsftHoverBackground:hover {
+	opacity: 0.1 !important;
+}
+.active > .bsftHoverBackground {
+	opacity: 0.1 !important;
+}
+.active > .bsftHoverBackground:hover {
+	opacity: 0.2 !important;
+}
+
+.bsftShareButtonHoverBackground{
+	background-Color: #000000 !important;
+	opacity: 0;
+}
+.bsftShareButtonHoverBackground:hover,
+.active > .bsftShareButtonHoverBackground{
+	opacity: 0.15 !important;
+}
+
+.bsftDimmedText:-ms-input-placeholder{
+	color: #b4b4b4 !important;
+}
+.bsftDimmedText::-webkit-input-placeholder {
+	color: #b4b4b4 !important;
+}
+
+ .bsftDimmedText::-ms-clear {
+    display: none;
+}
+
+.bsftPrimaryText{
+	color: #FFFFFF !important;
+}
+.bsftCallBackground{
+	background-Color: #0D2C3E !important;
+}
+.bsftHeaders{
+	color: #323232 !important;
+}
+.bsftIncomingChatText{
+	color: #323232 !important;
+}
+.bsftOutgoingChatText{
+	color: #FFFFFF !important;
+}
+.bsftChatPrimaryText{
+	color: #2BAA85 !important;
+}
+.bsftChatSecondaryText{
+	color: #b4b4b4 !important;
+}
+.bsftSeparators{
+	border-color: #dcdcdc !important;
+	border-style: solid;
+}
+.bsftInputBoxBorder{
+	border-color: #dcdcdc !important;
+	border-style: solid;
+}
+/* .bsftInputFieldOutline{ */
+/*     outline-color: #c4e8dd !important; */
+/*     outline-style: solid; */
+/* } */
+.onyx-input-decorator.onyx-focused.bsftInputFieldOutline{
+	border-color: #c4e8dd !important;
+    border-style: solid;
+}
+.bsftAppNotification{
+    border-style: solid;
+    border-color: #FFDA00 !important;
+}
+.bsftAppNotificationBackground{
+	background-color: #F8F8F8 !important;
+}
+.bsftAppNotificationText{
+	color: #323232 !important;
+}
+.bsftBadgeText{
+	color: #323232 !important;
+}
+.bsftBadgeBackground{
+	background-color: #DCDCDC !important;
+}
+/* .bsftAccentText{ */
+/* 	color: #2BAA85 !important; */
+/* } */
+.bsftAccentText > a{
+	color: #2BAA85 !important;
+}
+.bsftAccentText > a {
+	text-decoration: none !important;
+	outline: none;
+}
+
+.bsftWelcomeScreenDesc > a {
+	color: #475561 !important;
+	outline: none;
+}
+
+.bsftTooltipBackground{
+	background-color: #323232 !important;
+}
+.bsftTooltipText{
+	color: #ffffff !important;
+}
+
+.bsftVersionText{
+	color: #969696 !important;
+}
+
+.bsftPrimaryContentText{
+	color: #333333 !important;
+}
+
+.bsftContentBackground{
+	background-color: #FFFFFF !important;
+}
+
+.bsftTertiaryContentText{
+	color: #C0C0C0 !important;
+}
+
+.bsftChatErrorFontColor{
+    color:#FF0000;
+}
+
+.bsftAlternateDialInNumbersPopup:after{
+    border-color: #2DBD9B transparent;
+}
+
+.bsftAlternateDialInNumbersPopupBackground{
+    background-color: #FFFFFF; 
+}
+
+.bsftWelcomeScreenPopupBackground{
+	background-color: #FFFFFF;
+}
+
+.bsftSharePopupBackground{
+	background-color: #F0F0F0;
+}
+
+.bsftPrimaryButtonBorder{
+	border-color: #2DBD9B !important;
+	border-style: solid;
+}
+
+.bsftDefaultAvatarBorder{
+	border-color: #2DBD9B !important;
+	border-style: solid;
+}
+
+.bsftDesktopSharePopupCancleBtn{
+	background-color: #FFFFFF;
+}
+/***************************************************
+ * The Customize CSS Classes ends here.
+ ***************************************************/

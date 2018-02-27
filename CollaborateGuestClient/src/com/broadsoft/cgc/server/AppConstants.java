@@ -50,10 +50,11 @@ public interface AppConstants extends Serializable {
 
 	public static final String CONFIG_KEY_GENERAL_ENABLE_WEBRTC = "cgc.config.key.webrtc.enabled";
 	public static final String CONFIG_KEY_GENERAL_ENABLE_WEBRTCVIDEO = "cgc.config.key.webrtc.video.enabled";
+	public static final String CONFIG_KEY_GENERAL_WEBRTCVIDEO_RESOLUTION = "cgc.config.key.webrtc.video.resolution";
 	public static final String CONFIG_KEY_GENERAL_ENABLE_CALLMENOW = "cgc.config.key.callmenow.enabled";
 	public static final String CONFIG_KEY_GENERAL_BOSH_URL = "cgc.config.key.boshUrlList";
 	public static final String CONFIG_KEY_GENERAL_CUSTOM_RESOURCE_PATH = "cgc.config.key.custom.resourcepath";
-	public static final String CONFIG_KEY_GENERAL_IN_BAND_DTMF_SUPPORT_ENABLED ="cgc.config.key.inBandDTMFSupport.enabled";
+	public static final String CONFIG_KEY_GENERAL_SEND_CONFID_AS_SIP_URI_HEADER_ENABLED ="cgc.config.key.sendConfIdAsSipURIHeader.enabled";
 	public static final String CONFIG_KEY_GENERAL_TXN_GLOBAL_LIMIT_PERIOD_IN_SEC = "cgc.config.key.globalTransactionLimitPeriodInSeconds";
 	public static final String CONFIG_KEY_GENERAL_TXN_GLOBAL_LIMIT = "cgc.config.key.globalTransactionLimit";
 	

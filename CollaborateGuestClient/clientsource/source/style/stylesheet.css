@@ -94,19 +94,23 @@
 }
 
 .localVideo {
-  display: none;
-  position: absolute;
-  top: auto;
-  right: 1%;
-  left: auto;
-  bottom: 1%;
-  width: 25%;
-  height: 25%;
-  background-color: #241D1D;
-  border-radius: 0px;
-  border: 0px solid #ddd;
-  box-shadow: 0px 0px 0px #999999;
-  z-index: 99;
+    display: none;
+    position: absolute;
+    top: auto;
+    right: 30px;
+    left: auto;
+    bottom: -20px;
+    width: 25%;
+    height: 25%;
+    background-color: #241D1D;
+/*     box-shadow: 0px 0px 0px #999999; */
+    z-index: 99;
+    border-radius: 6px;
+    border: 1px;
+}
+.cgcDockerPanel  .localVideo {
+	right: 1% !important;
+    bottom: 1% !important;
 }
 
 :-webkit-full-screen .remoteVideo {

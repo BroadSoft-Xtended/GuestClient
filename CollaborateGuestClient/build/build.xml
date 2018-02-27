@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
-<project name="cgc" default="cgc.war" basedir="../">
-
+<project name="cgc" default="cgc.dev.deploy.tomcat" basedir="../">
+	<property name="cgc.devenvironment.rootdir" location="C:\" />
+	<property name="cgc.etc.dir" location="${basedir}\etc" />
     <property name="cgc.src.dir" location="${basedir}\src" />
     <property name="cgc.clientsource.dir" location="${basedir}\clientsource" />
     <property name="cgc.enyo.out" location="${basedir}\war\cgc" />
@@ -11,39 +12,58 @@
     <property name="cgc.meta.inf" location="${cgc.war.src}\META-INF" />
     <property name="cgc.template.dir" location="${basedir}\template" />
     <property name="cgc.war.name" value="BWCollaborateGuestClient" />
-    <property name="cgc.base_version" value="2.0" />
-    <property name="cgc.version" value="3.19" />
+    <property name="cgc.base_version" value="4.0.1" />
+    <property name="cgc.version" value="4.0.1_1" />
     <property name="cgc.war.output" value="${basedir}\output" />
 
     <path id="lib.path">
         <fileset dir="${cgc.web.inf}\lib" includes="*.jar" />
     </path>
-
-
+    
+    <condition property="isWindows">
+        <os family="windows" />
+    </condition>
+    
+    <condition property="isLinux">
+        <os family="unix" />
+    </condition>
+    
     <target name="cgc.build.all">
         <mkdir dir="${cgc.classes.dir}" />
         <javac target="1.6" srcdir="${cgc.src.dir}" destdir="${cgc.classes.dir}" classpathref="lib.path" />
     </target>
-
-    <target name="cgc.minify">
+    
+    <target name="cgc.minify.windows" if="isWindows">
         <exec executable="${cgc.minify.tool}/deploy.bat" />
+    </target>
+    
+    <target name="cgc.minify.linux" if="isLinux">
+        <exec executable="${cgc.minify.tool}/deploy.sh" />
+    </target>
+
+    <target name="cgc.minify" depends="cgc.minify.windows,cgc.minify.linux">
+        
     </target>
 
     <target name="cgc.clean.all">       
+        <delete failonerror="false" dir="${cgc.enyo.out}" />
         <delete failonerror="false" dir="${cgc.enyo.out}\enyo" />
         <delete failonerror="false" dir="${cgc.enyo.out}\lib" />
         <delete failonerror="false" dir="${cgc.enyo.out}\source" />
         <delete failonerror="false" dir="${cgc.enyo.out}\assets" />     
         <delete failonerror="false" file="${cgc.war.src}\deploy.json" />
+        <delete failonerror="false" dir="${cgc.war.src}\media" /> 
+        <delete failonerror="false" dir="${cgc.enyo.out}\clientbuild" /> 
+        <delete failonerror="false" dir="${cgc.war.output}" /> 
         <delete>
             <fileset dir="${cgc.war.src}">
                 <exclude name="**/enyo*"/>
                 <exclude name="**/customDir/*"/>
                 <exclude name="**/*.jar"/>              
-                <exclude name="/META-INF/*"/>
-                <exclude name="**/*web.xml"/>
-                <excludesfile name="${cgc.war.src}/cgc.jsp"/>
-                <excludesfile name="${cgc.war.src}/jquery-1.6.4.js"/>                   
+                <exclude name="**/META-INF/*"/>
+                <exclude name="**/*.xml"/>
+                <exclude name="**/*.jsp"/>
+                <exclude name="**/*.js"/>                   
             </fileset>
         </delete>       
     </target>
@@ -79,8 +99,8 @@
 				<attribute name="Build-Name" value="${cgc.war.name}" />
 				<attribute name="Specification-Vendor" value="Broadsoft" />
 				<attribute name="Implementation-Vendor" value="Broadsoft" />
-				<attribute name="RELEASE_NAME" value="${cgc.base_version}" />
-				<attribute name="Version" value="${cgc.version}" />
+				<attribute name="RELEASE_NAME" value="${cgc.version}" />
+				<attribute name="Version" value="${cgc.base_version}" />
 				<attribute name="Cache_Version" value="${current.time}" />
 			</manifest>
 		</war>
@@ -103,7 +123,7 @@
         <javac target="1.6" srcdir="${cgc.src.dir}" destdir="${cgc.classes.dir}" classpathref="lib.path" />
     </target>
     
-    <target name="cgc.dev.deploy" depends="cgc.devclean.all,cgc.dev.build,cgc.copy.media">              
+    <target name="cgc.dev.deploy" depends="cgc.devclean.all,cgc.dev.build,cgc.copy.media,prepareDeskEnvironment,prepareDeskEnvironment">              
         <copy todir="${cgc.enyo.out}">
             <fileset dir="${cgc.clientsource.dir}">
                 <exclude name="build/" />
@@ -112,9 +132,43 @@
             </fileset>
         </copy>         
         
-        <copy todir="${cgc.web.inf}\classes">
+        <!-- copy todir="${cgc.web.inf}\classes">
             <fileset dir="${cgc.template.dir}"> </fileset>
+        </copy -->
+    </target> 
+	
+	<target name="cgc.dev.deploy.jetty" depends="cgc.dev.deploy">              
+	        <copy todir="${cgc.web.inf}\classes">
+	            <fileset dir="${cgc.template.dir}"> </fileset>
+	        </copy>
+	</target>   	
+ 
+    <target name="cgc.dev.deploy.tomcat" depends="cgc.dev.deploy,prepareDeskEnvironment">              
+    	 <copy todir="${cgc.web.inf}\classes">
+    	                <fileset dir="${cgc.template.dir}">
+    	                	<include name="BWCollaborateGuestClientConfig_${cgc.base_version}.properties" />
+    	                	
+    	                </fileset>
+    	 </copy>
+    </target>       
+    	
+   <target name="prepareDeskEnvironment" description="Prepare devmode for logging environment">
+        <mkdir dir="${cgc.devenvironment.rootdir}\usr\local\broadworks\bw_base\conf" />
+        <copy todir="${cgc.devenvironment.rootdir}\usr\local\broadworks\bw_base\conf">
+            <fileset dir="${cgc.etc.dir}" includes="*" />
         </copy>
-    </target>   
+
+        <mkdir dir="${cgc.devenvironment.rootdir}\var\broadworks\webapps\conf\BWCollaborateGuestClient_${cgc.base_version}" />
+        <copy todir="${cgc.devenvironment.rootdir}\var\broadworks\webapps\conf\BWCollaborateGuestClient_${cgc.base_version}">
+            <fileset dir="war/META-INF" includes="bwLogConfig.xml" />
+        </copy>
+	    <copy todir="${cgc.devenvironment.rootdir}\var\broadworks\webapps\conf\BWCollaborateGuestClient_${cgc.base_version}">
+	        <fileset dir="war/WEB-INF/customDir" includes="*" />
+	    </copy>   	
+       <copy todir="${cgc.devenvironment.rootdir}\var\broadworks\webapps\conf">
+            <fileset dir="${cgc.template.dir}" includes="BWCollaborateGuestClientConfig_${cgc.base_version}.properties" />
+       </copy>
+    </target>
+
     
 </project>

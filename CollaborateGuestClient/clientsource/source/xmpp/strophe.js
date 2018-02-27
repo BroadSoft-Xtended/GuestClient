@@ -4164,7 +4164,7 @@ Strophe.Bosh.prototype = {
         this.errors++;
         Strophe.warn("request errored, status: " + reqStatus +
                      ", number of errors: " + this.errors);
-        if (this.errors > 4) {
+        if (this.errors > 2) {
             this._conn._onDisconnectTimeout();
         }
     },

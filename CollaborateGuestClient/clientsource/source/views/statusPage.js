@@ -8,12 +8,15 @@ enyo.kind({
 	kind : "Control",
 	kind : "FittableRows",
 	name : "kind.com.broadsoft.cgc.WaitForLeaderAcceptance",
-	fit : true,
+//	fit : true,
 	create : function() {
 		this.inherited(arguments);
 		window.cgcComponent.joinPage = this;
 		if (window.cgcProfile.err != undefined) {
-			console.log("CollaborateGuestClient:loginWidget:create Login Page is not loaded for " + window.cgcProfile.err);
+            if(LOGGER.API.isInfo()){
+                LOGGER.API.info("statuspage.js", "Login page is not loaded due to invalid progile ", window.cgcProfile.err );
+            }
+			
 		} else {
 			document.title = htmlEscape(jQuery.i18n.prop(
 					"cgc.label.room.title", window.cgcProfile.name));
@@ -29,16 +32,19 @@ enyo.kind({
 		content : ""
 	}, 
 
-	{kind: "FittableColumns", style: "text-align:center;", components: [{
-        classes : "cgcJoinPageOuterBox", 
+	{kind: "FittableColumns", classes: "cgcStatusPageBox", components: [{
+        classes : "cgcJoinPageOuterBox bsftSeparators", 
         components:[
 			{
-				tag : "img",
-				id : "com.broadsoft.cgc.joinPageLogo",
-				name : "joinPageLogo",
-				classes : "cgcJoinPageLogo",
-				src : "branding/assets/applogo.png",
-				
+				tag : "div",
+				classes : "cgcJoinPageLogoOuterBox",
+				components : [ {
+						tag : "img",
+						id : "com.broadsoft.cgc.joinPageLogo",
+						name : "joinPageLogo",
+						classes : "cgcJoinPageLogo",
+						src : "branding/assets/applogo.png?ts=" + window.ts,
+				}]
 			},
 			{tag : "div", classes : "cgcLogoSeperator", name: "logoSeperatorDIV"},
 			{
@@ -51,8 +57,24 @@ enyo.kind({
 					
 		
 				}]
+			},
+			{
+				tag : "div",
+				classes : "cgcJoinPageFooterBox",
+				components : [ {
+						tag : "img",
+						id : "com.broadsoft.cgc.joinPageLogo",
+						name : "joinPageFooter",
+						classes : "cgcJoinPageFooterLogo",
+						src : "branding/assets/footer_logo_129x29.png?ts=" + window.ts,
+				}]
 			}]
-	    }
+	    },
+		{
+			tag : "div",
+			classes : "cgcAppVersion bsftVersionText",
+			content : window.cgcConfig.warVersion
+		}
 	
 	]}
 	
@@ -71,7 +93,7 @@ enyo
 				name : "LoginHeader",
 				content : "",
 				fit : true,
-				classes : "cgcLoginHeader",
+				classes : "cgcLoginHeader bsftHeaders bsftMediumFont",
 				rendered : function() {
 					if(window.cgcProfile.name){
 						this.setContent(jQuery.i18n.prop(
@@ -105,7 +127,7 @@ enyo
 									content : "",
 									allowHtml : true,
 									fit : true,
-									classes : "cgcStatusProgressInfoMessageBox"
+									classes : "cgcStatusProgressInfoMessageBox cgcLoginPageLabel"
 								},
 								{
 									name : "statusProgressWarningMessageBox",
@@ -113,12 +135,29 @@ enyo
 									allowHtml : true,
 									fit : true,
 									classes : "cgcStatusProgressWarningMessageBox"
-								}
+								},
+								{
+									name : "statusDismissedMessageBox",
+									classes : "cgcStatusDismissedMessageBox cgcHide",
+									components : [{
+										name : "statusDismissedMessage",
+										classes : "cgcLoginPageLabel bsftMediumFont",
+										content : "",
+										allowHtml : true
+									},
+									{
+										name : "declinedRoomHeader",
+										classes : "cgcLoginDeclinedRoomHeader bsftHeaders bsftMediumFont",
+										content : "",
+										allowHtml : true
+									}]
+								},
 				]
 			
 			}
 		],
 		showStatusMessage : function(event, data) {
+			
 			if (data.message == "cgc.info.sign-in.progress.pending") {
 				var opts = {
 						  lines: 13, // The number of lines to draw
@@ -145,12 +184,14 @@ enyo
 						//spinner.setStyle("position","relative");
 						
 						
+				this.$.statusMessageBox.addClass("bsftMediumFont cgcLoginPageLabel");
 				this.$.statusMessageBox
 					.setContent(htmlEscape(jQuery.i18n.prop("cgc.info.sign-in.progress.pending")));
 				
 				this.$.statusProgressInfoMessageBox
 				.setContent("<br>" + htmlEscape(jQuery.i18n.prop("cgc.info.sign-in.progress.status")));
 				
+				this.$.statusProgressWarningMessageBox.addClass("cgcLoginPageLabel");
 				this.$.statusProgressWarningMessageBox
 				.setContent("<br>" + htmlEscape(jQuery.i18n.prop("cgc.info.sign-in.progress.warning")));
 				
@@ -160,24 +201,29 @@ enyo
 					window.spinner.stop();
 				}
 				this.$.progressImage.hide();
-				if(data.message == "cgc.error.muc.guest.kicked" || data.message == "cgc.error.muc.session.closed"){
+				if(data.message == "cgc.error.muc.session.closed") {
 					this.$.statusMessageBox.setContent(htmlEscape(jQuery.i18n.prop(
 							data.message,
 							window.cgcProfile.name)));
-					this.$.statusMessageBox.addClass("cgcInfoPanel");
-				}else{
+					this.$.statusMessageBox.addClass("cgcInfoPanel bsftSymbolicRed bsftMediumFont");
+				} else if(data.message == "cgc.error.muc.guest.kicked"){
+					this.$.LoginHeader.hide();
+					this.$.statusDismissedMessage.setContent(htmlEscape(jQuery.i18n.prop("cgc.error.muc.guest.kicked")));
+					this.$.declinedRoomHeader.setContent(htmlEscape(jQuery.i18n.prop("cgc.label.room.title", window.cgcProfile.name)));
+					this.$.statusDismissedMessageBox.removeClass("cgcHide");
+				} else{
 					
-				if(data.message == "cgc.error.unsupported.browser"){
-						this.$.statusMessageBox.setContent(htmlEscape(jQuery.i18n.prop(data.message,browserName+" v."+fullVersion)));
-						this.$.statusProgressWarningMessageBox.removeClass("cgcStatusProgressWarningMessageBox");
-						this.$.statusProgressWarningMessageBox.addClass("cgcStatusUnSupportedBrowerMessageBox");
-						this.$.statusMessageBox.addClass("cgcBrowserSupportErrorPanel");
-						this.$.statusProgressWarningMessageBox.setContent(htmlEscape(jQuery.i18n.prop("cgc.info.supported.browserlist")));
-					}else{
-						this.$.statusMessageBox.setContent(data.message);
-						this.$.statusMessageBox.addClass("cgcErrorPanel");
+					if(data.message == "cgc.error.unsupported.browser"){
+							this.$.statusMessageBox.setContent(htmlEscape(jQuery.i18n.prop(data.message,browserName+" v."+fullVersion)));
+							this.$.statusProgressWarningMessageBox.removeClass("cgcStatusProgressWarningMessageBox");
+							this.$.statusProgressWarningMessageBox.addClass("cgcStatusUnSupportedBrowerMessageBox cgcLoginPageLabel bsftAccentText bsftMediumFont");
+							this.$.statusMessageBox.addClass("bsftSymbolicRed bsftMediumFont");
+							this.$.statusProgressWarningMessageBox.setContent(htmlEscape(jQuery.i18n.prop("cgc.info.supported.browserlist")));
+						}else{
+							this.$.statusMessageBox.setContent(data.message);
+							this.$.statusMessageBox.addClass("cgcErrorPanel  bsftSymbolicRed bsftMediumFont");
+						}
 					}
-				}
 			}
 			
 		

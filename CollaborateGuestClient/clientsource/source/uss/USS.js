@@ -16,6 +16,7 @@
 		this.bwp = config.bwp;
 		this.bcu = config.bcu;
 		this.bcp = config.bcp;
+		this.ownerJid = config.ownerJid;
 		this.name = config.name;
 		this.ownerid = null;
 		this.capacity = config.capacity;
@@ -64,8 +65,11 @@
         this.floorHolder = null;
         
         this.destroyed = false;
+        
+        
 		// callbacks
 		this.onStarted = function ( self ) {};
+		this.onScreenShareExtensionActiveDeactive = function ( isSuccess ) {};
 		this.onBaseImage = function ( imageFormat, imageData, dimension ) {	};
 		this.onImageDeltas = function ( imageFormat, imageDeltas, imageData ) {};
 		this.onCursorImage = function ( imageformat, imageData, posX, posY ) {};
@@ -79,96 +83,137 @@
 		this.setDesktopShareExtensionListener = function(){
 			
 			var self = this;
-		  	//console.log("USS:iFrame listeners to be added");
+		  	
 		  	window.addEventListener('message', function (event) {
 		  		if(self.destroyed){
 		  			return;
 		  		}
-		  		console.log("USS :: screenshare response :: " + event.data.response);
-				    
+                
+		  		if(LOGGER.API.isDevDebug())	LOGGER.API.devDebug("USS", "Event from Screenshare extension", event);  
+                
 			    if(event.data.responseFrom == "cgcframe") {
 			    	
-			    	
+			    	if(LOGGER.API.isDevDebug()){
+                        LOGGER.API.devDebug("USS", "EventResponse received for new frame from Screenshare extension ");
+                    }
+                    
 			    	 if(self.isFloorHolder() && event.data.response == "deltaImage") {
-			    		var deltas = event.data.deltas;
-				  		var imageData = event.data.image;
-				  		var isAppResized = event.data.isAppResized;
-				  		
-				  		if(isAppResized) {
-				  			self.iteration = self.BASE_IMAGE_FREQUENCY; // Reset it to Base image to start with resized images. 
-				  			self.sendUpdate(); // Call sendUpdate() to start the next iteration in calling the extension to get latest image
-				  			return;
-				  		}
-				  
-				  		if( imageData) {
-					  		self.postUSSMessage('shareDelta', {
-					  	          src : self.jid,
-					  	          share : self.shareId,
-					  	          rev : ++self.revision,
-					  	          deltas : deltas
-					  	        });
-					  		self.postUSSMessage('shareImage', {
-					  	          src : self.jid,
-					  	          share : self.shareId,
-					  	          imageData : imageData,
-					  	          rev : self.revision,
-					  	          hasDelta : true
-					  	        });
-				  		}
-				  		
-				  		self.sendUpdate(); // Call sendUpdate() to start the next iteration in calling the extension to get latest image
-					    
+			    		 if(!self.destroyed){
+			    			 	if(LOGGER.API.isDevDebug()){
+		                            LOGGER.API.devDebug("USS", "New packet received for deltaImage for new frame from Screenshare extension ", event.data.deltas );
+		                        }
+		                    
+			    			 	if(!event.data.image || !event.data.deltas){
+			                        LOGGER.API.warn("USS", "No valid delta packet received from Screenshare extension. Wait for next packet." );
+			    			 		self.startTime();
+			    			 		return;
+			    			 	}
+					    		var deltas = event.data.deltas;
+						  		var imageData = event.data.image;
+						  		var isAppResized = event.data.isAppResized;
+						  		
+						  		if(isAppResized) {
+						  			self.iteration = self.BASE_IMAGE_FREQUENCY; // Reset it to Base image to start with resized images. 
+						  			self.sendUpdate(); // Call sendUpdate() to start the next iteration in calling the extension to get latest image
+						  			return;
+						  		}
+						  
+						  		if( imageData) {
+							  		self.postUSSMessage('shareDelta', {
+							  	          src : self.jid,
+							  	          share : self.shareId,
+							  	          rev : ++self.revision,
+							  	          deltas : deltas
+							  	        });
+							  		self.postUSSMessage('shareImage', {
+							  	          src : self.jid,
+							  	          share : self.shareId,
+							  	          imageData : imageData,
+							  	          rev : self.revision,
+							  	          hasDelta : true
+							  	        });
+						  		}
+						  		
+						  		self.sendUpdate(); // Call sendUpdate() to start the next iteration in calling the extension to get latest image
+							   
+					   }
+                         
 			    	} else if(self.isFloorHolder() && event.data.response == "baseImage") {
+			    		 if(!self.destroyed){
+			    			 if(LOGGER.API.isDevDebug()){
+		                            LOGGER.API.devDebug("USS", "New packet received for baseImage from Screenshare extension " );
+		                        }
+			    			 
+			    			 	if(!event.data.image){
+			                        LOGGER.API.warn("USS", "No valid base packet received from Screenshare extension. Wait for next packet." );
+			    			 		self.startTime();
+			    			 		return;
+			    			 	}
+					    		var w = event.data.w;
+					  		    var h = event.data.h;
+					  	        var imageData = event.data.image;
+					  	        
+						  	    self.postUSSMessage('shareBase', {
+						  	        src : self.jid,
+						  	        share : self.shareId,
+						  	        rev : ++self.revision,
+						  	        hasDelta : false,
+						  	        screenRect : {
+						  	          l : 0,
+						  	          t : 0,
+						  	          w : w,
+						  	          h : h
+						  	        }
+						  	      });
+						  	      
+						  	  self.postUSSMessage('shareImage', {
+						  	        src : self.jid,
+						  	        share : self.shareId,
+						  	        imageData : imageData,
+						  	        rev : self.revision,
+						  	        hasDelta : false
+						  	      });
+						  	      
+						  	  self.sendUpdate(); // Call sendUpdate() to start the next iteration in calling the extension to get latest image
+						  	    
+			    		 }
 			    		
-			    		var w = event.data.w;
-			  		    var h = event.data.h;
-			  	        var imageData = event.data.image;
-			  	        
-				  	    self.postUSSMessage('shareBase', {
-				  	        src : self.jid,
-				  	        share : self.shareId,
-				  	        rev : ++self.revision,
-				  	        hasDelta : false,
-				  	        screenRect : {
-				  	          l : 0,
-				  	          t : 0,
-				  	          w : w,
-				  	          h : h
-				  	        }
-				  	      });
-				  	      
-				  	  self.postUSSMessage('shareImage', {
-				  	        src : self.jid,
-				  	        share : self.shareId,
-				  	        imageData : imageData,
-				  	        rev : self.revision,
-				  	        hasDelta : false
-				  	      });
-				  	      
-				  	  self.sendUpdate(); // Call sendUpdate() to start the next iteration in calling the extension to get latest image
-				  	    
 			    	} else if(event.data.response == "shareStarted") {
-			    		console.log("USS:Start Share:: " + event.data.response);
+                        if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Screenshare extension ready to send data " );
+                        }
+                        self.onScreenShareExtensionActiveDeactive(true);	
 					    self._startShare();
 					    
 			    	} else if(event.data.response == "shareOnend") {
-			    		console.log("USS:ShareOnended:: " + event.data.response);
+                        if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Screenshare extension stops sending data " );
+                        }
+                        
+			    		
 			    		self.stopShare();
-					    
+			    		self.onScreenShareExtensionActiveDeactive(false);
 					  	document.getElementById("cgcframe").contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "endShare"}, "*");
 					    
 			    	} else if(event.data.response == "shareFailed") {
-			    		console.log("USS:DesktopSharefailed:: " + event.data.response);
+			    		if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Screenshare extension failed to send data " );
+                        }
+			    		self.onScreenShareExtensionActiveDeactive(false);	
 					    self.stop();
 					    
 					    document.getElementById("cgcframe").contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "endShare"}, "*");
 					    
 			    	} else if(event.data.response == "extensionInitialized" && event.data.responseStatus == "success") {
-			    		console.log("USS:extensionInitialized:: " + event.data.response);
+			    		if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Screenshare extension initialized successfully " );
+                        }
 			    		document.getElementById("cgcframe").contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "extensionStart"}, "*");
 			    	}
 			    	
-			    }
+			    }else{
+                    LOGGER.API.warn("USS", "Screenshare extension send some unknown dataframe ", event );
+                }
 		  		
 		  	});
 			  	
@@ -178,13 +223,28 @@
 		}
 
         this._onRoleChanged = function ( changeToFloorHolder ) {
+            if(LOGGER.API.isInfo()){
+                LOGGER.API.info("USS", "process role change event for floorholder " + changeToFloorHolder );
+            }
 			var self = this;
 			if ( changeToFloorHolder == this.isFloorHolder() ) {
-				//already in that state. duplicate state change message.
-				//no need to process further.
-				return;
+                if(LOGGER.API.isDebug()){
+                    LOGGER.API.debug("USS", "Already a floorHolder" );
+                }
+
 			}
+			
+
+			/*
+			 * It might be conflicting case where the user
+			 * floor holder status was not changed previously and
+			 * this is a duplicate floor holder update.
+			 * 
+			 * So lets continue with the flow
+			 */
+			
 			if ( changeToFloorHolder == true ) {
+				this.floorHolder = true;
 
 				this.role = USSClass.prototype.ROLE.FLOOR_HOLDER;
                 if ( this.isAParticipant()  || ( this.isAOwner() && this.lastFloorHolderRequestId == this.jid)){
@@ -198,62 +258,6 @@
 
 			}
 		};
-		
-		this._init = function () {
-
-			var self = this;
-
-			if ( this.isFloorHolder() ) {
-				this.shareId = this.guid();
-				var ussContainer = document.getElementById( 'uss' );
-				this.video = document.createElement( "video" );
-				this.video.id = 'video_' + this.shareId;
-				this.video.style.display = 'none';
-				this.video.autoplay = true;
-				ussContainer.appendChild( this.video );
-
-				this.originalCanvas = document.createElement( "canvas" );
-				this.originalCanvas.style.display = 'none';
-				this.originalCanvas.id = 'originalCanvas_' + this.shareId;
-				ussContainer.appendChild( this.originalCanvas );
-
-				this.updatedCanvas = document.createElement( "canvas" );
-				this.updatedCanvas.style.display = 'none';
-				this.updatedCanvas.id = 'updatedCanvas_' + this.shareId;
-
-				ussContainer.appendChild( this.updatedCanvas );
-
-				this.deltaCanvas = document.createElement( "canvas" );
-				this.deltaCanvas.style.display = 'none';
-				this.deltaCanvas.id = 'deltaCanvas_' + this.shareId;
-				ussContainer.appendChild( this.deltaCanvas );
-
-				this.video.onloadedmetadata = function () {
-					self.width = this.videoWidth;
-					self.height = this.videoHeight;
-					if ( self.width > self.height ) {
-						self.gridSize = self.width / 4;
-					} else {
-						self.gridSize = self.height / 4;
-					}
-					self.originalCanvas.width = self.width;
-					self.originalCanvas.height = self.height;
-					self.originalContext = self.originalCanvas.getContext( '2d' );
-
-					self.updatedCanvas.width = self.width;
-					self.updatedCanvas.height = self.height;
-					self.updatedContext = self.updatedCanvas.getContext( '2d' );
-
-					self.deltaCanvas.width = self.width;
-					self.deltaCanvas.height = self.height;
-					self.deltaContext = self.deltaCanvas.getContext( '2d' );
-				};
-
-			}
-
-		};
-
-		
 
 	};
 	
@@ -279,61 +283,29 @@
 		if(this.destroyed || this.shareId){
             //This instance is destroyed or already in sharing mode. so nothing to do. 
             //In case, it is destroyed, the instance should be thrown away.
+            if(LOGGER.API.isDebug()){
+                LOGGER.API.debug("USS", "Duplicate call. User is already sharing the screen" );
+            }
             return;
         }  
+        if(LOGGER.API.isInfo()){
+                LOGGER.API.info("USS", "Initializing USS Session" );
+        }
 		this.isPaused = false;
 		if ( this.isFloorHolder() && this.createRoomOnlyAction != true ) {
+
+            this.shareId = this.guid();
+            var desktopShareFrame = document.getElementById("cgcframe");
+            if(desktopShareFrame != null) {
+                if(LOGGER.API.isInfo()){
+                    LOGGER.API.info("USS", "Trying to initialized the screen share extension" );
+                }
+                desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "isExtensionInitialized", imageDataFormat : this.imageFormat}, "*");
+            }
+            
 			
-			//for chrome extension
-			if(this.useDesktopShareExtension == true){
-				this.shareId = this.guid();
-				var desktopShareFrame = document.getElementById("cgcframe");
-				if(desktopShareFrame != null) {
-					desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "isExtensionInitialized", imageDataFormat : this.imageFormat}, "*");
-				}
-		    	return;
-		    }
-			
-			
-            this._init();
-			var self = this;
-			chrome.desktopCapture.chooseDesktopMedia( [
-					'screen', 'window'
-			], function ( id ) {
-				if ( id ) {
-					navigator.webkitGetUserMedia( {
-						audio : false,
-						video : {
-							mandatory : {
-								chromeMediaSource : 'desktop',
-								chromeMediaSourceId : id,
-								maxWidth : 1280,
-								maxHeight : 720
-							}
-						}
-					}, function ( stream ) {
-						self.video.src = URL.createObjectURL( stream );
-						self.localstream = stream;
-						stream.onended = function () {
-							self.stopShare();
-							
-
-						};
-
-						self._startShare();
-
-					}, function () {
-						if ( self.logLevel > 0 ) {
-							console.log( 'USS: getUserMedia() failed.' );
-						}
-						self.stop();
-					} );
-
-				} else {
-					self.stop();
-				}
-			} );
 		} else {
+            
             if(!this.ussWorker){
                 this.initUssWorker();
             }
@@ -419,6 +391,9 @@
 	};
 	
 	USSClass.prototype.stopShare = function () {
+        if(LOGGER.API.isInfo()){
+                    LOGGER.API.info("USS", "Stopping the share " + this.shareId);
+        }
 		this.isPaused = true;
 		if ( this.isFloorHolder() && this.ussWorker ) {
             if(this.shareId){
@@ -429,7 +404,7 @@
             }
             this.clearShareCaptureElements();
 		}
-
+		
 	};	
 
 	USSClass.prototype.leaveRoom = function () {
@@ -442,7 +417,10 @@
 		var self = this;
         this.reconnectCount = this.reconnectCount + 1;
         if(this.reconnectCount < 3){
-            console.log( 'USS: Trying ' + (this.reconnectCount + 1) + ' time to reconnect the USS session.' );
+            if(LOGGER.API.isInfo()){
+                    LOGGER.API.info("USS", (this.reconnectCount + 1) + ' time to reconnect the USS session.');
+            }
+            
             this.isPaused = true;
             this.iteration = this.BASE_IMAGE_FREQUENCY; 
             setTimeout(function(){
@@ -452,13 +430,20 @@
              
 
         }else{
-            console.log( 'USS:Failed to reconnect the USS session.Stopping the session.' );
+            if(LOGGER.API.isInfo()){
+                    LOGGER.API.info("USS", ' Failed to reconnect the USS session.Stopping the session.');
+            }
+
             this.onShareStartStop( self, false, self.jid, self.currentSharer, self.floorHolder );
             this.end();
         }
         
 	};
 	USSClass.prototype.stop = function () {
+        if(LOGGER.API.isInfo()){
+                    LOGGER.API.info("USS", ' Stopping the USS session.');
+        }
+        this.destroyed = true;
 		this.isPaused = true;
 		clearTimeout( this.timeoutId );
 
@@ -471,13 +456,16 @@
                 isFloorHolder:this.isFloorHolder()
 			} );
 		}
-
+		this.role = USSClass.prototype.ROLE.PARTICIPANT;
 	};
 
 	// called by framework when screen share has ended
 
 	USSClass.prototype.end = function () {
-		console.log( "USS: End the USS session" );
+        if(LOGGER.API.isInfo()){
+            LOGGER.API.info( "USS","Terminating USS session" );
+        }
+        this.role = USSClass.prototype.ROLE.PARTICIPANT;
 		this.destroyed = true;
 		this.isPaused = true;
 		if ( this.ussWorker ) {
@@ -486,6 +474,7 @@
 			this.ussWorker = null;
 		}
 
+		this.floorHolder = false;
 		this.clearShareCaptureElements();
 
 		this.viewScreenShareCanvasId = null;
@@ -499,7 +488,11 @@
 		clearTimeout( this.timeoutId );
 		var desktopShareFrame = document.getElementById("cgcframe");
 		if(desktopShareFrame != null) {
+            if(LOGGER.API.isInfo()){
+                LOGGER.API.info( "USS","Stopping screen share extension" );
+            }
 			desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "endShare"}, "*");
+			this.onScreenShareExtensionActiveDeactive(false);	
 		}
 		if ( this.video ) {
 
@@ -544,87 +537,22 @@
 	};
 	USSClass.prototype.sendBaseImage = function () {
 		//for chrome extension
-		if(this.useDesktopShareExtension == true){
-			var desktopShareFrame = document.getElementById("cgcframe");
-			desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "getBaseImage"}, "*");
-			return
-		}
-		
-		if ( this.originalContext !== null && this.updatedContext !== null ) {
-			this.originalContext.drawImage( this.video, 0, 0 );
-			this.updatedContext.putImageData( this.originalContext.getImageData( 0, 0, this.width, this.height ), 0, 0 );
-			var imageData = this.originalCanvas.toDataURL( this.imageFormat, this.imageQuality );
-			this.postUSSMessage( 'shareBase', {
-				src : this.jid,
-				share : this.shareId,
-				rev : ++this.revision,
-				hasDelta : false,
-				screenRect : {
-					l : 0,
-					t : 0,
-					w : this.width,
-					h : this.height
-				}
-			} );
-			this.postUSSMessage( 'shareImage', {
-				src : this.jid,
-				share : this.shareId,
-				imageData : imageData,
-				rev : this.revision,
-				hasDelta : false
-			} );
-
-		}
+        if(LOGGER.API.isDevDebug()){
+            LOGGER.API.devDebug( "USS","Request Screenshare for baseimage" );
+        }
+        var desktopShareFrame = document.getElementById("cgcframe");
+        desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "getBaseImage"}, "*");
 	};
 
 	USSClass.prototype.sendDeltaImages = function () {
+        if(LOGGER.API.isDevDebug()){
+            LOGGER.API.devDebug( "USS","Request Screenshare for deltaImage" );
+        }
 		//for chrome extension
-		if(this.useDesktopShareExtension == true){
-			var desktopShareFrame = document.getElementById("cgcframe");
-			desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "getDeltaImage"}, "*");
-			return;
-		}
 		
-		if ( this.originalContext !== null && this.updatedContext !== null ) {
-
-			// move updated to original
-			this.originalContext.putImageData( this.updatedContext.getImageData( 0, 0, this.width, this.height ), 0, 0 );
-
-			// draw video on updated
-			this.updatedContext.drawImage( this.video, 0, 0 );
-
-			var result = {
-				width : 0,
-				height : 0,
-				deltas : []
-			};
-			this.getDeltaImages( this.originalContext, this.updatedContext, 0, 0, this.width, this.height, result );
-			if ( result.deltas.length > 0 ) {
-				this.deltaCanvas.width = result.width;
-				this.deltaCanvas.height = result.height;
-				var left = 0;
-				for ( var i = 0; i < result.deltas.length; i++ ) {
-					this.deltaContext.putImageData( this.updatedContext.getImageData( result.deltas[ i ].l, result.deltas[ i ].t, result.deltas[ i ].w, result.deltas[ i ].h ), left, 0 );
-					left += result.deltas[ i ].w;
-				}
-
-				var imageData = this.deltaCanvas.toDataURL( this.imageFormat, this.imageQuality );
-				this.postUSSMessage( 'shareDelta', {
-					src : this.jid,
-					share : this.shareId,
-					rev : ++this.revision,
-					deltas : result.deltas
-				} );
-				this.postUSSMessage( 'shareImage', {
-					src : this.jid,
-					share : this.shareId,
-					imageData : imageData,
-					rev : this.revision,
-					hasDelta : true
-				} );
-
-			}
-		}
+        var desktopShareFrame = document.getElementById("cgcframe");
+        desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "getDeltaImage"}, "*");
+ 
 	};
 
 	USSClass.prototype.sendUpdate = function () {
@@ -634,9 +562,15 @@
 		}
 		
 		if ( this.iteration >= this.BASE_IMAGE_FREQUENCY ) {
+            if(LOGGER.API.isDevDebug()){
+                LOGGER.API.devDebug( "USS","Send baseImage to USS websocket worker" );
+            }        
 			this.sendBaseImage();
 			this.iteration = 0;
 		} else {
+            if(LOGGER.API.isDevDebug()){
+                LOGGER.API.devDebug( "USS","Send deltaImage to USS websocket worker" );
+            }    
 			this.sendDeltaImages();
 		}
 		// this.startTimer();
@@ -654,101 +588,15 @@
 		}, this.FREQUENCY );
 	};
 
-	/**
-	 * Recursively divide image in four tiles until width or height is <= 128
-	 * pixels. Then check if the updated region (tile) is different than the
-	 * original. If so, then calculate the smallest region containing the
-	 * difference.
-	 * 
-	 * @param originalContext -
-	 *          the original canvas context
-	 * @param updatedContext -
-	 *          the updated canvas context
-	 * @param left -
-	 *          left co-ordinate of region to inspect
-	 * @param top -
-	 *          top co-ordinate of region to inspect
-	 * @param right -
-	 *          right co-ordinate of region to inspect
-	 * @param bottom -
-	 *          bottom co-ordinate of region to inspect
-	 * @param result -
-	 *          regions that are different are stored here. { w: the overall width
-	 *          of the delta image, h: the overall height of the delta image,
-	 *          deltas: [array of {l:left, t:top, w:width, h:height}]}
-	 */
-	USSClass.prototype.getDeltaImages = function ( originalContext, updatedContext, left, top, right, bottom, result ) {
-		var width = right - left + 1;
-		var height = bottom - top + 1;
-		if ( width <= this.gridSize || height <= this.gridSize ) {
-			// stop and process
-			originalImageData = originalContext.getImageData( left, top, width, height );
-			updatedImageData = updatedContext.getImageData( left, top, width, height );
-			var length = originalImageData.data.length / 4;
-			var isDelta = false;
-			// reverse left, top, right, bottom so we can find smallest region
-			// that's different
-			var l = right;
-			var t = bottom;
-			var r = left;
-			var b = top;
-			for ( var i = 0; i < length; i++ ) {
-				// RGBA difference
-				var dr = originalImageData.data[ i * 4 + 0 ] - updatedImageData.data[ i * 4 + 0 ];
-				var dg = originalImageData.data[ i * 4 + 1 ] - updatedImageData.data[ i * 4 + 1 ];
-				var db = originalImageData.data[ i * 4 + 2 ] - updatedImageData.data[ i * 4 + 2 ];
-				var da = originalImageData.data[ i * 4 + 3 ] - updatedImageData.data[ i * 4 + 3 ];
-				if ( dr | dg | db | da ) {
-					isDelta = true;
-					var x = left + ( i % width );
-					var y = top + Math.floor( i / width );
-					// this pixel (x, y) is different, store it's co-ordinates if
-					// it's the left-most, top-most, right-most, bottom-most
-					if ( x < l ) {
-						l = x;
-					}
-					if ( x > r ) {
-						r = x;
-					}
-					if ( y < t ) {
-						t = y;
-					}
-					if ( y > b ) {
-						b = y;
-					}
-				}
-			}
-			if ( isDelta ) {
-				var delta = {
-					l : l,
-					t : t,
-					w : r - l + 1,
-					h : b - t + 1
-				};
-				result.deltas.push( delta );
-				// the overall delta image is a collage of differences laid out left
-				// to right, so it gets wider as we keep adding tiles. the height
-				// remains fixed to the tallest difference.
-				result.width += delta.w;
-				if ( delta.h > result.height ) {
-					result.height = delta.h;
-				}
-			}
-		} else {
-			// divide in 4 and recurse
-			width = Math.floor( width / 2 );
-			height = Math.floor( height / 2 );
-			this.getDeltaImages( originalContext, updatedContext, left, top, left + width - 1, top + height - 1, result );
-			this.getDeltaImages( originalContext, updatedContext, left + width, top, right, top + height - 1, result );
-			this.getDeltaImages( originalContext, updatedContext, left, top + height, left + width - 1, bottom, result );
-			this.getDeltaImages( originalContext, updatedContext, left + width, top + height, right, bottom, result );
-		}
-	};
+
 
 	USSClass.prototype._startShare = function () {
 		//if already initialized and available, then start the shareProcess.
 		if ( this.ussWorker) {
 			if(this.isFloorHolder() ){
+                if(LOGGER.API.isDebug()){
+                    LOGGER.API.debug( "USS","Starting the share process" );
+                } 
 				this.postUSSMessage( 'initShare', {
 					src : this.jid,
 					share : this.shareId,
@@ -765,6 +613,9 @@
 		}
 	}
 	USSClass.prototype.initUssWorker = function () {
+        if(LOGGER.API.isInfo()){
+                LOGGER.API.info("USS", "Initializing USS websocket" );
+        }
 		var self = this;
 
 		// create new USS worker
@@ -781,7 +632,9 @@
 		this.ussWorker.addEventListener( 'message', function ( e ) {
 			switch ( e.data.type ) {
 				case 'onConnected':
-					
+					if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "USS websocket connected successfully", e.data );
+                    }
 					if(e.data.data.imageFormats) {
                         var serverImageCaps = e.data.data.imageFormats;
                         var imgType = null;
@@ -816,16 +669,34 @@
 					}
 					break;
                 case 'channelReconnected':
-                    console.log( 'USS:Reconnected successfully to the USS session. Trying to join the room.' );
+                    if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Reconnected successfully to the USS session. Trying to join the room." );
+                    }
+                    
                     break;
 				case 'onDisconnect':
-                    if(e.data.data && e.data.data.forcedCloseRequested == false){
-                        self.reconnect();
+                    if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Websocket disconnected." , e.data);
+                    }
+                    if( e.data.data && e.data.data.forcedCloseRequested == false && !self.isFloorHolder()){
+                    	//in some asynchronous cases, the onDisconnect happens but the USS session is already stopped
+                    	if(self.destroyed){
+                    		//send the signal again
+                    	        
+                			self.postUSSMessage( 'terminating' );
+                    	}else{
+                    		 self.reconnect();
+                    	}
+                       
                     }else{
+                    	//self.isGraceFullyShareEnded = true;
                         self.end();
                     }
 					break;
 				case 'onStopShare':
+                    if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Current share is stopped.", e.data );
+                    }
 					self.isGraceFullyShareEnded = true;
                     
 					self.onShareStartStop( self, false, e.data.data.src, self.currentSharer, self.floorHolder );
@@ -838,10 +709,30 @@
                         self.stop();
                     }
                     
+                    //remove current sharer if that is the source of stopping share
+                    if(e.data.data.src == self.currentSharer && e.data.data.src != self.ownerJid){
+                    	if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Stopping the USS session as the current user is the floor holder and stopped the desktop share." );
+                    	}
+                    	self.stop();
+                    	self.currentSharer = null;
+                    }
                     
 					break;
+				case 'onUserLeft':
+					 
+					 if(e.data.data.uid == self.floorHolder){
+						 if(LOGGER.API.isInfo()){
+	                         LOGGER.API.info("USS", "Stopping USS session as the floor holder has left the share room.", e.data.data );
+						 }
+	                    	self.currentSharer = null;
+	                    	self.stop();
+	                 }
+					break;
 				case 'onRoleChanged':
-                    
+                    if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Current Role changed.", e.data );
+                    }
                     if ( e.data.data.removeRoles && e.data.data.removeRoles.indexOf( 'floorholder' ) > -1 ){
                     	self.floorHolder = null;
                         if ( self.isFloorHolder() && e.data.data.uid == self.jid) {
@@ -859,6 +750,9 @@
                     
 					break;
 				case 'onRoomClosed':
+                    if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Share room is closed.", e.data );
+                    }
 					self.isGraceFullyShareEnded = true;
 					self.end();
 
@@ -889,9 +783,15 @@
 					if ( e.data.data.errorCode === 0 || e.data.data.errorCode == 409) {
                         self.sessionToken = e.data.data.token;
                         if(self.reconnectCount>-1){
-                            console.log( 'USS:Joined the room successfully after reconneting.' );
+                            if(LOGGER.API.isInfo()){
+                                    LOGGER.API.info("USS", "Joined the USS room successfully after reconneting.", e.data );
+                            }
+                            
                             if ( self.isFloorHolder() ) {
-                                console.log( 'USS:Start sharing desktop after rejoining.' );
+                                if(LOGGER.API.isInfo()){
+                                        LOGGER.API.info("USS", "Start sharing desktop after rejoining.", e.data );
+                                }
+                                
                                 self.reconnectCount = -1;
                                 self.isPaused = false;
                                 self.iteration = self.BASE_IMAGE_FREQUENCY;
@@ -899,17 +799,11 @@
                                 
                             }   
                         }else{
+                            if(LOGGER.API.isInfo()){
+                                    LOGGER.API.info("USS", "Joined the USS room successfully.", e.data );
+                            }
                             self.isGraceFullyShareEnded = false; //reset it
                             self.sessionToken = e.data.data.token;
-                            /*if(self.isFloorHolder() && self.roomID){
-                              self.postUSSMessage('initShare', {
-                                src : self.jid,
-                                share : self.shareId,
-                                baseQuality : 75,
-                                deltaQuality : 60,
-                                colordepth : 'high'
-                              });
-                            }*/
                             self.onStarted( self );
                         }
 					} else {
@@ -917,6 +811,8 @@
                             self.onShareStartStop( self, false, e.data.data.src, self.currentSharer, self.floorHolder );
                             
                         }else{
+                            LOGGER.API.warn("USS", "Failed to join USS session.", e.data );
+
                             self.onStartError( self, e.data.data.errorCode );
                         }
                         self.end( );
@@ -925,6 +821,9 @@
 					break;
 
 				case 'onStartShare':
+                    if(LOGGER.API.isInfo()){
+                            LOGGER.API.info("USS", "Share started.", e.data );
+                    }                    
 					self.isGraceFullyShareEnded = false; //
                     if(self.lastFloorHolderRequestId && self.lastFloorHolderRequestId == e.data.data.src){
                         self.lastFloorHolderRequestId = null;
@@ -938,6 +837,9 @@
 
 					if ( self.isFloorHolder() ) {
 						if ( e.data.data.share && e.data.data.share == self.shareId ) {
+                            if(LOGGER.API.isInfo()){
+                                LOGGER.API.info("USS", "Share by guest is set active at USS room.", e.data );
+                            }  
 							self.isPaused = false;
                             self.iteration = self.BASE_IMAGE_FREQUENCY;
                             self.sendUpdate();
@@ -946,42 +848,27 @@
 					break;
 
 				case 'onShareBaseUpdate':
-					self.onBaseImage( e.data.data.format, e.data.data.imageData, e.data.data.shareMessage.screenRect );
-
-					// var imageBase = document.createElement('img');
-
-					// var imageCanvas = self.viewScreenShareCanvasId;
-
-					// imageBase.onload = function() {
-					// imageCanvas.width = this.width;
-					// imageCanvas.height = this.height;
-					// var context = imageCanvas.getContext('2d');
-					// context.drawImage(this, 0, 0);
-					// };
-
-					// imageBase.src = 'data:image/jpg;base64,' + e.data.data.imageData;
+					if(!self.destroyed ){
+						
+	                    if(LOGGER.API.isDevDebug()){
+	                        LOGGER.API.devDebug("USS", "Received base image", e.data );
+	                    }
+						self.onBaseImage( e.data.data.format, e.data.data.shareMessage, e.data.data.imageData );
+					}
 					break;
 
 				case 'onDeltaUpdate':
-					self.onImageDeltas( e.data.data.format, e.data.data.shareMessage, e.data.data.imageData );
-					// var image = document.createElement('img');
-					// image.src = 'data:image/jpg;base64,' + e.data.data.imageData;
-					// image.onload = function() {
-					// var imageCanvas = self.viewScreenShareCanvasId;
-					// var context = imageCanvas.getContext('2d');
-					// var sl = 0;
-					// var shareMessage = e.data.data.shareMessage;
-					// for ( var i = 0; i < shareMessage.deltas.length; i++) {
-					// context.drawImage(image, sl, 0, shareMessage.deltas[i].w,
-					// shareMessage.deltas[i].h,shareMessage.deltas[i].l,
-					// shareMessage.deltas[i].t, shareMessage.deltas[i].w,
-					// shareMessage.deltas[i].h);
-					// sl = sl + shareMessage.deltas[i].w;
-					// }
-					// };
+					if(!self.destroyed ){
+	                    if(LOGGER.API.isDevDebug()){
+	                        LOGGER.API.devDebug("USS", "Received delta image", e.data );
+	                    }
+						self.onImageDeltas( e.data.data.format, e.data.data.shareMessage, e.data.data.imageData );
+					}
 					break;
 				case 'onShareCursorUpdate':
-					self.onCursorImage( e.data.data.format, e.data.data.imageData, e.data.data.posX, e.data.data.posY );
+					if(!self.destroyed ){
+						self.onCursorImage( e.data.data.format, e.data.data.imageData, e.data.data.posX, e.data.data.posY );
+					}
 					break;
 				case 'onUserJoined':
 					if ( e.data.data.uid != self.jid ) {
@@ -990,9 +877,25 @@
                             self._shiftFloorOnUserJoined( e.data.data.uid );
                         }
 					}
-					if(e.data.data.roles && e.data.data.roles.indexOf('owner') >= 0){
-						self.setOwnerId(e.data.data.uid);
+					if(e.data.data.roles ){
+						
+						if(e.data.data.roles.indexOf('owner') >= 0){
+							self.setOwnerId(e.data.data.uid);
+							if(LOGGER.API.isInfo()){
+		                        LOGGER.API.info("USS", "USS owner is set to ", e.data.data.uid );
+							}
+						}
+						
+						if(e.data.data.roles.indexOf('floorholder') >= 0){
+							self.floorHolder = e.data.data.uid;
+							if(LOGGER.API.isInfo()){
+		                        LOGGER.API.info("USS", "USS floorholder is set to ", e.data.data.uid );
+							}
+						}
 					}
+					
+					
+					
 					
 					break;
                 case 'onDataQueueFailed':
@@ -1010,15 +913,23 @@
 			share : self.shareId,
 			isSafari : isSafari(),
 			isIE : isIE(),
-			isEdge : isEdge()
+			isEdge : isEdge(),
+			logLevel:LOGGER.Level
 		} );
 	};
 
 	USSClass.prototype.postUSSMessage = function ( cmd, message ) {
-		this.ussWorker.postMessage( {
-			cmd : cmd,
-			message : message
-		} );
+		if(this.ussWorker){
+			this.ussWorker.postMessage( {
+				cmd : cmd,
+				message : message
+			} );
+		}else{
+			if(LOGGER.API.isInfo()){
+                LOGGER.API.info("USS", "Could not post message to USS as the ussWorker not available=> command=" +  cmd );
+			}
+		}
+		
 	};
 
 	USSClass.prototype.ROLE = {

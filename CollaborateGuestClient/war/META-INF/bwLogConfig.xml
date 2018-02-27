@@ -6,7 +6,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaRev="17.3.33">
     <priority>4</priority>
     <maxQueueSize>50000</maxQueueSize>
     <defaultSeverity>Info</defaultSeverity>
-  
+    <showThreadName>true</showThreadName>
   </generalSettings>
   <inputChannels>
      <entry>

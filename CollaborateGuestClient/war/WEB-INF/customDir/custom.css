@@ -1,140 +1,195 @@
-.cgcAudio{
-	background-color:#1B1A1A;
+.bsftPrimaryBackground {
+	background-color: #2dbd9b !important;
 }
 
-.cgcAudioHover{
-	background-color:#171616;
+.bsftPrimaryButton {
+	background-color: #2DBD9B !important;
 }
 
-.cgcAudioPress{
-	background-color:#1A8DA5;
+.bsftPrimaryButton[disabled] {
+	opacity: 0.5 !important;
 }
 
-.cgcVideoOff{
-	background-color:#1B1A1A;
+.bsftPrimarySeparator {
+	border-color: #2DBD9B !important;
 }
 
-.cgcVideoOffHover{
-	background-color:#171616;
+.bsftPrimaryButtonReverse {
+	color: #FFFFFF !important;
 }
 
-.cgcVideoOffPress{
-	background-color:#1A8DA5;
+.bsftCallControlsBackground {
+	background-color: #F0F0F0 !important;
 }
 
-.cgcVideoOn{
-	background-color:#1D9DB8;
+.bsftChatBackground {
+	background-color: #f8f8f8 !important;
 }
 
-.cgcVideoOnHover{
-	background-color:#1A8DA5;
+.bsftIncomingChatBalloon {
+	background-Color: #FFFFFF !important;
 }
 
-.cgcVideoOnPress{
-	background-color:#177E93;
+.bsftOutgoingChatBalloon {
+	background-Color: #627789 !important;
 }
 
-.cgcMuteOff{
-	background-color:#1B1A1A;
+.bsftIcon {
+	color: #2d2d2d;
 }
 
-.cgcMuteOffHover{
-	background-color:#171616;
+.bsftSelectedIcon {
+	color: #2dbd9b !important;
 }
 
-.cgcMuteOffPress{
-	background-color:#1A8DA5;
+.bsftSymbolicRed {
+	Color: #FF3347 !important;
 }
 
-.cgcMuteOn{
-	background-color:#1D9DB8;
+.bsftHoverBackground {
+	background-Color: #000000 !important;
 }
 
-.cgcMuteOnHover{
-	background-color:#1A8DA5;
+:not (.bsftDisabledBG ) >.bsftHoverBackground:hover {
+	opacity: 0.1 !important;
 }
 
-.cgcMuteOnPress{
-	background-color:#177E93;
+.active>.bsftHoverBackground {
+	opacity: 0.1 !important;
 }
 
-.cgcEndActive{
-	background-color:#DE4D4D;
+.active>.bsftHoverBackground:hover {
+	opacity: 0.2 !important;
 }
 
-.cgcEndHover{
-	background-color:#C74545;
+.bsftShareButtonHoverBackground {
+	background-Color: #000000 !important;
 }
 
-.cgcEndPress{
-	background-color:#B23E3E;
+.bsftShareButtonHoverBackground:hover, .active>.bsftShareButtonHoverBackground {
+	opacity: 0.15 !important;
 }
 
-.cgcCallMeButtonDisableBackground{
-	color:#797979;
-	background-color: #323131;
+.bsftDimmedText:-ms-input-placeholder {
+	color: #b4b4b4 !important;
 }
 
-.cgcCallMeButtonEnableBackground{
-	color:#ffffff; 
-	background-color: #05d361;
+.bsftDimmedText::-webkit-input-placeholder {
+	color: #b4b4b4 !important;
 }
 
-.cgcCallMeButtonOnPressBackground{
-	color:#FFFFFF;
-	background-color: #04BD57;
+.bsftPrimaryText {
+	color: #FFFFFF !important;
 }
 
-.cgcChatInfoFontColor{
-    color: #00992d;
+.bsftCallBackground {
+	background-Color: #0D2C3E !important;
 }
 
-.cgcChatErrorFontColor{
+.bsftHeaders {
+	color: #323232 !important;
+}
+
+.bsftIncomingChatText {
+	color: #323232 !important;
+}
+
+.bsftOutgoingChatText {
+	color: #FFFFFF !important;
+}
+
+.bsftChatPrimaryText {
+	color: #2BAA85 !important;
+}
+
+.bsftChatSecondaryText {
+	color: #b4b4b4 !important;
+}
+
+.bsftSeparators {
+	border-color: #dcdcdc !important;
+}
+
+.bsftInputBoxBorder {
+	border-color: #dcdcdc !important;
+}
+
+.onyx-input-decorator.onyx-focused.bsftInputFieldOutline {
+	border-color: #c4e8dd !important;
+}
+
+.bsftAppNotification {
+	border-color: #FFDA00 !important;
+}
+
+.bsftAppNotificationBackground {
+	background-color: #F8F8F8 !important;
+}
+
+.bsftAppNotificationText {
+	color: #323232 !important;
+}
+
+.bsftBadgeText {
+	color: #323232 !important;
+}
+
+.bsftBadgeBackground {
+	background-color: #DCDCDC !important;
+}
+
+.bsftAccentText>a {
+	color: #2BAA85 !important;
+}
+
+.bsftWelcomeScreenDesc>a {
+	color: #475561 !important;
+}
+
+.bsftPrimaryContentText {
+	color: #333333 !important;
+}
+
+.bsftContentBackground {
+	background-color: #FFFFFF !important;
+}
+
+.bsftTertiaryContentText {
+	color: #C0C0C0 !important;
+}
+
+.bsftVersionText {
+	color: #969696 !important;
+}
+
+.bsftChatErrorFontColor{
     color:#FF0000;
 }
 
-.cgcChatMessageBackgroundFirstColor{
-	background-color: #EFEFEF;
+.bsftAlternateDialInNumbersPopup:after{
+    border-color: #2DBD9B transparent;
 }
 
-.cgcChatMessageBackgroundFirstColor:after{
-	border-color: transparent #EFEFEF;
+.bsftAlternateDialInNumbersPopupBackground{
+    background-color: #FFFFFF; 
 }
 
-.cgcChatMessageBackgroundSecondColor{
+.bsftWelcomeScreenPopupBackground{
 	background-color: #FFFFFF;
 }
 
-.cgcChatMessageBackgroundSecondColor:after{
-	border-color: transparent #FFFFFF;
+.bsftSharePopupBackground{
+	background-color: #F0F0F0;
 }
 
-.cgcAlternativeNumberPopupBackground{
-    background-color: rgba(210, 210, 210, 0.8); 
+.bsftPrimaryButtonBorder{
+	border-color: #2DBD9B !important;
 }
 
-.bsftPopup{
-	  background-color: #F0F0F0; 
+.bsftDefaultAvatarBorder{
+	border-color: #2DBD9B !important;
 }
 
-.bsftPopupInactiveButton{
-  color: #ADADAD;
-	background-color: #636363;
-}
-
-.bsftPopupActiveButton{
-  color: #FFFFFF;
-	background-color: #1d9db8;
-}
-
-.desktopShareButtonInactiveBackground{
-	background-color: #636363;
-}
-
-.desktopShareButtonActiveBackground{
-	background-color: #1d9db8;
-}
-
-.desktopShareStopButtonDisabled{
-	opacity: 0.5;
+.bsftDesktopSharePopupCancleBtn{
+	background-color: #FFFFFF;
 }
