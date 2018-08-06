@@ -394,6 +394,7 @@ enyo
             kind : "enyo.FittableRows",
             shareStatus : "end",
             listenersAdded : false,
+            screenSharePlugintimer: {timer:null},
             desktopShareAccess : "viewonly",
             shareRequestTimeout : null,
             components : [
@@ -629,15 +630,13 @@ enyo
 			            enyo.Signals.send("onSharePopupDisplay", {
 				            popupDisplay : "hide"
 			            });
-			            if (document.getElementById("cgcframe") != null) {
-				            document.getElementById("cgcframe").contentWindow
-				                    .postMessage(
-				                            {
-				                                requestFrom : "collaborate",
-				                                requestReason : "endShare",
-				                                extensionId : window.cgcConfig.desktopShareExtId
-				                            }, "*");
-			            }
+			            
+			            window.postMessage({ requestFrom: "USS-Client", 
+			    			requestReason: "endShare"}, 
+			    			window.location.origin);
+			            
+			            
+			            
 			            this.$.startShareButton.disabled = true;
 			            this.$.startShareButton.addClass("bsftDisabledBG");
 
@@ -720,84 +719,95 @@ enyo
             onShareClicked : function() {
 	            if (!this.$.startShareButton.disabled) {
 		            if (this.shareStatus == "end") {
-			            var desktopShareFrame = document
-			                    .getElementById("cgcframe");
-			            if (desktopShareFrame == null) {
-				            desktopShareFrame = document
-				                    .createElement("iframe");
-				            desktopShareFrame.id = "cgcframe";
-				            desktopShareFrame.src = "./cgcframe.jsp";
-				            desktopShareFrame.style.display = "none";
-				            desktopShareFrame.width = 0;
-				            desktopShareFrame.height = 0;
-				            document.body.appendChild(desktopShareFrame);
-			            }
 
-			            var desktopShareFrameWindow = desktopShareFrame.contentWindow;
-
+		            	var self = this;
 			            if (!this.listenersAdded) {
-
-				            var self = this;
+			            	
+				           
 				            window
-				                    .addEventListener(
-				                            'message',
-				                            function(event) {
+		                    .addEventListener(
+		                            'message',
+		                            function(event) {
+		                            	// We only accept messages from ourselves
+		                            	if (event.source != window || event.origin !== window.location.origin){
+		                            		return;
+		                            	}else if (event.data.responseFrom == "ContentScript") {
+		                            		
+		                            		if(self.screenSharePlugintimer && self.screenSharePlugintimer.timer){
+				                            	
+			                            		clearTimeout(self.screenSharePlugintimer.timer);
+			                            		self.screenSharePlugintimer.timer = null;
+			                            	}
+		                            		
+				                            if (event.data.response == "extensionConnected") {
 
-					                            if (event.data.responseFrom == "cgcframe") {
-						                            if (event.data.response == "frameReady") {
-							                            desktopShareFrameWindow
-							                                    .postMessage(
-							                                            {
-							                                                requestFrom : "collaborate",
-							                                                requestReason : "isExtensionInstalled",
-							                                                extensionId : window.cgcConfig.desktopShareExtId
-							                                            }, "*");
-						                            } else if (event.data.response == "extensionInstalled") {
-
-							                            enyo.Signals
-							                                    .send(
-							                                            "onSharePopupDisplay",
-							                                            {
-								                                            popupDisplay : "show"
-							                                            });
-							                            if (LOGGER.API.isInfo()) {
-								                            LOGGER.API
-								                                    .info(
-								                                            "controlpanel.js",
-								                                            'Start desktop share process');
-							                            }
-
-						                            } else if (event.data.response == "extensionNotInstalled") {
-							                            if (LOGGER.API.isInfo()) {
-								                            LOGGER.API
-								                                    .info(
-								                                            "controlpanel.js",
-								                                            'Extension is not present');
-							                            }
-
-							                            enyo.Signals
-							                                    .send(
-							                                            "onChatInfoMessage",
-							                                            {
-							                                                message : htmlEscape(jQuery.i18n
-							                                                        .prop(
-							                                                                "cgc.info.uss.screenshare.installextension",
-							                                                                jQuery.i18n
-							                                                                        .prop("cgc.label.app.title"),
-							                                                                "https://chrome.google.com/webstore/detail/"
-							                                                                        + window.cgcConfig.desktopShareExtId)),
-							                                                avatar : false
-							                                            });
-						                            }
-
+				                            	
+				                            	
+				                            	
+					                            enyo.Signals
+					                                    .send(
+					                                            "onSharePopupDisplay",
+					                                            {
+						                                            popupDisplay : "show"
+					                                            });
+					                            
+					                            
+					                            if (LOGGER.API.isInfo()) {
+						                            LOGGER.API
+						                                    .info(
+						                                            "controlpanel.js",
+						                                            'Start desktop share process');
 					                            }
 
-				                            });
+					                            
+					                            
+				                            } else if (event.data.response == "extensionConnectionProblem") {
+				                            	
+				                            	
+					                            if (LOGGER.API.isInfo()) {
+						                            LOGGER.API
+						                                    .error(
+						                                            "controlpanel.js",
+						                                            'Extension Connection could not be establised by the content script');
+					                            }
+
+					                            enyo.Signals
+					                                    .send(
+					                                            "onChatInfoMessage",
+					                                            {
+					                                                message : htmlEscape(jQuery.i18n
+					                                                        .prop(
+					                                                                "cgc.info.uss.screenshare.installextension",
+					                                                                jQuery.i18n
+					                                                                        .prop("cgc.label.app.title"),
+					                                                                "https://chrome.google.com/webstore/detail/"
+					                                                                        + window.cgcConfig.desktopShareExtId)),
+					                                                avatar : false
+					                                            });
+				                            }
+
+			                            }
+
+		                            });
+
 
 				            this.listenersAdded = true;
+				            
+				            
 			            }
+			            self.screenSharePlugintimer.timer = setTimeout(function(){
+		            		window.postMessage({ responseFrom :"ContentScript", response :"extensionConnectionProblem"}, window.location.origin);
+		            		
+		            		//send the signal anyways, even if extension is not connected, to ensure port is closed (in case where it takes more than 3 seconds to connect to the extension)
+                    		window.postMessage({ requestFrom: "USS-Client", 
+    		    				requestReason: "endShare"}, 
+    		    				window.location.origin);
+                    		
+                    		self.screenSharePlugintimer.timer = null;
+		            	}, 5000);
+			            
+			            window.postMessage({ requestFrom : "GuestClient", requestReason : "initiateScreenShareExtension", extensionId: window.cgcConfig.desktopShareExtId }, window.location.origin);
 
-			            desktopShareFrame.src = "./cgcframe.jsp";
 		            } else {
 			            //this.processDesktopShare();
 			            this.endDesktopShare();
@@ -813,6 +823,9 @@ enyo
 		            popupDisplay : "hide"
 	            });
 	            this.endDesktopShare();
+	            window.postMessage({ requestFrom: "USS-Client", 
+	    			requestReason: "endShare"}, 
+	    			window.location.origin);
 	            this.$.cancleFGCover.addClass("active");
             },
             onDesktopShareStart : function() {

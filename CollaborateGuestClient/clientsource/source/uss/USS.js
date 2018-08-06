@@ -91,7 +91,7 @@
                 
 		  		if(LOGGER.API.isDevDebug())	LOGGER.API.devDebug("USS", "Event from Screenshare extension", event);  
                 
-			    if(event.data.responseFrom == "cgcframe") {
+			    if(event.data.responseFrom == "ContentScript") {
 			    	
 			    	if(LOGGER.API.isDevDebug()){
                         LOGGER.API.devDebug("USS", "EventResponse received for new frame from Screenshare extension ");
@@ -103,12 +103,7 @@
 		                            LOGGER.API.devDebug("USS", "New packet received for deltaImage for new frame from Screenshare extension ", event.data.deltas );
 		                        }
 		                    
-			    			 	if(!event.data.image || !event.data.deltas){
-			                        LOGGER.API.warn("USS", "No valid delta packet received from Screenshare extension. Wait for next packet." );
-			    			 		self.startTime();
-			    			 		return;
-			    			 	}
-					    		var deltas = event.data.deltas;
+			    			 	var deltas = event.data.deltas;
 						  		var imageData = event.data.image;
 						  		var isAppResized = event.data.isAppResized;
 						  		
@@ -117,6 +112,13 @@
 						  			self.sendUpdate(); // Call sendUpdate() to start the next iteration in calling the extension to get latest image
 						  			return;
 						  		}
+						  		
+			    			 	if(!event.data.image || !event.data.deltas){
+			                        LOGGER.API.info("USS", "No change noted in screen share. Waiting for next delta." );
+			    			 		self.startTimer();
+			    			 		return;
+			    			 	}
+					    		
 						  
 						  		if( imageData) {
 							  		self.postUSSMessage('shareDelta', {
@@ -146,33 +148,38 @@
 			    			 
 			    			 	if(!event.data.image){
 			                        LOGGER.API.warn("USS", "No valid base packet received from Screenshare extension. Wait for next packet." );
-			    			 		self.startTime();
+			    			 		self.startTimer();
 			    			 		return;
 			    			 	}
 					    		var w = event.data.w;
 					  		    var h = event.data.h;
 					  	        var imageData = event.data.image;
 					  	        
-						  	    self.postUSSMessage('shareBase', {
-						  	        src : self.jid,
-						  	        share : self.shareId,
-						  	        rev : ++self.revision,
-						  	        hasDelta : false,
-						  	        screenRect : {
-						  	          l : 0,
-						  	          t : 0,
-						  	          w : w,
-						  	          h : h
-						  	        }
-						  	      });
-						  	      
-						  	  self.postUSSMessage('shareImage', {
-						  	        src : self.jid,
-						  	        share : self.shareId,
-						  	        imageData : imageData,
-						  	        rev : self.revision,
-						  	        hasDelta : false
-						  	      });
+					  	        //Only send the base if it is not minimized.
+					  	        if(w>10 || h>10){
+					  	        	
+					  	        	self.postUSSMessage('shareBase', {
+							  	        src : self.jid,
+							  	        share : self.shareId,
+							  	        rev : ++self.revision,
+							  	        hasDelta : false,
+							  	        screenRect : {
+							  	          l : 0,
+							  	          t : 0,
+							  	          w : w,
+							  	          h : h
+							  	        }
+							  	      });
+							  	      
+							  	  self.postUSSMessage('shareImage', {
+							  	        src : self.jid,
+							  	        share : self.shareId,
+							  	        imageData : imageData,
+							  	        rev : self.revision,
+							  	        hasDelta : false
+							  	      });
+					  	        }
+						  	    
 						  	      
 						  	  self.sendUpdate(); // Call sendUpdate() to start the next iteration in calling the extension to get latest image
 						  	    
@@ -193,7 +200,11 @@
 			    		
 			    		self.stopShare();
 			    		self.onScreenShareExtensionActiveDeactive(false);
-					  	document.getElementById("cgcframe").contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "endShare"}, "*");
+			    		
+			    		window.postMessage({ requestFrom: "USS-Client", 
+		    				requestReason: "endShare"}, 
+		    				window.location.origin);
+			    		
 					    
 			    	} else if(event.data.response == "shareFailed") {
 			    		if(LOGGER.API.isInfo()){
@@ -202,17 +213,29 @@
 			    		self.onScreenShareExtensionActiveDeactive(false);	
 					    self.stop();
 					    
-					    document.getElementById("cgcframe").contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "endShare"}, "*");
+					    
+					    window.postMessage({ requestFrom: "USS-Client", 
+		    				requestReason: "endShare"}, 
+		    				window.location.origin);
+					    
+					   
 					    
 			    	} else if(event.data.response == "extensionInitialized" && event.data.responseStatus == "success") {
 			    		if(LOGGER.API.isInfo()){
                             LOGGER.API.info("USS", "Screenshare extension initialized successfully " );
                         }
-			    		document.getElementById("cgcframe").contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "extensionStart"}, "*");
+			    		
+			    		window.postMessage({ requestFrom: "USS-Client", 
+			    				requestReason: "extensionStart"}, 
+			    				window.location.origin);
+			    		
 			    	}
 			    	
 			    }else{
-                    LOGGER.API.warn("USS", "Screenshare extension send some unknown dataframe ", event );
+			    	if(event.data.requestFrom != "USS-Client" && event.data.requestFrom != "GuestClient"){
+			    		LOGGER.API.warn("USS", "Dataframe reeived from unknown source", event );
+			    	}
+                    
                 }
 		  		
 		  	});
@@ -295,13 +318,12 @@
 		if ( this.isFloorHolder() && this.createRoomOnlyAction != true ) {
 
             this.shareId = this.guid();
-            var desktopShareFrame = document.getElementById("cgcframe");
-            if(desktopShareFrame != null) {
-                if(LOGGER.API.isInfo()){
-                    LOGGER.API.info("USS", "Trying to initialized the screen share extension" );
-                }
-                desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "isExtensionInitialized", imageDataFormat : this.imageFormat}, "*");
-            }
+            window.postMessage({ requestFrom: "USS-Client", 
+                		requestReason: "isExtensionInitialized", 
+                		imageDataFormat : this.imageFormat}, 
+                		window.location.origin);
+                
+            
             
 			
 		} else {
@@ -484,16 +506,17 @@
 		this.shareId = null;
 
 	};
+	
 	USSClass.prototype.clearShareCaptureElements = function () {
 		clearTimeout( this.timeoutId );
-		var desktopShareFrame = document.getElementById("cgcframe");
-		if(desktopShareFrame != null) {
-            if(LOGGER.API.isInfo()){
-                LOGGER.API.info( "USS","Stopping screen share extension" );
-            }
-			desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "endShare"}, "*");
-			this.onScreenShareExtensionActiveDeactive(false);	
-		}
+		
+		window.postMessage({ requestFrom: "USS-Client", 
+			requestReason: "endShare"}, 
+			window.location.origin);
+
+
+		this.onScreenShareExtensionActiveDeactive(false);	
+		
 		if ( this.video ) {
 
 			this.video.pause();
@@ -540,8 +563,13 @@
         if(LOGGER.API.isDevDebug()){
             LOGGER.API.devDebug( "USS","Request Screenshare for baseimage" );
         }
-        var desktopShareFrame = document.getElementById("cgcframe");
-        desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "getBaseImage"}, "*");
+        
+        window.postMessage({ requestFrom: "USS-Client", 
+    		requestReason: "getBaseImage"}, 
+    		window.location.origin);
+        
+        
+      
 	};
 
 	USSClass.prototype.sendDeltaImages = function () {
@@ -549,9 +577,11 @@
             LOGGER.API.devDebug( "USS","Request Screenshare for deltaImage" );
         }
 		//for chrome extension
-		
-        var desktopShareFrame = document.getElementById("cgcframe");
-        desktopShareFrame.contentWindow.postMessage({ requestFrom: "collaborate", requestReason : "getDeltaImage"}, "*");
+        window.postMessage({ requestFrom: "USS-Client", 
+        		requestReason: "getDeltaImage"}, 
+        		window.location.origin);
+        
+        
  
 	};
 

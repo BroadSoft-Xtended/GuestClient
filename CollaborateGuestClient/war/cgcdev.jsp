@@ -6,6 +6,7 @@
 <%@page import="com.broadsoft.cgc.util.ApplicationUtil"%>
 <%@page import="com.broadsoft.cgc.i18n.I18nManager"%>
 <%@page import="com.broadsoft.cgc.util.ApplicationUtil"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
 <%!

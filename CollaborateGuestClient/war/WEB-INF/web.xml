@@ -7,13 +7,13 @@
 		<description>Version</description>
 		<env-entry-name>webAppVersion</env-entry-name>
 		<env-entry-type>java.lang.String</env-entry-type>
-		<env-entry-value>4.0.1</env-entry-value>
+		<env-entry-value>4.0.3</env-entry-value>
 	</env-entry>
 	<env-entry>
 		<description>Name of the Configuration File for this WebApp</description>
 		<env-entry-name>webAppConfigFile</env-entry-name>
 		<env-entry-type>java.lang.String</env-entry-type>
-		<env-entry-value>BWCollaborateGuestClientConfig_4.0.1.properties</env-entry-value>
+		<env-entry-value>BWCollaborateGuestClientConfig_4.0.3.properties</env-entry-value>
 	</env-entry>
 	
 	<resource-env-ref>

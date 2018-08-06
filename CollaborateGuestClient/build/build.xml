@@ -12,8 +12,8 @@
     <property name="cgc.meta.inf" location="${cgc.war.src}\META-INF" />
     <property name="cgc.template.dir" location="${basedir}\template" />
     <property name="cgc.war.name" value="BWCollaborateGuestClient" />
-    <property name="cgc.base_version" value="4.0.1" />
-    <property name="cgc.version" value="4.0.1_1" />
+    <property name="cgc.base_version" value="4.0.3" />
+    <property name="cgc.version" value="4.0.3_1" />
     <property name="cgc.war.output" value="${basedir}\output" />
 
     <path id="lib.path">
